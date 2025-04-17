@@ -1,6 +1,6 @@
-const express = require("express");
-const router = express.Router();
-const { notion } = require("../services/notionService");
+import { Router } from "express";
+const router = Router();
+import { notion } from "../services/notionService";
 
 // Get children of a page
 router.get("/children/:pageId", async (req, res) => {
@@ -13,4 +13,4 @@ router.get("/children/:pageId", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

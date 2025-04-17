@@ -1,12 +1,12 @@
-const express = require("express");
+import express, { json } from "express";
 const app = express();
-const cors = require("cors");
+import cors from "cors";
 require("dotenv").config();
 
-const notionRoutes = require("./routes/notion");
+import notionRoutes from "./routes/notion";
 
 app.use(cors());
-app.use(express.json());
+app.use(json());
 app.use("/api/notion", notionRoutes);
 
 const PORT = process.env.PORT || 3000;
