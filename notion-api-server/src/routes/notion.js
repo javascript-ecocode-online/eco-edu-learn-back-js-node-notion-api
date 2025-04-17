@@ -1,13 +1,18 @@
-import { Router } from "express";
-const router = Router();
-import { notion } from "../services/notionService";
+import express from 'express';
+import {
+  notion,
+  getChildrenPages,
+  getPageContent,
+} from '../services/notionService.js';
 
-// Get children of a page
-router.get("/children/:pageId", async (req, res) => {
-  const { pageId } = req.params;
+const router = express.Router();
+
+// GET /api/notion/children?pageId=...
+router.get('/children', async (req, res) => {
+  const { pageId } = req.query;
   try {
-    const response = await notion.blocks.children.list({ block_id: pageId });
-    res.json({pageId: pageId, data: response.results});
+    const children = await getChildrenPages(pageId);
+    res.json(children);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
