@@ -7,7 +7,7 @@ router.get("/children/:pageId", async (req, res) => {
   const { pageId } = req.params;
   try {
     const response = await notion.blocks.children.list({ block_id: pageId });
-    res.json(response.results);
+    res.json({pageId: pageId, data: response.results});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
