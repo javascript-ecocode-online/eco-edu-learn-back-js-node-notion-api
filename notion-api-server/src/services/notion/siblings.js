@@ -4,7 +4,7 @@ export async function getSiblingPages(pageId) {
   const page = await notion.pages.retrieve({ page_id: pageId });
 
   if (page.parent.type !== 'page_id') {
-    throw new Error('Current page does not have a parent page');
+    return [];
   }
 
   const parentId = page.parent.page_id;
