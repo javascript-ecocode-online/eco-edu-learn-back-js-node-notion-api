@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 
-const notionRoutes = require("./routes/notion");
+const notionRoutes = require("./routes/notion").default;
 
 app.use(cors());
 app.use(express.json());
