@@ -1,41 +1,38 @@
-import { notion } from '../../config/notionClient.js';
+import { notion } from '../../config/notionClient.js'
+import { getTitle } from '../../utils/title.js' // nếu bạn dùng helper tách title
+export async function getAllParentPages (pageId) {
+  const result = []
+  let currentId = pageId
 
-export async function getAllParentPages(pageId) {
-  const parents = [];
-  let currentId = pageId;
-
-  while (true) {
-    const page = await notion.pages.retrieve({ page_id: currentId });
-
-    // Lưu thông tin trang hiện tại
-    const currentInfo = {
-      id: currentId,
-      type: page.object,
-      title: extractTitle(page),
-    };
-    parents.push(currentInfo);
+  while (currentId) {
+    const page = await notion.pages.retrieve({ page_id: currentId })
 
     if (page.parent?.type === 'page_id') {
-      currentId = page.parent.page_id;
+      const parentId = page.parent.page_id
+      const parent = await notion.pages.retrieve({ page_id: parentId })
+
+      result.push({
+        id: parentId,
+        title: getTitle(parent),
+        type: 'page',
+      })
+
+      currentId = parentId
+    } else if (page.parent?.type === 'database_id') {
+      const databaseId = page.parent.database_id
+      const db = await notion.databases.retrieve({ database_id: databaseId })
+
+      result.push({
+        id: databaseId,
+        title: db.title?.[0]?.plain_text || '(Untitled Database)',
+        type: 'database',
+      })
+
+      break // database là gốc → dừng lại
     } else {
-      break;
+      break // workspace hoặc unknown → dừng
     }
   }
 
-  return parents;
-}
-
-// 🔍 Trích xuất tiêu đề của page (nếu có)
-function extractTitle(page) {
-  if (!page.properties) return null;
-
-  const titleProp = Object.values(page.properties).find(
-    (prop) => prop.type === 'title'
-  );
-
-  if (titleProp && titleProp.title.length > 0) {
-    return titleProp.title.map(part => part.plain_text).join('');
-  }
-
-  return null;
+  return result
 }
