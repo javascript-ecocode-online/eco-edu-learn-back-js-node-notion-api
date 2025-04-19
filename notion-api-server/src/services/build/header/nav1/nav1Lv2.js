@@ -1,8 +1,10 @@
 import { Lv2Builder } from '../../lv2Builder.js'
+import {NotionJsonBuilder} from '../../../../utils/builders/notion-json-builder.js'
+
 export class Nav1Lv2Builder extends Lv2Builder {
     _lv2Text = ''
   constructor (pageId, lv1BlockId, parents, friends, children) {
-    super(lv1BlockId)
+    super('Nav1Lv2Builder', lv1BlockId)
     this._pageId = pageId
     this._parents = parents
     this._friends = friends
@@ -20,20 +22,12 @@ export class Nav1Lv2Builder extends Lv2Builder {
     return nav1Lv2Blocks;
   }
 
-  #buildRichText (text) {
-    return [
-      {
-        type: 'text',
-        text: { content: text },
-      },
-    ]
-  }
-
   #createToggleBlock (richTextOrString, children = []) {
-    const me = this
+    //const me = this
+    const jb = NotionJsonBuilder
     const rich_text = Array.isArray(richTextOrString)
       ? richTextOrString
-      : me.#buildRichText(richTextOrString)
+      : jb.buildRichText(richTextOrString)
   
     return {
       object: 'block',

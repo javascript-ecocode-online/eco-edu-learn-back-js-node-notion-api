@@ -1,120 +1,81 @@
-import { Lv1Builder } from '../../lv1Builder.js'
 import { Nav1Lv2Builder } from './nav1Lv2.js'
 import { Nav1Lv4Builder } from './nav1Lv4.js'
-import { notion } from '../../../../config/notionClient.js'
-
-export class Nav1Lv1Builder extends Lv1Builder {
-  _parentId
-  _lv1Text = '☝ _Parent_ | ✍️ _Build_ | 👉 _Learn_'
+import { Lv1NavBuilder } from '../../lv1NavBuilder.js'
+import { UrlBuilder } from '../../../../utils/builders/url-builder.js'
+import { NotionJsonArrayHelper } from '../../../../utils/helpers/notion-json-array-helper.js'
+export class Nav1Lv1Builder extends Lv1NavBuilder {
+  
   constructor (pageId, parents, friends, children) {
-    super(pageId)
+    super('Nav1Lv1Builder', pageId)
     this._parents = parents
     this._friends = friends
     this._children = children
-    this._parentId = parents?.[0]?.id ?? ''
   }
 
-  #buildNotionUrl (pageId) {
-    const cleanId = pageId.replace(/-/g, '')
-    return `https://www.notion.so/${cleanId}`
-  }
-  #buildRichTextWithLinks (items) {
-    const richText = []
-
-    items.forEach((item, index) => {
-      if (index > 0) {
-        // Thêm divider nếu không phải phần đầu tiên
-        richText.push({
-          type: 'text',
-          text: { content: ' | ' },
-        })
-      }
-
-      // Thêm emoji nếu có
-      if (item.emoji) {
-        richText.push({
-          type: 'text',
-          text: { content: `${item.emoji} ` },
-        })
-      }
-
-      // Thêm link text
-      richText.push({
-        type: 'text',
-        text: {
-          content: item.label,
-          link: { url: item.url },
-        },
-        //annotations: { italic: true },
-      })
-    })
-
-    return richText
-  }
-  #createToggleBlock (richTextOrString) {
-    const rich_text = Array.isArray(richTextOrString)
-      ? richTextOrString
-      : buildRichText(richTextOrString)
-
-    return {
-      object: 'block',
-      type: 'toggle',
-      toggle: {
-        rich_text,
-        //children,
-      },
-    }
-  }
-  _getLv1ToggleBlockJson () {
+  //Override
+  _getMenuItemData () {
     const me = this
-    const parentId = me._parentId
-
+    const helper = NotionJsonArrayHelper
+    const parentId = helper.getFirstBlockId(me._parents)
+    const pageId = me._pageId
+    const ub = UrlBuilder
     const items = [
-      { emoji: '☝', label: '_Parent_', url: me.#buildNotionUrl(parentId) },
-      { emoji: '✍️', label: '_Build_', url: 'https://example.com/build' },
-      { emoji: '👉', label: '_Learn_', url: 'https://example.com/learn' },
+      { emoji: '☝', label: '_Parent_', url: ub.buildNotionUrl(parentId) },
+      { emoji: '✍️', label: '_Build_', url: ub.buildEcoBuildUrl(pageId) },
+      { emoji: '👉', label: '_Learn_', url: ub.buildEcoLeanUrl(pageId) },
     ]
-
-    const richText = me.#buildRichTextWithLinks(items)
-    return me.#createToggleBlock(richText)
+    return items
   }
 
+  //Override
   _getLv2Blocks (lv1BlockId) {
     const me = this
-    const pageId = me._pageId
-    const parents = me._parents
-    const friends = me._friends
-    const children = me._children
     const lv2Builder = new Nav1Lv2Builder(
-      pageId,
+      me._pageId,
       lv1BlockId,
-      parents,
-      friends,
-      children
+      me._parents,
+      me._friends,
+      me._children
     )
-    const nav1Lv2Blocks = lv2Builder.getBlocks()
-    return nav1Lv2Blocks
+    return lv2Builder.getBlocks()
   }
 
-  async #getChildrenToggleBlocks(blockId) {
-    const response = await notion.blocks.children.list({ block_id: blockId });
-    return response.results
-      .filter(block => block.type === 'toggle')
-  }
+  async _buildLevel3Blocks (level1BlockId, existingLv2Blocks) {
+    ///const me = this;
+    console.log(`--- Đang kiểm tra thêm lv3 cho block lv1: ${level1BlockId}...`)
+    //const builder = new Nav1Lv4Builder()
+    for (const lv2Block of existingLv2Blocks ?? []) {
+      console.log('... lv2Block: ', lv2Block)
+      for (const child of lv2Block.newChildren ?? []) {
+        console.log('... child.toggle.rich_text: ', child.toggle.rich_text)
 
-  async _onExecuteDone (blockId) {
-    console.log('_onExecuteDone', blockId)
-    const me = this;
-    const builder = new Nav1Lv4Builder()
-    const lv2Blocks = await me.#getChildrenToggleBlocks(blockId)
-    for (const lv2Block of lv2Blocks ?? []) {
-      const lv3Blocks = await me.#getChildrenToggleBlocks(lv2Block.id)
-      for (const lv3Block of lv3Blocks ?? []) {
-        builder.init(lv3Block).execute()
-        console.log('--- lv3Block', lv3Block)
+        for (const rt of child.toggle.rich_text ?? []) {
+          console.log('... rt.mention.pagep.id: ', rt?.mention?.page?.id)
+        }
       }
     }
-   
+    //console.log(existingLv2Blocks)
+  }
+
+  //Override
+  async _onExecuteDone (lv1BlockId) {
+    const me = this
+    const nqc = me._nqc
+    //console.log('> Nav1Lv1Builder > _onExecuteDone', lv1BlockId)
+
+    const builder = new Nav1Lv4Builder()
+    let reason = '_onExecuteDone > get lv2Blocks'
+    const lv2Blocks = await nqc.getToggleChildrenById(reason, lv1BlockId)
+
+    reason = '_onExecuteDone > get lv3Blocks'
+    for (const lv2Block of lv2Blocks ?? []) {
+      const lv3Blocks = await nqc.getToggleChildrenById(reason, lv2Block.id)
+      for (const lv3Block of lv3Blocks ?? []) {
+        builder.init(lv3Block).execute()
+        //console.log('--- lv3Block', lv3Block)
+      }
+    }
+
     //console.log('Level 1 block id: ', blockId)
   }
 }

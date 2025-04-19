@@ -1,11 +1,11 @@
-import { notion } from '../../config/notionClient.js'
+import { Lv0Builder } from './lv0Builder.js'
 
-import { EcoTextUtil as ETU } from '../../utils/text.js'
 
-export class Lv2Builder {
+export class Lv2Builder extends Lv0Builder{
   _lv1BlockId
   _lv2Text
-  constructor (lv1BlockId) {
+  constructor (name, lv1BlockId) {
+    super(name)
     this._lv1BlockId = lv1BlockId
   }
 }

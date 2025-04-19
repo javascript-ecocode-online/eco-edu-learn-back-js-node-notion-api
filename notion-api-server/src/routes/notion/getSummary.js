@@ -1,37 +1,38 @@
-import express from 'express';
+import express from 'express'
 import {
-  getChildrenPages,
+  NotionQueryChildren,
   getAllParentPages,
   getSiblingPages,
-  getPageBlocks
-} from '../../services/notion/index.js';
+} from '../../services/notion/index.js'
 
-const router = express.Router();
+const router = express.Router()
 
 router.get('/', async (req, res) => {
-  const { pageId } = req.query;
+  const { pageId } = req.query
   if (!pageId) {
-    return res.status(400).json({ error: 'Missing pageId' });
+    return res.status(400).json({ error: 'Missing pageId' })
   }
 
   try {
-    const [children, parents, friends, blocks] = await Promise.all([
-      getChildrenPages(pageId),
+    const nqc = NotionQueryChildren.instance
+    const reason = 'api-get-summary'
+    const blocks = await nqc.getPageBlocks(reason, pageId)
+    const [children, parents, friends] = await Promise.all([
+      nqc.getChildrenPages(reason, blocks),
       getAllParentPages(pageId),
       getSiblingPages(pageId),
-      getPageBlocks(pageId)
-    ]);
+    ])
 
     res.json({
       pageId,
       children,
       parents,
       friends,
-      blocks
-    });
+      blocks,
+    })
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message })
   }
-});
+})
 
-export default router;
+export default router
