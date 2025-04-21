@@ -1,7 +1,7 @@
 import express from 'express'
 import {
   NotionQueryParents,
-  getSiblingPages,
+  NotionQuerySiblings,
   NotionQueryChildren,
 } from '../../services/notion/index.js'
 import { Nav1Lv1Builder } from '../../services/build/index.js'
@@ -15,10 +15,11 @@ router.post('/', async (req, res) => {
   try {
      const nqc = NotionQueryChildren.instance
      const nqp = NotionQueryParents.instance
+     const nqs = NotionQuerySiblings.instance
     const reason = 'api-get-cache-nav'
     const [parents, friends, children] = await Promise.all([
       nqp.getAllParentPages(reason, pageId),
-      getSiblingPages(pageId),
+      nqs.getSiblingPages(reason, pageId),
       nqc.getChildrenPages(reason, pageId),
     ])
    

@@ -2,7 +2,7 @@ import express from 'express'
 import {
   NotionQueryChildren,
   NotionQueryParents,
-  getSiblingPages,
+  NotionQuerySiblings,
 } from '../../services/notion/index.js'
 
 const router = express.Router()
@@ -16,12 +16,13 @@ router.get('/', async (req, res) => {
   try {
     const nqc = NotionQueryChildren.instance
     const nqp = NotionQueryParents.instance
+    const nqs = NotionQuerySiblings.instance
     const reason = 'api-get-summary'
     const blocks = await nqc.getPageBlocks(reason, pageId)
     const [children, parents, friends] = await Promise.all([
       nqc.getChildrenPages(reason, blocks),
       nqp.getAllParentPages(reason, pageId),
-      getSiblingPages(pageId),
+      nqs.getSiblingPages(reason, pageId),
     ])
 
     res.json({
