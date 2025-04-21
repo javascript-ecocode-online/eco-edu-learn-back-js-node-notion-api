@@ -190,6 +190,7 @@ export class Lv1Builder extends Lv0Builder {
   }
   async execute () {
     const me = this
+    
     const toggleBlock = await me._getLv1Block()
     const lv1BlockId = toggleBlock.id
     const newLv2Blocks = me._getLv2Blocks(lv1BlockId)
@@ -211,5 +212,6 @@ export class Lv1Builder extends Lv0Builder {
     }
     console.log('Kiểm tra và bổ sung các blocks level > 3...')
     await me._onExecuteDone(lv1BlockId)
+    return lv2UniqueNewBlocks
   }
 }

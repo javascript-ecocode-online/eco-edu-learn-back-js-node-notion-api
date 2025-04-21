@@ -1,4 +1,4 @@
-import { getTitle } from '../../utils/title.js' // nếu bạn dùng helper tách title
+import { getTitle } from '../../../utils/title.js' // nếu bạn dùng helper tách title
 import { NotionQueryBase as Base } from './notion-query-base.js'
 export class NotionQueryParents extends Base {
   constructor () {

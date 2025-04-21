@@ -1,5 +1,5 @@
-import { notion } from '../../config/notionClient.js'
-import { EcoServiceBase } from '../eco-service-base.js'
+import { notion } from '../../../config/notionClient.js'
+import { EcoServiceBase } from '../../../services/eco-service-base.js'
 
 export class NotionBase extends EcoServiceBase{
   constructor (logConfig) {

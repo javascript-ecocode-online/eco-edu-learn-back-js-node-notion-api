@@ -1,5 +1,5 @@
 import { EcoNotionRouterController } from '../../../base/controller/router-notion-controller.js'
-import { NotionQuerySiblings } from '../../../services/notion/notion-query-siblings.js'
+import { NotionQuerySiblings } from '../services/notion-query-siblings.js'
 
 export class EcoPageSiblingsController extends EcoNotionRouterController {
   constructor (cfg) {

@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import notionRoutes from './routes/notion/index.js';
+import notionRoutes from './modules/notion/routes.js';
 
 dotenv.config();
 

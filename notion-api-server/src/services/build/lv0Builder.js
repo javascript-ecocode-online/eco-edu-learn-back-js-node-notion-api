@@ -1,4 +1,4 @@
-import { NotionQueryChildren } from '../notion/notion-query-children.js'
+import { NotionQueryChildren } from '../../modules/notion/services/notion-query-children.js'
 
 export class Lv0Builder {
   _name

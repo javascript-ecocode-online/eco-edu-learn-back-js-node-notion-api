@@ -3,20 +3,28 @@ import { EcoRouterController } from './router-controller.js'
 export class EcoNotionRouterController extends EcoRouterController {
   constructor (cfg) {
     super(cfg)
-    
   }
   async _execRequestPageId (name, req, res, func) {
     const me = this
+    const {pageId} = req.params
     me._execRequest(name, res, async () => {
-      const pageId = me.#validatePageId(req, res)
+      const pid = me.#validateRequestPageId(pageId, res)
+      if (!pid) return
+      await func(pid)
+    })
+  }
+  async _execPostPageId (name, req, res, func) {
+    const me = this
+    const pid = req.body.pageId
+    me._execRequest(name, res, async () => {
+      const pageId = me.#validateRequestPageId(pid, res)
       if (!pageId) return
       await func(pageId)
     })
   }
   // 🔒 Private methods
-  #validatePageId (req, res) {
+  #validateRequestPageId (pageId, res) {
     const me = this
-    const { pageId } = req.params
     if (!me.#isPresent(pageId)) {
       res
         .status(400)
