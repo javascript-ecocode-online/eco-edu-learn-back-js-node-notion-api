@@ -1,9 +1,9 @@
-import { NotionQueryBase as Base } from './notion-query-base.js'
-import { NotionQueryParents } from './notion-query-parents.js'
-import { NotionQueryChildren } from './notion-query-children.js'
-import { NotionQuerySiblings } from './notion-query-siblings.js'
+import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.js'
+import { EcoNotionServiceQueryParents } from './notion-service-query-parents.js'
+import { EcoNotionServiceQueryChildren } from './notion-service-query-children.js'
+import { EcoNotionServiceQuerySiblings } from './notion-service-query-siblings.js'
 
-export class NotionQueryRelations extends Base {
+export class EcoNotionServiceQueryRelations extends Base {
   constructor () {
     super({ name: 'NotionQueryRelations', isDebug: true, level: 'info' })
   }
@@ -12,9 +12,9 @@ export class NotionQueryRelations extends Base {
     const logName = `> getSiblingPages > ${reason}`
     me._logInfoBegin(logName, pageId)
 
-    const nqc = NotionQueryChildren.instance
-    const nqp = NotionQueryParents.instance
-    const nqs = NotionQuerySiblings.instance
+    const nqc = EcoNotionServiceQueryChildren.instance
+    const nqp = EcoNotionServiceQueryParents.instance
+    const nqs = EcoNotionServiceQuerySiblings.instance
     const blocks = await nqc.getPageBlocks(reason, pageId)
     const [children, parents, friends] = await Promise.all([
       nqc.getChildrenPages(reason, blocks),

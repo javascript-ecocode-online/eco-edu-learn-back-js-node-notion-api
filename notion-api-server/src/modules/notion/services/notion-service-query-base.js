@@ -1,6 +1,6 @@
-import { NotionBase as Base } from './notion-base.js'
+import { EcoNotionServiceBase as Base } from './notion-service-base.js'
 
-export class NotionQueryBase extends Base {
+export class EcoNotionServiceQueryBase extends Base {
   constructor (logConfig) {
     super(logConfig)
   }

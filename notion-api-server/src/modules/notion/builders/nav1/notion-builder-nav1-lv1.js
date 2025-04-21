@@ -1,9 +1,9 @@
-import { Nav1Lv2Builder } from './nav1Lv2.js'
-import { Nav1Lv4Builder } from './nav1Lv4.js'
-import { Lv1NavBuilder } from '../../lv1NavBuilder.js'
+import { EcoNotionBuilderNav1Lv2 } from './notion-builder-nav1-lv2.js'
+import { EcoNotionBuilderNav1Lv4 } from './notion-builder-nav1-lv4.js'
+import { Lv1NavBuilder } from '../../../../services/build/lv1NavBuilder.js'
 import { UrlBuilder } from '../../../../utils/builders/url-builder.js'
 import { NotionJsonArrayHelper } from '../../../../utils/helpers/notion-json-array-helper.js'
-export class Nav1Lv1Builder extends Lv1NavBuilder {
+export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
   
   constructor (pageId, parents, friends, children) {
     super('Nav1Lv1Builder', pageId)
@@ -20,9 +20,9 @@ export class Nav1Lv1Builder extends Lv1NavBuilder {
     const pageId = me._pageId
     const ub = UrlBuilder
     const items = [
-      { emoji: '☝', label: '_Parent_', url: ub.buildNotionUrl(parentId) },
-      { emoji: '✍️', label: '_Build_', url: ub.buildEcoBuildUrl(pageId) },
-      { emoji: '👉', label: '_Learn_', url: ub.buildEcoLeanUrl(pageId) },
+      { emoji: '☝', label: '# Parent', url: ub.buildNotionUrl(parentId) },
+      { emoji: '✍️', label: '# Build', url: ub.buildEcoBuildUrl(pageId) },
+      { emoji: '👉', label: '# Learn', url: ub.buildEcoLeanUrl(pageId) },
     ]
     return items
   }
@@ -30,7 +30,7 @@ export class Nav1Lv1Builder extends Lv1NavBuilder {
   //Override
   _getLv2Blocks (lv1BlockId) {
     const me = this
-    const lv2Builder = new Nav1Lv2Builder(
+    const lv2Builder = new EcoNotionBuilderNav1Lv2(
       me._pageId,
       lv1BlockId,
       me._parents,
@@ -63,7 +63,7 @@ export class Nav1Lv1Builder extends Lv1NavBuilder {
     const nqc = me._nqc
     //console.log('> Nav1Lv1Builder > _onExecuteDone', lv1BlockId)
 
-    const builder = new Nav1Lv4Builder()
+    const builder = new EcoNotionBuilderNav1Lv4()
     let reason = '_onExecuteDone > get lv2Blocks'
     const lv2Blocks = await nqc.getToggleChildrenById(reason, lv1BlockId)
 

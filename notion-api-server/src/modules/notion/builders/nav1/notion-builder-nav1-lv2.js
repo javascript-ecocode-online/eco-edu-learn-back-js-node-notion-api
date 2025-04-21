@@ -1,7 +1,7 @@
-import { Lv2Builder } from '../../lv2Builder.js'
-import {NotionJsonBuilder} from '../../../../utils/builders/notion-json-builder.js'
+import { Lv2Builder } from '../../../../services/build/lv2Builder.js'
+import { NotionJsonBuilder } from '../../../../utils/builders/notion-json-builder.js'
 
-export class Nav1Lv2Builder extends Lv2Builder {
+export class EcoNotionBuilderNav1Lv2 extends Lv2Builder {
     _lv2Text = ''
   constructor (pageId, lv1BlockId, parents, friends, children) {
     super('Nav1Lv2Builder', lv1BlockId)

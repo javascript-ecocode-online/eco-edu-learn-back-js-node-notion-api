@@ -1,13 +1,13 @@
 import { EcoNotionRouterController } from '../../../base/controller/router-notion-controller.js'
-import { NotionBuildPage } from '../services/notion-build-page.js'
+import { EcoNotionServiceBuildPage } from '../services/notion-service-build-page.js'
 
-export class EcoBuildPageController extends EcoNotionRouterController {
+export class EcoNotionControllerBuildPage extends EcoNotionRouterController {
   constructor (cfg) {
     super(cfg)
     this.#init()
   }
   #init () {
-    this._nbp = NotionBuildPage.instance
+    this._nbp = EcoNotionServiceBuildPage.instance
     return this
   }
 

@@ -1,9 +1,9 @@
-import { NotionQueryChildren } from '../../modules/notion/services/notion-query-children.js'
+import { EcoNotionServiceQueryChildren } from '../../modules/notion/services/notion-service-query-children.js'
 
 export class Lv0Builder {
   _name
   get _nqc () {
-    return NotionQueryChildren.instance
+    return EcoNotionServiceQueryChildren.instance
   }
   constructor (name) {
     this._name = name

@@ -1,7 +1,7 @@
 import { notion } from '../../../../config/notionClient.js'
-import { Lv0Builder } from '../../lv0Builder.js'
+import { Lv0Builder } from '../../../../services/build/lv0Builder.js'
 
-export class Nav1Lv4Builder extends Lv0Builder {
+export class EcoNotionBuilderNav1Lv4 extends Lv0Builder {
   constructor () {
     super('Nav1Lv4Builder')
   }

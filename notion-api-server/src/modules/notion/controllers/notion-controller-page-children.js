@@ -1,13 +1,13 @@
 import { EcoNotionRouterController } from '../../../base/controller/router-notion-controller.js'
-import { NotionQueryChildren } from '../services/notion-query-children.js'
+import { EcoNotionServiceQueryChildren } from '../services/notion-service-query-children.js'
 
-export class EcoPageChildrenController extends EcoNotionRouterController {
+export class EcoNotionControllerPageChildren extends EcoNotionRouterController {
   constructor (cfg) {
     super(cfg)
     this.#init()
   }
   #init () {
-    this._nqc = NotionQueryChildren.instance
+    this._nqc = EcoNotionServiceQueryChildren.instance
     return this
   }
 

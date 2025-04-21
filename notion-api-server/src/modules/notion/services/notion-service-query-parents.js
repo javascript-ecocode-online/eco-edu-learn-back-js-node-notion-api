@@ -1,6 +1,6 @@
 import { getTitle } from '../../../utils/title.js' // nếu bạn dùng helper tách title
-import { NotionQueryBase as Base } from './notion-query-base.js'
-export class NotionQueryParents extends Base {
+import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.js'
+export class EcoNotionServiceQueryParents extends Base {
   constructor () {
     super({ name: 'NotionQueryParents', isDebug: true, level: 'info' })
   }

@@ -1,5 +1,5 @@
-import { NotionQueryBase as Base } from './notion-query-base.js'
-export class NotionQuerySiblings extends Base {
+import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.js'
+export class EcoNotionServiceQuerySiblings extends Base {
   constructor () {
     super({ name: 'NotionQuerySiblings', isDebug: true, level: 'info' })
   }
