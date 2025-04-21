@@ -14,4 +14,9 @@ export class NotionQueryBase extends Base {
     //notion.pages.retrieve
     return this._notionClient.pages
   }
+
+  get databases () {
+    //notion.pages.retrieve
+    return this._notionClient.databases
+  }
 }

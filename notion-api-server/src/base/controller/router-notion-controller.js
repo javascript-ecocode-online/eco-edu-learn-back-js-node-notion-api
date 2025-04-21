@@ -1,10 +1,9 @@
 import { EcoRouterController } from './router-controller.js'
-import { NotionQueryChildren } from '../../services/notion/notion-query-children.js'
 
 export class EcoNotionRouterController extends EcoRouterController {
   constructor (cfg) {
     super(cfg)
-    this._nqc = NotionQueryChildren.instance
+    
   }
   async _execRequestPageId (name, req, res, func) {
     const me = this

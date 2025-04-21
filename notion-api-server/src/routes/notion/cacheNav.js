@@ -1,6 +1,6 @@
 import express from 'express'
 import {
-  getAllParentPages,
+  NotionQueryParents,
   getSiblingPages,
   NotionQueryChildren,
 } from '../../services/notion/index.js'
@@ -14,9 +14,10 @@ router.post('/', async (req, res) => {
 
   try {
      const nqc = NotionQueryChildren.instance
+     const nqp = NotionQueryParents.instance
     const reason = 'api-get-cache-nav'
     const [parents, friends, children] = await Promise.all([
-      getAllParentPages(pageId),
+      nqp.getAllParentPages(reason, pageId),
       getSiblingPages(pageId),
       nqc.getChildrenPages(reason, pageId),
     ])

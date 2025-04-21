@@ -1,7 +1,14 @@
 import { EcoNotionRouterController } from '../../../base/controller/router-notion-controller.js'
+import { NotionQueryChildren } from '../../../services/notion/notion-query-children.js'
+
 export class EcoPageChildrenController extends EcoNotionRouterController {
   constructor (cfg) {
     super(cfg)
+    this.#init()
+  }
+  #init () {
+    this._nqc = NotionQueryChildren.instance
+    return this
   }
 
   // 🇻🇳 Lấy danh sách các trang con của trang

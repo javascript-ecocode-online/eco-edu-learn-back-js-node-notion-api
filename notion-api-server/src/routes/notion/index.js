@@ -1,6 +1,6 @@
 import express from 'express';
 import getChildren from '../../modules/notion/routers/page-children-router.js';
-import getParents from './getParents.js';
+import getParents from '../../modules/notion/routers/page-parents-router.js';
 import getSiblings from './getSiblings.js';
 import getBlocks from '../../modules/notion/routers/page-blocks-router.js';
 import summaryRoute from './getSummary.js'; // thêm dòng này
