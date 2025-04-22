@@ -1,7 +1,7 @@
-import { notion } from '../../config/notionClient.js'
+import { notion } from '../../../../config/notionClient.js'
 import { Lv0Builder } from './lv0Builder.js'
 
-import { EcoTextUtil as ETU } from '../../utils/text.js'
+import { EcoTextUtil as ETU } from '../../../../utils/text.js'
 
 export class Lv1Builder extends Lv0Builder {
   _pageId
@@ -45,6 +45,7 @@ export class Lv1Builder extends Lv0Builder {
     const me = this
     const pageId = me._pageId
     const navMasterBlock1 = me._getLv1ToggleBlockJson()
+    if(!navMasterBlock1) return null
     const appendResult = await notion.blocks.children.append({
       block_id: pageId,
       children: [].concat(navMasterBlock1),
@@ -164,20 +165,7 @@ export class Lv1Builder extends Lv0Builder {
       children: uniqueNewBlocks,
     })
   }
-  /* Result: 
-  [
-    {
-      object: 'block',
-      type: 'toggle',
-      toggle: { rich_text: [Array], children: [Array] }
-    },
-    {
-      object: 'block',
-      type: 'toggle',
-      toggle: { rich_text: [Array], children: [Array] }
-    }
-  ]
-*/
+  
   async _getLv2Blocks () {
     throw new Error('Need implement _getLv2Blocks')
   }
@@ -192,6 +180,7 @@ export class Lv1Builder extends Lv0Builder {
     const me = this
     
     const toggleBlock = await me._getLv1Block()
+    if(!toggleBlock) return null
     const lv1BlockId = toggleBlock.id
     const newLv2Blocks = me._getLv2Blocks(lv1BlockId)
     //console.log('newLv2Blocks', newLv2Blocks)

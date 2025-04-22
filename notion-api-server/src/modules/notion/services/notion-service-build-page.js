@@ -2,7 +2,7 @@ import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.j
 import { EcoNotionServiceQueryParents } from './notion-service-query-parents.js'
 import { EcoNotionServiceQueryChildren } from './notion-service-query-children.js'
 import { EcoNotionServiceQuerySiblings } from './notion-service-query-siblings.js'
-import { EcoNotionBuilderNav1Lv1 } from '../builders/nav1/notion-builder-nav1-lv1.js'
+import { EcoNotionBuilderNav1Lv1 } from '../builders/header-nav1/notion-builder-nav1-lv1.js'
 
 export class EcoNotionServiceBuildPage extends Base {
   constructor () {

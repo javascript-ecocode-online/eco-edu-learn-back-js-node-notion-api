@@ -1,7 +1,7 @@
 import { notion } from '../../../config/notionClient.js'
-import { EcoServiceBase } from '../../../services/eco-service-base.js'
+import { EcoBase } from '../../../base/base.js'
 
-export class EcoNotionServiceBase extends EcoServiceBase{
+export class EcoNotionServiceBase extends EcoBase{
   constructor (logConfig) {
     super(logConfig)
   }
@@ -10,12 +10,4 @@ export class EcoNotionServiceBase extends EcoServiceBase{
     return notion
   }
 
-  static _instance = null
-
-  static get instance () {
-    if (!this._instance) {
-      this._instance = new this()
-    }
-    return this._instance
-  }
 }

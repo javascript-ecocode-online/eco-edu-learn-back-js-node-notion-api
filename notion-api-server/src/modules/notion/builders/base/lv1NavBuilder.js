@@ -1,5 +1,6 @@
 import { Lv1Builder } from './lv1Builder.js'
-import { NotionJsonBuilder } from '../../utils/builders/notion-json-builder.js'
+import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
+import { EcoNotionBuilderObjectText } from '../blocks/notion-builder-object-text.js'
 
 export class Lv1NavBuilder extends Lv1Builder {
   constructor (name, pageId) {
@@ -22,57 +23,36 @@ export class Lv1NavBuilder extends Lv1Builder {
   _getLv1ToggleBlockJson () {
     const me = this
     const items = me._getMenuItemData()
-    const richText = me.#buildRichTextWithLinks(items)
-    return me.#createToggleBlock(richText)
-  }
+    const richTextArr = me.#buildRichTextWithLinks(items)
+    const blockBuilder = new EcoNotionBuilderBlockToggle()
 
-  #createToggleBlock (richTextOrString) {
-    //const me = this
-    const jb = NotionJsonBuilder
-    const rich_text = Array.isArray(richTextOrString)
-      ? richTextOrString
-      : jb.buildRichText(richTextOrString)
-
-    return {
-      object: 'block',
-      type: 'toggle',
-      toggle: {
-        rich_text,
-        //children,
-      },
-    }
+    return blockBuilder.setRichTextArray(richTextArr).oBlockRaw
   }
 
   //Private
   #buildRichTextWithLinks (items) {
     const richText = []
-
     items.forEach((item, index) => {
       if (index > 0) {
         // Thêm divider nếu không phải phần đầu tiên
-        richText.push({
-          type: 'text',
-          text: { content: ' | ' },
-        })
+        const t1 = new EcoNotionBuilderObjectText().setContent(' | ').oObjSafe
+        richText.push(t1)
       }
 
       // Thêm emoji nếu có
       if (item.emoji) {
-        richText.push({
-          type: 'text',
-          text: { content: `${item.emoji} ` },
-        })
+        const t2 = new EcoNotionBuilderObjectText().setContent(
+          `${item.emoji} `
+        ).oObjSafe
+        richText.push(t2)
       }
 
       // Thêm link text
-      richText.push({
-        type: 'text',
-        text: {
-          content: item.label,
-          link: { url: item.url },
-        },
-        //annotations: { italic: true },
-      })
+      const t3 = new EcoNotionBuilderObjectText()
+        .setContent(item.label)
+        .setLink(item.url).oObjSafe
+
+      richText.push(t3)
     })
 
     return richText

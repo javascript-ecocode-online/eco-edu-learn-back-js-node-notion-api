@@ -1,9 +1,10 @@
 import { notion } from '../../../../config/notionClient.js'
-import { Lv0Builder } from '../../../../services/build/lv0Builder.js'
+import { Lv0Builder } from '../base/lv0Builder.js'
+import { EcoNotionBuilderBlockParagraph } from '../blocks/notion-builder-block-paragraph.js'
 
 export class EcoNotionBuilderNav1Lv4 extends Lv0Builder {
   constructor () {
-    super('Nav1Lv4Builder')
+    super('EcoNotionBuilderNav1Lv4')
   }
   #getToggleMentionPageId (block) {
     const rs = block?.toggle?.rich_text
@@ -21,33 +22,19 @@ export class EcoNotionBuilderNav1Lv4 extends Lv0Builder {
   }
   /**
    * Thêm 1 text block vào trong 1 toggle block đã tồn tại
-   * @param {string} toggleBlockId - ID của toggle block
+   * @param {string} blockLv3Id - ID của toggle block
    * @param {string} text - Nội dung văn bản muốn thêm vào
    */
-  async #appendTextToToggleBlock (toggleBlockId, text) {
+  async #appendTextToToggleBlock (blockLv3Id, text) {
     try {
-      const response = await notion.blocks.children.append({
-        block_id: toggleBlockId,
-        children: [
-          {
-            object: 'block',
-            type: 'paragraph',
-            paragraph: {
-              rich_text: [
-                {
-                  type: 'text',
-                  text: {
-                    content: text,
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      })
+      const blockLv4 = new EcoNotionBuilderBlockParagraph().setText(text).oBlockRaw
+      const response = blockLv4? await notion.blocks.children.append({
+        block_id: blockLv3Id,
+        children: [blockLv4],
+      }): null
 
       console.log(
-        `✅ Text block ${text} đã được thêm vào toggle block ${toggleBlockId}!`
+        `✅ Text block ${text} đã được thêm vào toggle block ${blockLv3Id}!`
       )
       return response
     } catch (error) {
@@ -85,19 +72,19 @@ export class EcoNotionBuilderNav1Lv4 extends Lv0Builder {
   }
   async execute () {
     const me = this
-    const block = me._lv3Block
-    const blockId = block.id
+    const blockLv3 = me._lv3Block
+    const blockLv3Id = blockLv3.id
     //console.log('====================')
     //console.log('block.id: ', block.id)
     //const toggleText = getToggleRichText(block)
-    const targetBlockId = me.#getToggleMentionPageId(block)
+    const targetBlockId = me.#getToggleMentionPageId(blockLv3)
     //console.log(toggleText, targetBlockId)
     const idText = `🔑 ${targetBlockId}`
-    const hasChild = await me.#hasChildWithText(blockId, idText)
+    const hasChild = await me.#hasChildWithText(blockLv3Id, idText)
     if (hasChild) {
-      console.log(`🔥 Block ${blockId} đã tồn tại block con ${idText}!`)
+      console.log(`🔥 Block ${blockLv3Id} đã tồn tại block con ${idText}!`)
     } else {
-      await me.#appendTextToToggleBlock(blockId, idText)
+      await me.#appendTextToToggleBlock(blockLv3Id, idText)
     }
   }
 }

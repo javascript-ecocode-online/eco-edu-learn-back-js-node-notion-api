@@ -1,4 +1,4 @@
-import { EcoNotionServiceQueryChildren } from '../../modules/notion/services/notion-service-query-children.js'
+import { EcoNotionServiceQueryChildren } from '../../services/notion-service-query-children.js'
 
 export class Lv0Builder {
   _name
