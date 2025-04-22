@@ -1,6 +1,6 @@
 import { Lv1Builder } from './lv1Builder.js'
-import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
 import { EcoNotionBuilderObjectText } from '../blocks/notion-builder-object-text.js'
+import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-build-block-toggle.js'
 
 export class Lv1NavBuilder extends Lv1Builder {
   constructor (name, pageId) {
@@ -18,19 +18,24 @@ export class Lv1NavBuilder extends Lv1Builder {
   _getMenuItemData () {
     throw new Error('Need implement _getMenuItemData')
   }
+  //Override
+  async _updateBlockText (block) {
+    const me = this
+    const svc = new EcoNotionServiceBuildBlockToggle()
+    const richTextArr = me._getLv1ToggleBlockRichTextArr()
+    const response = await svc.updateRichText(block.id, richTextArr)
+    return response
+  }
 
   //Override
-  _getLv1ToggleBlockJson () {
+  _getLv1ToggleBlockRichTextArr () {
     const me = this
     const items = me._getMenuItemData()
-    const richTextArr = me.#buildRichTextWithLinks(items)
-    const blockBuilder = new EcoNotionBuilderBlockToggle()
-
-    return blockBuilder.setRichTextArray(richTextArr).oBlockRaw
+    return me._buildLv1RichTextArr(items)
   }
 
   //Private
-  #buildRichTextWithLinks (items) {
+  _buildLv1RichTextArr (items) {
     const richText = []
     items.forEach((item, index) => {
       if (index > 0) {

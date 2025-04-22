@@ -1,6 +1,6 @@
-import { notion } from '../../../../config/notionClient.js'
 import { Lv0Builder } from '../base/lv0Builder.js'
 import { EcoNotionBuilderBlockParagraph } from '../blocks/notion-builder-block-paragraph.js'
+import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-build-block-toggle.js'
 
 export class EcoNotionBuilderNav1Lv4 extends Lv0Builder {
   constructor () {
@@ -28,10 +28,8 @@ export class EcoNotionBuilderNav1Lv4 extends Lv0Builder {
   async #appendTextToToggleBlock (blockLv3Id, text) {
     try {
       const blockLv4 = new EcoNotionBuilderBlockParagraph().setText(text).oBlockRaw
-      const response = blockLv4? await notion.blocks.children.append({
-        block_id: blockLv3Id,
-        children: [blockLv4],
-      }): null
+      const svc = new EcoNotionServiceBuildBlockToggle()
+      const response = blockLv4? await svc.appendChild(blockLv3Id, blockLv4): null
 
       console.log(
         `✅ Text block ${text} đã được thêm vào toggle block ${blockLv3Id}!`

@@ -1,5 +1,7 @@
-import { notion } from '../../../../config/notionClient.js'
 import { Lv0Builder } from './lv0Builder.js'
+import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
+import { EcoNotionServiceBuildBlockPage } from '../../services/notion-service-build-block-page.js'
+import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-build-block-toggle.js'
 
 import { EcoTextUtil as ETU } from '../../../../utils/text.js'
 
@@ -38,29 +40,42 @@ export class Lv1Builder extends Lv0Builder {
     return foundBlock
   }
 
+  _getLv1ToggleBlockRichTextArr () {
+    throw new Error('Need implement _getLv1ToggleBlockRichTextArr')
+  }
   _getLv1ToggleBlockJson () {
-    throw new Error('Need implement _getLv1ToggleBlockJson')
+    const me = this
+    const richTextArr = me._getLv1ToggleBlockRichTextArr()
+    const blockBuilder = new EcoNotionBuilderBlockToggle()
+    return blockBuilder.setRichTextArray(richTextArr).oBlockRaw
   }
   async _createLv1ToggleBlock () {
     const me = this
     const pageId = me._pageId
     const navMasterBlock1 = me._getLv1ToggleBlockJson()
-    if(!navMasterBlock1) return null
-    const appendResult = await notion.blocks.children.append({
-      block_id: pageId,
-      children: [].concat(navMasterBlock1),
-    })
-    if (appendResult.results?.length) {
-      return appendResult.results[0]
-    }
-    return null
+    if (!navMasterBlock1) return null
+    const svc = new EcoNotionServiceBuildBlockPage()
+    return await svc.appendChild(pageId, navMasterBlock1)
+    //
+  }
+
+  async #appendLevel2Block (blockId, uniqueNewBlocks) {
+    const svc = new EcoNotionServiceBuildBlockToggle()
+    return await svc.appendChildren(blockId, uniqueNewBlocks)
+  }
+
+  async _updateBlockText (block) {
+    return block
   }
 
   async _getLv1Block () {
     const me = this
     let block = await me.#findLv1Block()
     if (block) {
-      console.log(`--- No create nav1 lv1 block > Found: id = ${block.id} ---`)
+      console.log(
+        `--- No create nav1 lv1 block, change rich text only > Found: id = ${block.id} ---`
+      )
+      block = await me._updateBlockText(block)
     } else {
       console.log(`--- Need create nav1 lv1 block ---`)
       block = await me._createLv1ToggleBlock()
@@ -127,31 +142,27 @@ export class Lv1Builder extends Lv0Builder {
       return !lv2AllExistingTexts.has(combinedText)
     })
 
-    const lv2ExistingTargetBlocks = lv2ExistingAllBlocks.filter(
-      block => {
-        const richText = block[block.type]?.rich_text
-        //console.log('existingBlocks > richText: ', richText)
-        if (!richText) return true
-        //console.log('richText', richText)
-        //rt.plain_text
-        const combinedText = richText
-          .map(rt => me._normalizeText(rt.text.content))
-          .join('')
-        //console.log('newTexts', newTexts)
-        //console.log('combinedText', combinedText)
-        //const isInclude = newCompareData.has(combinedText)
-        const isInclude = newCompareData.some(
-          item => item.text === combinedText
-        )
-        const match = newCompareData.find(item => item.text === combinedText)
-        const blockData = match ? match.data : null
-        //console.log('isInclude', isInclude)
-        //console.log('blockData > children', blockData.toggle.children)
-        if (isInclude && blockData.toggle.children)
-          block.newChildren = blockData.toggle.children
-        return isInclude
-      }
-    )
+    const lv2ExistingTargetBlocks = lv2ExistingAllBlocks.filter(block => {
+      const richText = block[block.type]?.rich_text
+      //console.log('existingBlocks > richText: ', richText)
+      if (!richText) return true
+      //console.log('richText', richText)
+      //rt.plain_text
+      const combinedText = richText
+        .map(rt => me._normalizeText(rt.text.content))
+        .join('')
+      //console.log('newTexts', newTexts)
+      //console.log('combinedText', combinedText)
+      //const isInclude = newCompareData.has(combinedText)
+      const isInclude = newCompareData.some(item => item.text === combinedText)
+      const match = newCompareData.find(item => item.text === combinedText)
+      const blockData = match ? match.data : null
+      //console.log('isInclude', isInclude)
+      //console.log('blockData > children', blockData.toggle.children)
+      if (isInclude && blockData.toggle.children)
+        block.newChildren = blockData.toggle.children
+      return isInclude
+    })
     //console.log('$$$ existingBlocks (lv2)', existingBlocks)
     return {
       lv2UniqueNewBlocks: lv2UniqueNewBlocks,
@@ -159,13 +170,8 @@ export class Lv1Builder extends Lv0Builder {
     }
   }
 
-  async #appendLevel2Block (blockId, uniqueNewBlocks) {
-    await notion.blocks.children.append({
-      block_id: blockId,
-      children: uniqueNewBlocks,
-    })
-  }
-  
+
+
   async _getLv2Blocks () {
     throw new Error('Need implement _getLv2Blocks')
   }
@@ -178,9 +184,9 @@ export class Lv1Builder extends Lv0Builder {
   }
   async execute () {
     const me = this
-    
+
     const toggleBlock = await me._getLv1Block()
-    if(!toggleBlock) return null
+    if (!toggleBlock) return null
     const lv1BlockId = toggleBlock.id
     const newLv2Blocks = me._getLv2Blocks(lv1BlockId)
     //console.log('newLv2Blocks', newLv2Blocks)

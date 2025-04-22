@@ -4,7 +4,7 @@ export class EcoRouterController {
   constructor (cfg) {
     autoBind(this)
     this.cfg = cfg
-    console.log('🌳 EcoRouterController > constructor: ', cfg.name)
+    //console.log('🌳 EcoRouterController > constructor: ', cfg.name)
     //this.getChildren = this.getChildren.bind(this);
   }
   #logBeginRequest (funcName) {

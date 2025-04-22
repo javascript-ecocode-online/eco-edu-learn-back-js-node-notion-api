@@ -38,7 +38,8 @@ export class EcoBase {
     return typeof value === 'string' ? value : JSON.stringify(value, null, 2)
   }
   constructor (logConfig) {
-    this.#setLogConfig(logConfig).#createLogger()._logInfo('> Eco Base Created')
+    this.#setLogConfig(logConfig).#createLogger()
+    //._logInfo('> Eco Base Created')
   }
   _logInfo (obj1, obj2) {
     const text1 = this.#normalizeValue(obj1)

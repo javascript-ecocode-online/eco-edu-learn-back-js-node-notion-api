@@ -8,6 +8,7 @@ export class EcoNotionServiceBuildPage extends Base {
   constructor () {
     super({ name: 'NotionBuildPage', isDebug: true, level: 'info' })
   }
+  
   async buildPage (reason, pageId) {
     const me = this
     const logName = `> buildPage > ${reason}`
