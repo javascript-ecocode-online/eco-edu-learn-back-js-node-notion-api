@@ -3,14 +3,13 @@ import { EcoNotionBuilderNav1Lv4 } from './notion-builder-nav1-lv4.js'
 import { Lv1NavBuilder } from '../base/lv1NavBuilder.js'
 import { UrlBuilder } from '../../../../utils/builders/url-builder.js'
 import { NotionJsonArrayHelper } from '../../../../utils/helpers/notion-json-array-helper.js'
+import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
 export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
-  
   constructor (pageId, parents, friends, children, buildCfg) {
     super('EcoNotionBuilderNav1Lv1', pageId, buildCfg)
     this._parents = parents
     this._friends = friends
     this._children = children
-    
   }
 
   //Override
@@ -20,10 +19,23 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
     const parentId = helper.getFirstBlockId(me._parents)
     const pageId = me._pageId
     const ub = UrlBuilder
+    const tpl = EcoNotionTemplateLv1.nav1Template
     const items = [
-      { emoji: '☝', label: '# Parent', url: ub.buildNotionUrl(parentId) },
-      { emoji: '✍️', label: '# Build', url: ub.buildEcoBuildUrl(pageId) },
-      { emoji: '👉', label: '# Learn', url: ub.buildEcoLeanUrl(pageId) },
+      {
+        emoji: tpl.parent.emoji,
+        label: tpl.parent.label,
+        url: ub.buildNotionUrl(parentId),
+      },
+      {
+        emoji: tpl.build.emoji,
+        label: tpl.build.label,
+        url: ub.buildEcoBuildUrl(pageId),
+      },
+      {
+        emoji: tpl.learn.emoji,
+        label: tpl.learn.label,
+        url: ub.buildEcoLeanUrl(pageId),
+      },
     ]
     return items
   }
