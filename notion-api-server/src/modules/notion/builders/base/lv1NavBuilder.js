@@ -3,8 +3,8 @@ import { EcoNotionBuilderObjectText } from '../blocks/notion-builder-object-text
 import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-build-block-toggle.js'
 
 export class Lv1NavBuilder extends Lv1Builder {
-  constructor (name, pageId) {
-    super(name, pageId)
+  constructor (name, pageId, buildCfg) {
+    super(name, pageId, buildCfg)
   }
 
   _lv1Text () {
@@ -23,8 +23,8 @@ export class Lv1NavBuilder extends Lv1Builder {
     const me = this
     const svc = new EcoNotionServiceBuildBlockToggle()
     const richTextArr = me._getLv1ToggleBlockRichTextArr()
-    const response = await svc.updateRichText(block.id, richTextArr)
-    return response
+    const responseBlock = await svc.updateRichText(block.id, richTextArr)
+    return responseBlock
   }
 
   //Override

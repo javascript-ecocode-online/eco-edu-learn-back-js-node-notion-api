@@ -7,12 +7,20 @@ import { EcoTextUtil as ETU } from '../../../../utils/text.js'
 
 export class Lv1Builder extends Lv0Builder {
   _pageId
+  _buildCfg
   _lv1Text () {
     throw new Error('Lv1Builder > _lv1Text need implement!')
   }
-  constructor (name, pageId) {
+  get _isResetRichText () {
+    return this._buildCfg?.isResetRichText ?? false
+  }
+  get _isResetChildren () {
+    return this._buildCfg?.isResetChildren ?? false
+  }
+  constructor (name, pageId, buildCfg) {
     super(name)
     this._pageId = pageId
+    this._buildCfg = buildCfg
   }
 
   _normalizeText (text) {
@@ -37,6 +45,7 @@ export class Lv1Builder extends Lv0Builder {
       const compareText = me._normalizeText(plainText)
       return compareText === targetText
     })
+    console.log('📍 ----- foundBlock: -----', foundBlock)
     return foundBlock
   }
 
@@ -64,22 +73,34 @@ export class Lv1Builder extends Lv0Builder {
     return await svc.appendChildren(blockId, uniqueNewBlocks)
   }
 
+  //Can override
   async _updateBlockText (block) {
     return block
   }
 
-  async _getLv1Block () {
+  async _removeChildren (block) {
+    if (!block.has_children) return block
+    const svc = new EcoNotionServiceBuildBlockToggle()
+    return await svc.deleteAllChildBlocks(block.id)
+  }
+
+  async #getLv1Block () {
     const me = this
     let block = await me.#findLv1Block()
     if (block) {
-      console.log(
-        `--- No create nav1 lv1 block, change rich text only > Found: id = ${block.id} ---`
-      )
-      block = await me._updateBlockText(block)
+      console.log(`--- Found Lv1 block: id = ${block.id} ---`)
+      if (me._isResetRichText) {
+        block = await me._updateBlockText(block)
+      }
+
+      if (me._isResetChildren) {
+        block = await me._removeChildren(block)
+      }
     } else {
       console.log(`--- Need create nav1 lv1 block ---`)
       block = await me._createLv1ToggleBlock()
     }
+    console.log(`🪭 --- getLv1Block result ---`, block)
     return block
   }
 
@@ -170,8 +191,6 @@ export class Lv1Builder extends Lv0Builder {
     }
   }
 
-
-
   async _getLv2Blocks () {
     throw new Error('Need implement _getLv2Blocks')
   }
@@ -185,7 +204,7 @@ export class Lv1Builder extends Lv0Builder {
   async execute () {
     const me = this
 
-    const toggleBlock = await me._getLv1Block()
+    const toggleBlock = await me.#getLv1Block()
     if (!toggleBlock) return null
     const lv1BlockId = toggleBlock.id
     const newLv2Blocks = me._getLv2Blocks(lv1BlockId)

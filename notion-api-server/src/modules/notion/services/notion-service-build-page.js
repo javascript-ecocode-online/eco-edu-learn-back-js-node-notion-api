@@ -9,7 +9,7 @@ export class EcoNotionServiceBuildPage extends Base {
     super({ name: 'NotionBuildPage', isDebug: true, level: 'info' })
   }
   
-  async buildPage (reason, pageId) {
+  async buildPage (reason, pageId, buildCfg) {
     const me = this
     const logName = `> buildPage > ${reason}`
     me._logInfoBegin(logName, pageId)
@@ -23,7 +23,7 @@ export class EcoNotionServiceBuildPage extends Base {
       nqc.getChildrenPages(reason, pageId),
     ])
 
-    const nav1Builder = new EcoNotionBuilderNav1Lv1(pageId, parents, friends, children)
+    const nav1Builder = new EcoNotionBuilderNav1Lv1(pageId, parents, friends, children, buildCfg)
     const blocks = await nav1Builder.execute()
     const rs = { success: true, 'new-lv2-block': blocks}
 

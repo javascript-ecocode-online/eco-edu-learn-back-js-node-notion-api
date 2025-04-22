@@ -5,11 +5,12 @@ import { UrlBuilder } from '../../../../utils/builders/url-builder.js'
 import { NotionJsonArrayHelper } from '../../../../utils/helpers/notion-json-array-helper.js'
 export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
   
-  constructor (pageId, parents, friends, children) {
-    super('EcoNotionBuilderNav1Lv1', pageId)
+  constructor (pageId, parents, friends, children, buildCfg) {
+    super('EcoNotionBuilderNav1Lv1', pageId, buildCfg)
     this._parents = parents
     this._friends = friends
     this._children = children
+    
   }
 
   //Override

@@ -15,9 +15,11 @@ export class EcoNotionControllerBuildPage extends EcoNotionRouterController {
   // 🇳🇿 Get a list of sub-pages of the page
   async buildPage (req, res) {
     const me = this
+    const options = req.body.options
+   
     me._execPostPageId('⚡️ build_page', req, res, async pageId => {
       const nbp = me._nbp
-      const rs = await nbp.buildPage('api-build-page', pageId)
+      const rs = await nbp.buildPage('api-build-page', pageId, options)
       res.json(rs)
     })
   }
