@@ -1,8 +1,11 @@
 import { Lv1Builder } from './lv1Builder.js'
-import { EcoNotionBuilderObjectText } from '../blocks/notion-builder-object-text.js'
 import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-build-block-toggle.js'
-
+import { EcoNotionBuilderRichTextLinks } from '../blocks/notion-builder-rich-text-links.js'
+import { EcoNotionBlocksConfig as cfg} from '../../configs/notion-blocks-config.js'
 export class Lv1NavBuilder extends Lv1Builder {
+  get _linksDivider () {
+    return cfg.linksDivider
+  }
   constructor (name, pageId, buildCfg) {
     super(name, pageId, buildCfg)
   }
@@ -30,36 +33,9 @@ export class Lv1NavBuilder extends Lv1Builder {
   //Override
   _getLv1ToggleBlockRichTextArr () {
     const me = this
+    const helper = new EcoNotionBuilderRichTextLinks()
     const items = me._getMenuItemData()
-    return me._buildLv1RichTextArr(items)
-  }
-
-  //Private
-  _buildLv1RichTextArr (items) {
-    const richText = []
-    items.forEach((item, index) => {
-      if (index > 0) {
-        // Thêm divider nếu không phải phần đầu tiên
-        const t1 = new EcoNotionBuilderObjectText().setContent(' | ').oObjSafe
-        richText.push(t1)
-      }
-
-      // Thêm emoji nếu có
-      if (item.emoji) {
-        const t2 = new EcoNotionBuilderObjectText().setContent(
-          `${item.emoji} `
-        ).oObjSafe
-        richText.push(t2)
-      }
-
-      // Thêm link text
-      const t3 = new EcoNotionBuilderObjectText()
-        .setContent(item.label)
-        .setLink(item.url).oObjSafe
-
-      richText.push(t3)
-    })
-
+    const richText = helper.getLinksRichText(items, me._linksDivider)
     return richText
   }
 }

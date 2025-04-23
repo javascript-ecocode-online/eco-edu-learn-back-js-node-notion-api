@@ -1,4 +1,4 @@
-import { notion } from '../../../config/notionClient.js'
+import { notion } from '../clients/notion-client.js'
 import { EcoBase } from '../../../base/eco-base.js'
 
 export class EcoNotionServiceBase extends EcoBase{

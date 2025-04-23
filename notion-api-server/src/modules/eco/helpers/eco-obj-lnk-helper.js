@@ -3,15 +3,24 @@ export class EcoObjLinkHelper {
   static getRelatedLearnLinkObject (id) {
     return {
       emoji: '⛵️ ',
-      content: '_Learn_',
+      label: '_Learn_',
       url: eUrl.getEcoLearnUrl(id),
     }
   }
   static getRelatedTestLinkObject (id) {
     return {
       emoji: '🌳 ',
-      content: '_Test_',
+      label: '_Test_',
       url: eUrl.getEcoTestUrl(id),
     }
+  }
+  static getRawInputCompareText (arrObjects) {
+    return arrObjects
+      ?.map(o => {
+        const emoji = o.emoji?.trim()
+        const label = o.label
+        return `${emoji} ${label}`
+      })
+      .join(' ')
   }
 }

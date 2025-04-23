@@ -1,12 +1,17 @@
 import { EcoBase as Base } from '../../../../../base/eco-base.js'
 import { EcoNotionServiceBuildBlockToggle } from '../../../services/notion-service-build-block-toggle.js'
 import { NotionIdHelper } from '../../../helpers/id/notion-id-helper.js'
+import { EcoNotionTaskBlockCheck as pChecker} from '../../../tasks/notion-task-block-check.js'
+import { EcoNotionBlocksConfig as cfg} from '../../../configs/notion-blocks-config.js'
 
 export class NotionBuilderLv4ItemBase extends Base {
   _blockLv3Id
   _children
   _targetPageId
   _isResetChildren
+  get _linksDivider () {
+    return cfg.linksDivider
+  }
   constructor (logConfig = 'NotionBuilderLv4ItemBase') {
     super(logConfig)
   }
@@ -33,12 +38,7 @@ export class NotionBuilderLv4ItemBase extends Base {
   }
 
   _hasContentLv4TextBlock (block) {
-    return (
-      block.type === 'paragraph' && // hoặc kiểm tra type khác nếu cần
-      block.paragraph &&
-      block.paragraph.rich_text &&
-      block.paragraph.rich_text.length > 0
-    )
+    return pChecker.hasParagraphContent(block)
   }
 
   async _appendToggleBlock (blockLv3Id, blockLv4) {
