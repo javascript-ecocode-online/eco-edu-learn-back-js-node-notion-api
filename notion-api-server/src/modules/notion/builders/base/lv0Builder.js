@@ -1,7 +1,7 @@
 import { EcoNotionServiceQueryChildren } from '../../services/notion-service-query-children.js'
-import { EcoBase } from '../../../../base/base.js'
+import { EcoBase } from '../../../../base/eco-base.js'
 import { EcoNotionServiceBuildBlockAny } from '../../services/notion-service-build-block-any.js'
-import { UrlBuilder } from '../../../../utils/builders/url-builder.js'
+import { NotionIdHelper } from '../../helpers/id/notion-id-helper.js'
 
 export class Lv0Builder extends EcoBase {
   get _nqc () {
@@ -15,6 +15,6 @@ export class Lv0Builder extends EcoBase {
   }
 
   _cleanId (pageId) {
-    return UrlBuilder.cleanId(pageId)
+    return NotionIdHelper.cleanId(pageId)
   }
 }

@@ -1,4 +1,4 @@
-import { EcoBase } from '../../../../base/base.js'
+import { EcoBase } from '../../../../base/eco-base.js'
 import { EcoNotionBuilderObjectText } from './notion-builder-object-text.js'
 
 export class EcoNotionBuilderBlockBase extends EcoBase {

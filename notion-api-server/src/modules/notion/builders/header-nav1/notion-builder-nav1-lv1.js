@@ -1,8 +1,10 @@
 import { EcoNotionBuilderNav1Lv2 } from './notion-builder-nav1-lv2.js'
 import { EcoNotionBuilderNav1Lv4 } from './notion-builder-nav1-lv4.js'
 import { Lv1NavBuilder } from '../base/lv1NavBuilder.js'
-import { UrlBuilder } from '../../../../utils/builders/url-builder.js'
-import { NotionJsonArrayHelper } from '../../../../utils/helpers/notion-json-array-helper.js'
+import { NotionIdHelper as nId} from '../../helpers/id/notion-id-helper.js'
+import { NotionUrlHelper as nUrl } from '../../helpers/id/notion-url-helper.js'
+import { EcoUrlHelper as eUrl } from '../../../eco/helpers/eco-txt-url-helper.js'
+import { NotionJsonArrayHelper } from '../../helpers/notion-object-array-helper.js'
 import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
 export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
   constructor (pageId, info, parents, friends, children, buildCfg) {
@@ -40,23 +42,23 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
     const helper = NotionJsonArrayHelper
     const parentId = helper.getFirstBlockId(me._parents)
     const pageId = me._pageId
-    const ub = UrlBuilder
     const tpl = EcoNotionTemplateLv1.nav1Template
+    const cleanId = nId.cleanId(pageId)
     const items = [
       {
         emoji: tpl.parent.emoji,
         label: tpl.parent.label,
-        url: ub.buildNotionUrl(parentId),
+        url: nUrl.getNotionUrl(parentId),
       },
       {
         emoji: tpl.build.emoji,
         label: tpl.build.label,
-        url: ub.buildEcoBuildUrl(pageId),
+        url: eUrl.getEcoBuildUrl(cleanId),
       },
       {
         emoji: tpl.learn.emoji,
         label: tpl.learn.label,
-        url: ub.buildEcoLeanUrl(pageId),
+        url: eUrl.getEcoLearnUrl(cleanId),
       },
     ]
     return items
@@ -171,7 +173,7 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
 
       const lv3Blocks = await nqc.getToggleChildrenById(reason, lv2BlockId)
       for (const lv3Block of lv3Blocks ?? []) {
-        builder.init(lv3Block).execute()
+       await builder.execute(lv3Block)
         //console.log('--- lv3Block', lv3Block)
       }
     }

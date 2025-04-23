@@ -10,7 +10,7 @@ export class EcoRouterController {
   #logBeginRequest (funcName) {
     const cfg = this.cfg
     console.log(
-      `🌳 EcoRouterController > ${cfg.name} > Begin request: `,
+      `===== 🌳 EcoRouterController > ${cfg.name} > Begin request: =====`,
       funcName
     )
   }
@@ -37,7 +37,7 @@ export class EcoRouterController {
   #logEndRequest (funcName) {
     const cfg = this.cfg
     console.log(
-      `🌳 EcoRouterController > ${cfg.name} > End request: `,
+      `===== 🌳 EcoRouterController > ${cfg.name} > End request: =====`,
       funcName
     )
   }
