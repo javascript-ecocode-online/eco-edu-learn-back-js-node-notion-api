@@ -1,12 +1,14 @@
 import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.js'
 export class EcoNotionServiceQueryChildren extends Base {
   constructor () {
-    super({ name: 'NotionQueryChildren', isDebug: true, level: 'info' })
+    super({ name: 'NotionQueryChildren', isDebug: false, level: 'info' })
   }
 
   get #list () {
     return this.blocks.children.list
   }
+
+
 
   async getPageBlocks (reason, pageId) {
     const logName = `> getPageBlocks > ${reason}`

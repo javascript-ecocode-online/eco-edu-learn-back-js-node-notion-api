@@ -5,7 +5,7 @@ import { EcoNotionBuilderObjectMentionPage } from '../blocks/notion-builder-obje
 
 export class EcoNotionBuilderNav1Lv3 extends EcoBase {
   constructor () {
-    super({ name: 'EcoNotionBuilderNav1Lv3', isDebug: true, level: 'info' })
+    super({ name: 'EcoNotionBuilderNav1Lv3', isDebug: false, level: 'info' })
   }
   getLv3Blocks (pageId, items) {
     const me = this

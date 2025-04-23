@@ -4,7 +4,7 @@ export class EcoNotionServiceBuildBlockToggle extends Base {
   constructor () {
     super({
       name: 'EcoNotionServiceBuildBlockToggle',
-      isDebug: true,
+      isDebug: false,
       level: 'info',
     })
   }

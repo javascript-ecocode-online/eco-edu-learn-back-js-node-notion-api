@@ -1,7 +1,7 @@
 import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.js'
 export class EcoNotionServiceQuerySiblings extends Base {
   constructor () {
-    super({ name: 'NotionQuerySiblings', isDebug: true, level: 'info' })
+    super({ name: 'NotionQuerySiblings', isDebug: false, level: 'info' })
   }
   get #list () {
     return this.blocks.children.list

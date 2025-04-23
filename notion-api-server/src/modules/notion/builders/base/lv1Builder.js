@@ -45,7 +45,7 @@ export class Lv1Builder extends Lv0Builder {
       const compareText = me._normalizeText(plainText)
       return compareText === targetText
     })
-    console.log('📍 ----- foundBlock: -----', foundBlock)
+    //console.log('📍 ----- foundBlock: -----', foundBlock)
     return foundBlock
   }
 
@@ -88,7 +88,7 @@ export class Lv1Builder extends Lv0Builder {
     const me = this
     let block = await me.#findLv1Block()
     if (block) {
-      console.log(`--- Found Lv1 block: id = ${block.id} ---`)
+      //console.log(`--- Found Lv1 block: id = ${block.id} ---`)
       if (me._isResetRichText) {
         block = await me._updateBlockText(block)
       }
@@ -97,10 +97,10 @@ export class Lv1Builder extends Lv0Builder {
         block = await me._removeChildren(block)
       }
     } else {
-      console.log(`--- Need create nav1 lv1 block ---`)
+      //console.log(`--- Need create nav1 lv1 block ---`)
       block = await me._createLv1ToggleBlock()
     }
-    console.log(`🪭 --- getLv1Block result ---`, block)
+    //console.log(`🪭 --- getLv1Block result ---`, block)
     return block
   }
 

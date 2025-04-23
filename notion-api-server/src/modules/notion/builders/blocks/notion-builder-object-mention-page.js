@@ -7,7 +7,7 @@ export class EcoNotionBuilderObjectMentionPage extends EcoNotionBuilderObjectMen
   constructor () {
     super({
       name: 'EcoNotionBuilderObjectMentionPage',
-      isDebug: true,
+      isDebug: false,
       level: 'info',
     })
   }

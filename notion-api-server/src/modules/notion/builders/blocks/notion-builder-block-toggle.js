@@ -5,7 +5,7 @@ export class EcoNotionBuilderBlockToggle extends EcoNotionBuilderBlockBase {
   }
 
   constructor () {
-    super({ name: 'EcoNotionBuilderBlockToggle', isDebug: true, level: 'info' })
+    super({ name: 'EcoNotionBuilderBlockToggle', isDebug: false, level: 'info' })
   }
 
   setChildrenBlocks (children) {

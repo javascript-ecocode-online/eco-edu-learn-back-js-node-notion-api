@@ -5,7 +5,7 @@ export class EcoNotionBuilderBlockParagraph extends EcoNotionBuilderBlockBase {
   }
 //TODO: Appply
   constructor () {
-    super({ name: 'EcoNotionBuilderBlockParagraph', isDebug: true, level: 'info' })
+    super({ name: 'EcoNotionBuilderBlockParagraph', isDebug: false, level: 'info' })
   }
 
   

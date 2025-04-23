@@ -2,7 +2,7 @@ import { getTitle } from '../../../utils/title.js' // nếu bạn dùng helper t
 import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.js'
 export class EcoNotionServiceQueryParents extends Base {
   constructor () {
-    super({ name: 'NotionQueryParents', isDebug: true, level: 'info' })
+    super({ name: 'NotionQueryParents', isDebug: false, level: 'info' })
   }
   async getAllParentPages (reason, pageId) {
     const me = this

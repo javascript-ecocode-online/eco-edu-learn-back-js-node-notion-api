@@ -4,7 +4,7 @@ export class EcoNotionServiceBuildBlockPage extends Base {
   constructor () {
     super({
       name: 'EcoNotionServiceBuildBlockPage',
-      isDebug: true,
+      isDebug: false,
       level: 'info',
     })
   }

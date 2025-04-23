@@ -5,7 +5,7 @@ export class EcoNotionBuilderObjectText extends EcoNotionBuilderObjectBase {
   }
   
   constructor () {
-    super({ name: 'EcoNotionBuilderObjectText', isDebug: true, level: 'info' })
+    super({ name: 'EcoNotionBuilderObjectText', isDebug: false, level: 'info' })
   }
 
   setContent (content) {

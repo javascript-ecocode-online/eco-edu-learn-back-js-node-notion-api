@@ -5,8 +5,9 @@ import { UrlBuilder } from '../../../../utils/builders/url-builder.js'
 import { NotionJsonArrayHelper } from '../../../../utils/helpers/notion-json-array-helper.js'
 import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
 export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
-  constructor (pageId, parents, friends, children, buildCfg) {
+  constructor (pageId, info, parents, friends, children, buildCfg) {
     super('EcoNotionBuilderNav1Lv1', pageId, buildCfg)
+    this._info = info
     this._parents = parents
     this._friends = friends
     this._children = children
@@ -54,20 +55,12 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
   }
 
   async _buildLevel3Blocks (level1BlockId, existingLv2Blocks) {
-    ///const me = this;
-    console.log(`--- Đang kiểm tra thêm lv3 cho block lv1: ${level1BlockId}...`)
-    //const builder = new Nav1Lv4Builder()
-    for (const lv2Block of existingLv2Blocks ?? []) {
-      console.log('... lv2Block: ', lv2Block)
-      for (const child of lv2Block.newChildren ?? []) {
-        console.log('... child.toggle.rich_text: ', child.toggle.rich_text)
-
-        for (const rt of child.toggle.rich_text ?? []) {
-          console.log('... rt.mention.pagep.id: ', rt?.mention?.page?.id)
-        }
-      }
-    }
-    //console.log(existingLv2Blocks)
+    // for (const lv2Block of existingLv2Blocks ?? []) {
+    //   for (const child of lv2Block.newChildren ?? []) {
+    //     for (const rt of child.toggle.rich_text ?? []) {
+    //     }
+    //   }
+    // }
   }
 
   //Override
@@ -75,7 +68,7 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
     const me = this
     const nqc = me._nqc
 
-    const builder = new EcoNotionBuilderNav1Lv4()
+    const builder = new EcoNotionBuilderNav1Lv4(me._isResetChildren)
     let reason = '_onExecuteDone > get lv2Blocks'
     const lv2Blocks = await nqc.getToggleChildrenById(reason, lv1BlockId)
 

@@ -5,7 +5,7 @@ import { EcoNotionServiceQuerySiblings } from './notion-service-query-siblings.j
 
 export class EcoNotionServiceQueryRelations extends Base {
   constructor () {
-    super({ name: 'NotionQueryRelations', isDebug: true, level: 'info' })
+    super({ name: 'NotionQueryRelations', isDebug: false, level: 'info' })
   }
   async getRelations (reason, pageId) {
     const me = this
