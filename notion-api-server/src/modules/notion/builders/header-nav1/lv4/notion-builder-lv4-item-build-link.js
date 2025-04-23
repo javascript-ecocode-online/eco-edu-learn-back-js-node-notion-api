@@ -6,8 +6,8 @@ export class NotionBuilderLv4ItemBuildLink extends Base {
   }
   async #addEcoBuildLink ( emj, displayText, url) {
     const me = this
-    const blockLv3Id = me.blockLv3Id
-    const children = me.children
+    const blockLv3Id = me._blockLv3Id
+    const children = me._children
     const hasChild = await me._hasChildWithImageLink(children, emj, displayText)
     if (hasChild) {
       // console.log(
@@ -21,7 +21,7 @@ export class NotionBuilderLv4ItemBuildLink extends Base {
   async build () {
     const me = this
     const emj = '💦 '
-    const targetPageId = me.targetPageId
+    const targetPageId = me._targetPageId
     const cleanPageId = me._cleanId(targetPageId)
     const displayText = cleanPageId
     const url = eUrl.getEcoBuildUrl(cleanPageId)

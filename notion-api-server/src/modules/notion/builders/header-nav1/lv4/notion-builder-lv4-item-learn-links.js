@@ -10,45 +10,43 @@ export class NotionBuilderLv4ItemLearnLinks extends Base {
   #getCompareText (text) {
     return text?.replace(/\|/g, '').replace(/\//g, '').replace(/\s+/g, '')
   }
+  #getRawInputCompareText (arrObjects) {
+    return arrObjects
+      ?.map(o => {
+        const emoji = o.emoji?.trim()
+        const content = o.content
+        //const url = o.url
+        return `${emoji} ${content}`
+      })
+      .join('')
+  }
+  #getBlockCompareText (block) {
+    const me = this
+    const rawBlockText = block?.paragraph?.rich_text
+      .map(rt => rt.plain_text)
+      .join('')
+    return me.#getCompareText(rawBlockText)
+  }
+  #isEqualInputText (block, inputCompareText) {
+    const me = this
+    if (me._hasContentLv4TextBlock(block)) {
+      const blockCompareText = me.#getBlockCompareText(block)
+      if (blockCompareText === inputCompareText) return true
+    }
+    return false
+  }
   async #hasChildWithLinks (children, arrObjects) {
     const me = this
-    const inputCompareText = me.#getCompareText(
-      arrObjects
-        ?.map(o => {
-          const emoji = o.emoji?.trim()
-          const content = o.content
-          //const url = o.url
-          return `${emoji} ${content}`
-        })
-        .join('')
-    )
-
+    const rawText = me.#getRawInputCompareText(arrObjects)
+    const inputCompareText = me.#getCompareText(rawText)
     for (const block of children) {
-      if (
-        block.type === 'paragraph' && // hoặc kiểm tra type khác nếu cần
-        block.paragraph &&
-        block.paragraph.rich_text &&
-        block.paragraph.rich_text.length > 0
-      ) {
-        const blockTextArr = me.#getCompareText(
-          block.paragraph.rich_text.map(rt => rt.plain_text).join('')
-        )
-        const isEqual = blockTextArr === inputCompareText
-        //console.log(`---> 🍒: Comparing..."`)
-        //me._logLines(blockTextArr, inputCompareText)
-
-        //const cleaned = fullText.replace(new RegExp(emj, 'g'), '').trim()
-        //console.log(`---> 🍒: "${cleaned}" vs "${linkText}"`)
-        if (isEqual) {
-          //console.log(isEqual)
-          return true // Đã tồn tại block có nội dung trùng
-        }
-      }
+      const isEqual = me.#isEqualInputText(block, inputCompareText)
+      if (isEqual) return true
     }
     return false
   }
   #getLinksLv4ToggleBlock (arrObjects) {
-    const me = this
+    //const me = this
     //let idx = 0
     const richText = []
     arrObjects?.forEach((o, index) => {
@@ -75,10 +73,9 @@ export class NotionBuilderLv4ItemLearnLinks extends Base {
 
       richText.push(t3)
     })
-
+    const pb = new EcoNotionBuilderBlockParagraph()
     const blockLv4 = richText.length
-      ? new EcoNotionBuilderBlockParagraph().setRichTextArray(richText)
-          .oBlockRaw
+      ? pb.setRichTextArray(richText).oBlockRaw
       : null
     return blockLv4
   }
@@ -104,9 +101,9 @@ export class NotionBuilderLv4ItemLearnLinks extends Base {
   }
   async build () {
     const me = this
-    const targetPageId = me.targetPageId
-    const blockLv3Id = me.blockLv3Id
-    const children = me.children
+    const targetPageId = me._targetPageId
+    const blockLv3Id = me._blockLv3Id
+    const children = me._children
 
     const id = me._cleanId(targetPageId)
     return await me.#addTextLinks(blockLv3Id, children, [

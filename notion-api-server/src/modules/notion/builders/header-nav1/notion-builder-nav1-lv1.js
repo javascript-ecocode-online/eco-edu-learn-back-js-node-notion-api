@@ -174,8 +174,11 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
       const lv3Blocks = await nqc.getToggleChildrenById(reason, lv2BlockId)
       for (const lv3Block of lv3Blocks ?? []) {
        await builder.execute(lv3Block)
-        //console.log('--- lv3Block', lv3Block)
       }
+
+      // await Promise.all(
+      //   (lv3Blocks ?? []).map(lv3Block => builder.execute(lv3Block))
+      // );
     }
 
     //console.log('Level 1 block id: ', blockId)

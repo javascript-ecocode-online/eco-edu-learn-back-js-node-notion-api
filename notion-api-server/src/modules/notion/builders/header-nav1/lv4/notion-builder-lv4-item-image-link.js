@@ -8,9 +8,9 @@ export class NotionBuilderLv4ItemImageLink extends Base {
   async build (){
 
     const me = this
-    const targetPageId = me.targetPageId
-    const blockLv3Id = me.blockLv3Id
-    const children = me.children
+    const targetPageId = me._targetPageId
+    const blockLv3Id = me._blockLv3Id
+    const children = me._children
 
     const nqPage = EcoNotionServiceQueryPage.instance
     const reason = 'NotionBuilderLv4ItemImageLink > addImageLink'

@@ -34,14 +34,10 @@ export class NotionBuilderLv4ItemSingleLink extends Base {
     if (this._isResetChildren) return false
 
     if (!children) return false // Không có block con nào trùng text
+    const me = this
     // Duyệt qua từng block con và so sánh text
     for (const block of children) {
-      if (
-        block.type === 'paragraph' && // hoặc kiểm tra type khác nếu cần
-        block.paragraph &&
-        block.paragraph.rich_text &&
-        block.paragraph.rich_text.length > 0
-      ) {
+      if (me._hasContentLv4TextBlock(block)) {
         const fullText = block.paragraph.rich_text
           .map(rt => rt.plain_text)
           .join('')
