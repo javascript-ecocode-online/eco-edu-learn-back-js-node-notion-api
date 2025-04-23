@@ -17,8 +17,8 @@ export class Lv1Builder extends Lv0Builder {
   get _isResetChildren () {
     return this._buildCfg?.isResetChildren ?? false
   }
-  constructor (name, pageId, buildCfg) {
-    super(name)
+  constructor (logCfg, pageId, buildCfg) {
+    super(logCfg)
     this._pageId = pageId
     this._buildCfg = buildCfg
   }

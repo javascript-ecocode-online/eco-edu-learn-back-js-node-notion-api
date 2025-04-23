@@ -1,18 +1,31 @@
 import winston from 'winston'
+
 export class EcoBase {
   #logger
   #logConfig
+  constructor (logConfig) {
+    this.#setLogConfig(logConfig).#createLogger()
+    //._logInfo('> Eco Base Created')
+  }
+
+  get #isString () {
+    return typeof this.#logConfig === 'string'
+  }
+
   get #isDebug () {
+    if (this.#isString) return false
     return this.#logConfig?.isDebug ?? false
   }
   get #logLevel () {
+    if (this.#isString) return 'info'
     return this.#logConfig?.level ?? 'info'
   }
   get #logName () {
+    if (this.#isString) return this.#logConfig
     return this.#logConfig?.name ?? 'EcoBase'
   }
   get _logName () {
-    return this.#logName 
+    return this.#logName
   }
   #setLogConfig (logConfig) {
     this.#logConfig = logConfig
@@ -37,9 +50,8 @@ export class EcoBase {
   #normalizeValue (value) {
     return typeof value === 'string' ? value : JSON.stringify(value, null, 2)
   }
-  constructor (logConfig) {
-    this.#setLogConfig(logConfig).#createLogger()
-    //._logInfo('> Eco Base Created')
+  _logLines (...args) {
+    args?.forEach(arg => console.log(arg))
   }
   _logInfo (obj1, obj2) {
     const text1 = this.#normalizeValue(obj1)
