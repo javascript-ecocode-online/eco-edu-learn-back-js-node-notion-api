@@ -1,4 +1,4 @@
-export class EcoUrlHelper {
+export class EcoTaskUrl {
   static getEcoBuildUrl (cleanPageId) {
     return `https://build.ecocode.online?id=${cleanPageId}`
   }

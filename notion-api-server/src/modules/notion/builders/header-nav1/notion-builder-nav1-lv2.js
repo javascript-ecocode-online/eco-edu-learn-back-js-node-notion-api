@@ -2,6 +2,7 @@ import { Lv2Builder } from '../base/lv2Builder.js'
 import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
 
 import { EcoNotionBuilderNav1Lv3 } from './notion-builder-nav1-lv3.js'
+import { EcoNotionBlocksConfig as cfg} from '../../configs/notion-blocks-config.js'
 
 export class EcoNotionBuilderNav1Lv2 extends Lv2Builder {
   _lv2Text = ''
@@ -31,13 +32,14 @@ export class EcoNotionBuilderNav1Lv2 extends Lv2Builder {
 
   #buildNavBlocks ({ pageId, parents, friends, children }) {
     const me = this
+    const lbl = cfg.pageTypeLabels
     const rs = []
     if (parents?.length)
-      rs.push(me.#createToggleFolder(pageId, '📂 Parent Pages', parents))
+      rs.push(me.#createToggleFolder(pageId, lbl.parent, parents))
     if (friends?.length)
-      rs.push(me.#createToggleFolder(pageId, '❄️ Friend Pages', friends))
+      rs.push(me.#createToggleFolder(pageId, lbl.friend, friends))
     if (children?.length)
-      rs.push(me.#createToggleFolder(pageId, '👶 Children Pages', children))
+      rs.push(me.#createToggleFolder(pageId, lbl.children, children))
     return rs
   }
 

@@ -1,5 +1,5 @@
 import { EcoBase as Base } from '../../../base/eco-base.js'
-import { EcoObjLinkHelper as eObjLnk } from '../../eco/helpers/eco-obj-lnk-helper.js'
+import { EcoTasksLinks as eObjLnk } from '../tasks/notion-task-block-links.js'
 import { EcoNotionTaskBlockCheck as pChecker } from '../tasks/notion-task-block-check.js'
 
 export class EcoNotionMissionBlockCompare extends Base {

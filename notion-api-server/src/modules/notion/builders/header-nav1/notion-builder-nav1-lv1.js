@@ -3,7 +3,7 @@ import { EcoNotionBuilderNav1Lv4 } from './notion-builder-nav1-lv4.js'
 import { Lv1NavBuilder } from '../base/lv1NavBuilder.js'
 import { NotionIdHelper as nId} from '../../helpers/id/notion-id-helper.js'
 import { NotionUrlHelper as nUrl } from '../../helpers/id/notion-url-helper.js'
-import { EcoUrlHelper as eUrl } from '../../../eco/helpers/eco-txt-url-helper.js'
+import { EcoTaskUrl as eUrl } from '../../../eco/tasks/eco-task-url.js'
 import { NotionJsonArrayHelper } from '../../helpers/object/notion-object-array-helper.js'
 import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
 export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {

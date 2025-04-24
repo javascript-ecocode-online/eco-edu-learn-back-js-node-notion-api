@@ -1,4 +1,4 @@
-import { EcoUrlHelper as eUrl } from '../../../../eco/helpers/eco-txt-url-helper.js'
+import { EcoTaskUrl as eUrl } from '../../../../eco/tasks/eco-task-url.js'
 import { NotionBuilderLv4ItemSingleLink as Base } from './notion-builder-lv4-item-single-link.js'
 export class NotionBuilderLv4ItemBuildLink extends Base {
   constructor (logConfig = 'NotionBuilderLearnLinks') {

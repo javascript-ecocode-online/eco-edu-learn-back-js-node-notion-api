@@ -1,6 +1,6 @@
 import { NotionBuilderLv4ItemBase as Base } from './notion-builder-lv4-item-base.js'
 import { EcoNotionBuilderBlockParagraph } from '../../blocks/notion-builder-block-paragraph.js'
-import { EcoObjLinkHelper as eObjLnk } from '../../../../eco/helpers/eco-obj-lnk-helper.js'
+import { EcoTasksLinks as eObjLnk } from '../../../tasks/notion-task-block-links.js'
 import { EcoNotionBuilderRichTextLinks } from '../../blocks/notion-builder-rich-text-links.js'
 import { EcoNotionMissionBlockCompare as CompareService } from '../../../missions/notion-mission-block-compare.js'
 export class NotionBuilderLv4ItemLearnLinks extends Base {
