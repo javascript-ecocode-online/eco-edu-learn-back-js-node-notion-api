@@ -8,4 +8,7 @@ export class EcoNotionTaskBlockCheck extends Base {
       block.paragraph.rich_text.length > 0
     )
   }
+  static isMentionType (item, type) {
+    return item.type === 'mention' && item.mention.type === type
+  }
 }

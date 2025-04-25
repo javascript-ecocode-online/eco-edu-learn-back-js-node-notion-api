@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".", // Giúp import từ root
+      "paths": {
+        "@nt/*": ["src/modules/notion/*"] // (tuỳ chọn) tạo alias gợi ý import ngắn
+      }
+    },
+    "include": ["src/**/*"]
+  }

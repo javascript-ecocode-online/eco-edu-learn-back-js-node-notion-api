@@ -70,7 +70,9 @@ export class Lv1Builder extends Lv0Builder {
 
   async #appendLevel2Block (blockId, uniqueNewBlocks) {
     const svc = new EcoNotionServiceBuildBlockToggle()
-    return await svc.appendChildren(blockId, uniqueNewBlocks)
+    const rs = await svc.appendChildren(blockId, uniqueNewBlocks)
+    console.log(`Đã thêm ${uniqueNewBlocks.length} block lv2 vào toggle lv1.`)
+    return rs
   }
 
   //Can override
@@ -198,33 +200,40 @@ export class Lv1Builder extends Lv0Builder {
   async _onExecuteDone (lv1BlockId) {
     throw new Error(`Need implement _onExecuteDone, lv1BlockId: ${lv1BlockId}`)
   }
-  async _buildLevel3Blocks (level1BlockId, newLv2Blocks) {
-    console.log(`Không có block lv3 cho block lv1: ${level1BlockId}...`)
+  async _buildLv3BlocksForExtgLv2Blocks (lv1BlockId, lv2ExtgBlocks) {
+    console.log(`Không có block lv3 cho block lv1: ${lv1BlockId}...`)
   }
   async execute () {
     const me = this
-
+    const isResetChildren = me._isResetChildren
     const toggleBlock = await me.#getLv1Block()
     if (!toggleBlock) return null
     const lv1BlockId = toggleBlock.id
     const newLv2Blocks = me._getLv2Blocks(lv1BlockId)
     //console.log('newLv2Blocks', newLv2Blocks)
     // Lọc các block mới không trùng text
-    const { lv2UniqueNewBlocks, lv2ExistingTargetBlocks } =
-      await me.#getUniqueNewOrExistingBlocks(lv1BlockId, newLv2Blocks)
-    if (lv2ExistingTargetBlocks.length !== 0) {
-      await me._buildLevel3Blocks(lv1BlockId, lv2ExistingTargetBlocks)
+    const { lv2UniqueNewBlocks, lv2ExistingTargetBlocks } = isResetChildren
+      ? { lv2UniqueNewBlocks: newLv2Blocks, lv2ExistingTargetBlocks: [] }
+      : await me.#getUniqueNewOrExistingBlocks(lv1BlockId, newLv2Blocks)
+
+    const hasNewLv2Blocks = lv2UniqueNewBlocks.length !== 0
+    const hasExistingLv2Blocks = lv2ExistingTargetBlocks.length !== 0
+    if (hasExistingLv2Blocks) {
+      if (isResetChildren) {
+        console.log(
+          'Không xử lý các blocks lv2 đã tồn tại trước đó vì isResetChildren = true '
+        )
+      } else {
+        await me._buildLv3BlocksForExtgLv2Blocks(lv1BlockId, lv2ExistingTargetBlocks)
+      }
     }
-    if (lv2UniqueNewBlocks.length === 0) {
-      console.log('Không có các blocks mới lv2 để thêm.')
-    } else {
-      // Thêm block mới không trùng
+    if (hasNewLv2Blocks) {
+      // Thêm block mới không trùng lv2 có bao gồm lv3
       await me.#appendLevel2Block(lv1BlockId, lv2UniqueNewBlocks)
-      console.log(
-        `Đã thêm ${lv2UniqueNewBlocks.length} block lv2 vào toggle lv1.`
-      )
+    } else {
+      console.log('Không có các blocks mới lv2 để thêm.')
     }
-    console.log('Kiểm tra và bổ sung các blocks level > 3...')
+   
     await me._onExecuteDone(lv1BlockId)
     return lv2UniqueNewBlocks
   }

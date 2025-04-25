@@ -1,7 +1,7 @@
 import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.js'
 export class EcoNotionServiceQueryChildren extends Base {
   constructor () {
-    super({ name: 'NotionQueryChildren', isDebug: false, level: 'info' })
+    super({ name: 'NotionQueryChildren', isDebug: true, level: 'info' })
   }
 
   get #list () {
@@ -58,13 +58,14 @@ export class EcoNotionServiceQueryChildren extends Base {
     }
   }
 
-  async getAllChildrenById (reason, blockId) {
+  async getAllChildrenById (reason, blockId, type) {
     const logName = `> getAllChildrenById > ${reason}`
 
     this._logInfoBegin(logName, blockId)
 
     //results
-    const rs = await this.#getChildrenById(blockId)
+    let rs = await this.#getChildrenById(blockId)
+    if(type) rs = rs.filter(block => block.type === type)
     //const rs = results.filter(block => block.type === 'toggle')
 
     this._logInfoEnd(logName, rs.length)
@@ -73,15 +74,6 @@ export class EcoNotionServiceQueryChildren extends Base {
   }
 
   async getToggleChildrenById (reason, blockId) {
-    const logName = `> getToggleChildrenById > ${reason}`
-
-    this._logInfoBegin(logName, blockId)
-
-    const results = await this.#getChildrenById(blockId)
-    const rs = results.filter(block => block.type === 'toggle')
-
-    this._logInfoEnd(logName, rs.length)
-
-    return rs
+    return await this.getAllChildrenById(reason, blockId, 'toggle')
   }
 }

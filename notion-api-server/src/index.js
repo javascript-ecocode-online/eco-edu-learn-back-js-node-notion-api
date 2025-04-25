@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import notionRoutes from './modules/notion/routes.js';
 
 dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json()); // phải có dòng này trước khi các route được dùng
