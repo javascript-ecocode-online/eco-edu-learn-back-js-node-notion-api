@@ -14,13 +14,13 @@ export class EcoNotionBuilderNav1Lv1Comparer extends Base {
     super(logCfg)
   }
   prepare () {
-    return this._prepare_Text_Emoji_Links()
+    return this._prepare_Text_Emoji_Links_Special()
   }
   isMatchContent (block) {
     return this._isMatch_RawText_OrLinks_OrEmoji(block)
   }
   needUpdateRichText (block) {
-    return !this._isEqual_RawText_Links_Emoji(block)
+    return !this._isEqual_RawText_Links_Emoji_Special(block)
   }
 }
 //_inputCompareEmojiText

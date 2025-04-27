@@ -1,21 +1,58 @@
 import { EcoBase as Base } from '../../../../base/eco-base.js'
-import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
-import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
-
+import { EcoBuilderBlockComparerTextEmojis } from './builder-block-comparer-text-emojis.js'
+import { EcoBuilderBlockComparerTextRaw } from './builder-block-comparer-text-raw.js'
+import { EcoBuilderBlockComparerTextLinks } from './builder-block-comparer-text-links.js'
+import { EcoBuilderBlockComparerNumCount } from './builder-block-comparer-num-count.js'
+import { EcoBuilderBlockComparerTextSpecial } from './builder-block-comparer-text-special.js'
 export class EcoBuilderBlockComparer extends Base {
+  #txtc
+  #emjc
+  #lnkc
+  #numc
+  #spec
   _textBuilder
-  _inputCompareText
-  _inputCompareLinks
-  _inputCompareEmojiText
+  
+  
   constructor (
     logConfig = { isDebug: false, name: 'EcoBuilderBlockQuery', level: 'info' }
   ) {
     super(logConfig)
   }
+  
+  get _txtc(){
+    const me = this
+    if(!me.#txtc) me.#txtc = new EcoBuilderBlockComparerTextRaw(me._textBuilder)
+    return me.#txtc
+  }
+
+  get _emjc(){
+    const me = this
+    if(!me.#emjc) me.#emjc = new EcoBuilderBlockComparerTextEmojis(me._textBuilder)
+    return me.#emjc
+  }
+
+  get _lnkc(){
+    const me = this
+    if(!me.#lnkc) me.#lnkc = new EcoBuilderBlockComparerTextLinks(me._textBuilder)
+    return me.#lnkc
+  }
+
+  get _numc(){
+    const me = this
+    if(!me.#numc) me.#numc = new EcoBuilderBlockComparerNumCount(me._textBuilder)
+    return me.#numc
+  }
+
+  get _spec(){
+    const me = this
+    if(!me.#spec) me.#spec = new EcoBuilderBlockComparerTextSpecial(me._textBuilder)
+    return me.#spec
+  }
 
   setTextBuilder (textBuilder) {
-    this._textBuilder = textBuilder
-    return this
+    const me = this
+    me._textBuilder = textBuilder
+    return me
   }
 
   prepare () {
@@ -35,199 +72,114 @@ export class EcoBuilderBlockComparer extends Base {
   }
 
   //Can override
-  _prepareRawTextOnly () {
+  #prepareRawText () {
     const me = this
-    me._inputCompareText = me.#getDefaultInputCompareString()
+    me._txtc.prepare()
     return me
   }
-  _prepareEmojiTextOnly () {
+  #prepareEmojis () {
     const me = this
-    me._inputCompareEmojiText = me.#getDefaultInputCompareEmojiString()
-    //console.log('me._inputCompareEmojiText', me._inputCompareEmojiText)
+    me._emjc.prepare()
     return me
   }
-  _prepareInputLinksOnly () {
+  #prepareTextLinks () {
     const me = this
-    me._inputCompareLinks = me.#inputLinks()
+    me._lnkc.prepare()
+    return me
+  }
+  #prepareCountNumber () {
+    const me = this
+    me._numc.prepare()
+    return me
+  }
+  #prepareSpecialText(){
+    const me = this
+    me._spec.prepare()
     return me
   }
   _prepare_Text_Links () {
-    return this._prepareRawTextOnly()._prepareInputLinksOnly()
+    return this.#prepareRawText().#prepareTextLinks()
   }
   _prepare_Text_Emoji () {
-    return this._prepareRawTextOnly()._prepareEmojiTextOnly()
+    return this.#prepareRawText().#prepareEmojis()
+  }
+  _prepare_Text_Emoji_Count () {
+    return this.#prepareRawText()
+      .#prepareEmojis()
+      .#prepareCountNumber()
   }
   _prepare_Text_Emoji_Links () {
-    return this._prepareRawTextOnly()._prepareInputLinksOnly()._prepareEmojiTextOnly()
+    return this.#prepareRawText()
+      .#prepareTextLinks()
+      .#prepareEmojis()
   }
-  //Can override
-  _isMatchRawTextOnly (block) {
-    const me = this
-    const inputCompareText = me._inputCompareText
-    return me.#isMatchRawContent(block, inputCompareText)
+  _prepare_Text_Emoji_Links_Special () {
+    return this.#prepareRawText()
+      .#prepareTextLinks()
+      .#prepareEmojis().#prepareSpecialText()
   }
-
-  _isMatchTextLinksOnly (block) {
-    const me = this
-    const inputCompareLinks = me._inputCompareLinks
-    return me.#isMatchTextLinks(block, inputCompareLinks)
-  }
-  _isMatchRawEmojiOnly (block) {
-    const me = this
-    const inputCompareEmojiText = me._inputCompareEmojiText
-    return me.#isMatchEmojiString(block, inputCompareEmojiText)
-  }
-  #isMatchTextLinks (block, inputCompareLinks) {
-    const me = this
-    const existingCompareTextLinks = me.#getDefaultRichTextCompareLinks(block)
-    return me.#compareLinksAndLinks(inputCompareLinks, existingCompareTextLinks)
-  }
+  
   _isMatch_RawText_OrLinks (block) {
     const me = this
-    const isMatchRawTextOnly = me._isMatchRawTextOnly(block)
-    const isMatchTextLinksOnly = me._isMatchTextLinksOnly(block)
+    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchTextLinksOnly = me._lnkc.isMatch(block)
     return isMatchRawTextOnly || isMatchTextLinksOnly
   }
+
   _isMatch_RawText_OrEmoji (block) {
     const me = this
-    const isMatchRawTextOnly = me._isMatchRawTextOnly(block)
-    const isMatchEmojiLinksOnly = me._isMatchRawEmojiOnly(block)
-    return isMatchRawTextOnly || isMatchEmojiLinksOnly
+    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchEmojisOnly = me._emjc.isMatch(block)
+    return isMatchRawTextOnly || isMatchEmojisOnly
   }
+
   _isMatch_RawText_OrLinks_OrEmoji (block) {
     const me = this
-    const isMatchRawTextOnly = me._isMatchRawTextOnly(block)
-    const isMatchTextLinksOnly = me._isMatchTextLinksOnly(block)
-    const isMatchEmojiLinksOnly = me._isMatchRawEmojiOnly(block)
+    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchTextLinksOnly = me._lnkc.isMatch(block)
+    const isMatchEmojisOnly = me._emjc.isMatch(block)
     //console.log('🌙 isMatchRawTextOnly', isMatchRawTextOnly)
     //console.log('🌙 isMatchTextLinksOnly', isMatchTextLinksOnly)
     //console.log('🌙 isMatchEmojiLinksOnly', isMatchEmojiLinksOnly)
-    return isMatchRawTextOnly || isMatchTextLinksOnly || isMatchEmojiLinksOnly
+    return isMatchRawTextOnly || isMatchTextLinksOnly || isMatchEmojisOnly
   }
+
   _isEqual_RawText_Links (block) {
     const me = this
-    const isMatchRawTextOnly = me._isMatchRawTextOnly(block)
-    const isMatchTextLinksOnly = me._isMatchTextLinksOnly(block)
+    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchTextLinksOnly = me._lnkc.isMatch(block)
     return isMatchRawTextOnly && isMatchTextLinksOnly
   }
+
   _isEqual_RawText_Emoji (block) {
     const me = this
-    const isMatchRawTextOnly = me._isMatchRawTextOnly(block)
-    const isMatchEmojiLinksOnly = me._isMatchRawEmojiOnly(block)
-    return isMatchRawTextOnly && isMatchEmojiLinksOnly
+    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchEmojisOnly = me._emjc.isMatch(block)
+    return isMatchRawTextOnly && isMatchEmojisOnly
   }
+
+  _isEqual_RawText_Emoji_Number (block) {
+    const me = this
+    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchEmojisOnly = me._emjc.isMatch(block)
+    const isMatchCountNumberOnly = me._numc.isMatch(block)
+    return isMatchRawTextOnly && isMatchEmojisOnly && isMatchCountNumberOnly
+  }
+
   _isEqual_RawText_Links_Emoji (block) {
     const me = this
-    const isMatchRawTextOnly = me._isMatchRawTextOnly(block)
-    const isMatchTextLinksOnly = me._isMatchTextLinksOnly(block)
-    const isMatchEmojiLinksOnly = me._isMatchRawEmojiOnly(block)
-    return isMatchRawTextOnly && isMatchTextLinksOnly && isMatchEmojiLinksOnly
+    const isMatchRawText = me._txtc.isMatch(block)
+    const isMatchTextLinks = me._lnkc.isMatch(block)
+    const isMatchEmojis = me._emjc.isMatch(block)
+    return isMatchRawText && isMatchTextLinks && isMatchEmojis
   }
-  #displayText () {
+
+  _isEqual_RawText_Links_Emoji_Special (block) {
     const me = this
-    const textBuilder = me._textBuilder
-    return textBuilder?.getDisplayText()
-  }
-  #inputLinks () {
-    const me = this
-    const textBuilder = me._textBuilder
-    return textBuilder?.getTextLinks()
-  }
-  #getDefaultInputCompareString () {
-    const me = this
-    const displayText = me.#displayText()
-    //console.log('🎋 displayText', displayText)
-    return uTxt.normalizeText(displayText)
-  }
-  #getDefaultInputCompareEmojiString () {
-    const me = this
-    const displayText = me.#displayText()
-    //console.log('🎋 displayText', displayText)
-    return uTxt.getEmojiString(displayText)
-  }
-  #getDefaultRichTextCompareString (block) {
-    //const me = this
-    const richTexts = (block? block[block.type]?.rich_text: []) || []
-    const plainText = mt.getBlockDisplayTextFromNotionRichTextArr(richTexts)
-    //console.log('🌽 plainText', plainText)
-    //console.log('💎 rich_text', block.toggle.rich_text)
-    const existingCompareText = uTxt.normalizeText(plainText)
-    //console.log('🌱 #getDefaultRichTextCompareString', existingCompareText)
-    return existingCompareText
-  }
-
-  #getRichTextEmojiString (block) {
-    //const me = this
-    const richTexts =  (block? block[block.type]?.rich_text: []) || []
-    //console.log('🐸 #getRichTextEmojiString', richTexts)
-
-    const plainText = mt.getBlockDisplayTextFromNotionRichTextArr(richTexts)
-    //console.log('🌽 plainText', plainText)
-    //console.log('💎 rich_text', block.toggle.rich_text)
-    const existingCompareEmojiText = uTxt.getEmojiString(plainText)
-    //console.log('> existingCompareEmojiText', existingCompareEmojiText)
-
-    return existingCompareEmojiText
-  }
-
-  #getDefaultRichTextCompareLinks (block) {
-    //const me = this
-    const richTexts = block.toggle.rich_text || []
-    const arrLinks = mt.getTextLinksFromRichText(richTexts)
-
-    return arrLinks
-  }
-
-  #compareTextAndText (inputCompareText, existingCompareText) {
-    // if(this._logName === 'EcoNotionBuilderNav1Lv2Comparer'){
-    //     console.log(
-    //         '🪭 _compareTextAndText',
-    //          this._logName
-    //        )
-    //        console.log('- ipt: ', inputCompareText)
-    //        console.log('- ext: ', existingCompareText)
-    // }
-    
-    return inputCompareText === existingCompareText
-  }
-
-   #cleanUrl(url) {
-    return url.replace(/\/\?/, '?'); // thay "/?" thành "?"
-  }
-
-  #compareLinksAndLinks (inputCompareLinks, existingCompareTextLinks) {
-    const me = this
-    // console.log(
-    //   '💥 compareLinksAndLinks',
-    //   'inputCompareLinks vs existingCompareTextLinks'
-    // )
-    // console.log('- ipt: ', inputCompareLinks)
-    // console.log('- ext: ', existingCompareTextLinks)
-    const arr1 = inputCompareLinks
-    const arr2 = existingCompareTextLinks
-    if (arr1.length !== arr2.length) return false // khác độ dài => khác chắc chắn
-
-    for (let i = 0; i < arr1.length; i++) {
-      if (me.#cleanUrl(arr1[i]) !== me.#cleanUrl(arr2[i])) {
-        //console.log('- compareLinksAndLinks diff: ')
-        //console.log(arr1[i], arr2[i])
-        return false // chỉ cần khác 1 phần tử => khác
-      }
-    }
-    //console.log('- rs: ', true)
-    return true
-  }
-
-  #isMatchRawContent (block, inputCompareText) {
-    const me = this
-    const existingCompareText = me.#getDefaultRichTextCompareString(block)
-    return me.#compareTextAndText(inputCompareText, existingCompareText)
-  }
-
-  #isMatchEmojiString (block, inputCompareEmojiText) {
-    const me = this
-    const existingCompareText = me.#getRichTextEmojiString(block)
-    return me.#compareTextAndText(inputCompareEmojiText, existingCompareText)
+    const isMatchRawText = me._txtc.isMatch(block)
+    const isMatchTextLinks = me._lnkc.isMatch(block)
+    const isMatchEmojis = me._emjc.isMatch(block)
+    const isMatchSpecial = me._spec.isMatch(block)
+    return isMatchRawText && isMatchTextLinks && isMatchEmojis && isMatchSpecial
   }
 }
-//#getRichTextEmojiString
