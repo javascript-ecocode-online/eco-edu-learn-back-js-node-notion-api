@@ -1,10 +1,10 @@
-import { Lv2Builder } from '../base/lv2Builder.js'
+import { EcoNotionLv2Builder } from '../base/lv2-builder.js'
 import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
 
 import { EcoNotionBuilderNav1Lv3 } from './notion-builder-nav1-lv3.js'
 import { EcoNotionBlocksConfig as cfg } from '../../configs/notion-blocks-config.js'
 
-export class EcoNotionBuilderNav1Lv2 extends Lv2Builder {
+export class EcoNotionBuilderNav1Lv2Data extends EcoNotionLv2Builder {
   _lv2Text = ''
   #blocks
   #pageId

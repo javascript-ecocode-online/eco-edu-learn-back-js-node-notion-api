@@ -16,4 +16,9 @@ export class EcoNotionServiceBuildBlockAny extends Base {
       archived: true,
     })
   }
+
+  async updateRichText (type, blockId, richTextArr) {
+    const me = this
+    return await me._updateRichText(type, blockId, richTextArr)
+  }
 }

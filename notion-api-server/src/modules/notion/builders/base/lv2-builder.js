@@ -1,7 +1,7 @@
 import { Lv0Builder } from './lv0Builder.js'
 
 
-export class Lv2Builder extends Lv0Builder{
+export class EcoNotionLv2Builder extends Lv0Builder{
   _lv1BlockId
   _lv2Text
   constructor (logCfg, lv1BlockId) {

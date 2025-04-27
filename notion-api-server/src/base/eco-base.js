@@ -66,10 +66,12 @@ export class EcoBase {
         : this.#logger.info(`${name} / ${text2}`)
   }
   _logInfoBegin (obj1, obj2) {
+    if(!this.#isDebug) return
     this._logInfo(`--- Bgn --- : ${obj1}`, obj2)
   }
 
   _logInfoEnd (obj1, obj2) {
+    if(!this.#isDebug) return
     this._logInfo(`--- End ---: ${obj1}`, obj2)
   }
 

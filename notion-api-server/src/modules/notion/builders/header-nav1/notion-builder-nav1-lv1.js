@@ -1,13 +1,11 @@
-import { EcoNotionBuilderNav1Lv2 } from './notion-builder-nav1-lv2.js'
 import { EcoNtbdNav14Blocks } from './ntbd-nav14-blocks.js'
 import { Lv1NavBuilder } from '../base/lv1NavBuilder.js'
-import { NotionIdHelper as nId } from '../../helpers/id/notion-id-helper.js'
-import { NotionUrlHelper as nUrl } from '../../helpers/id/notion-url-helper.js'
-import { EcoTaskUrl as eUrl } from '../../../eco/tasks/eco-task-url.js'
-import { NotionJsonArrayHelper } from '../../helpers/object/notion-object-array-helper.js'
-import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
 import { EcoNotionTaskBlockChildren as tc } from '../../tasks/notion-task-block-children.js'
+import { EcoNotionBuilderNav1Lv1DataText } from './nav1-lv1-data-text.js'
+import { EcoNotionBuilderNav1Lv1Children } from './builder-nav1-lv1-children.js'
+import { EcoNotionBuilderNav1Lv1Comparer as Comparer} from './builder-nav1-lv1-comparer.js'
 export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
+  #textBuilder
   constructor (pageId, info, parents, friends, children, buildCfg) {
     super('EcoNotionBuilderNav1Lv1', pageId, buildCfg)
     this._info = info
@@ -15,7 +13,39 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
     this._friends = friends
     this._children = children
   }
-
+  // Override from EcoBuilderBlockQuery
+  get _blockType () {
+    return 'toggle'
+  }
+  get _textComparer () {
+    return new Comparer()
+  }
+  // Override from EcoBuilderBlockQuery
+  get _textBuilder () {
+    const me = this
+    if (!me.#textBuilder) {
+      const pageId = me._pageId
+      const parents = me._parents
+      me.#textBuilder = new EcoNotionBuilderNav1Lv1DataText()
+        .setPageId(pageId)
+        .setParents(parents)
+    }
+    return me.#textBuilder
+  }
+  get _childrenBuilder () {
+    const me = this
+    const pageId = me._pageId
+    const parents = me._parents
+    const friends = me._friends
+    const children = me._children
+    const buildCfg = me._buildCfg
+    return new EcoNotionBuilderNav1Lv1Children()
+      .setPageId(pageId)
+      .setParents(parents)
+      .setFriends(friends)
+      .setChildren(children)
+      .setBuildCfg(buildCfg)
+  }
   get #isResetPages () {
     if (this._isResetChildren) return false
     return this._buildCfg?.isResetPages ?? false
@@ -35,45 +65,6 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
     //const logLbl = '#isResetPage'
     //me._logLines(cleanId, cleanTargets)
     return cleanTargets.includes(cleanId)
-  }
-
-  //Override
-  _getMenuItemData () {
-    const me = this
-    const helper = NotionJsonArrayHelper
-    const parentId = helper.getFirstBlockId(me._parents)
-    const pageId = me._pageId
-    const tpl = EcoNotionTemplateLv1.nav1Template
-    const cleanId = nId.cleanId(pageId)
-    const items = [
-      {
-        emoji: tpl.parent.emoji,
-        label: tpl.parent.label,
-        url: nUrl.getNotionUrl(parentId),
-      },
-      {
-        emoji: tpl.build.emoji,
-        label: tpl.build.label,
-        url: eUrl.getEcoBuildUrl(cleanId),
-      },
-      {
-        emoji: tpl.learn.emoji,
-        label: tpl.learn.label,
-        url: eUrl.getEcoLearnUrl(cleanId),
-      },
-    ]
-    return items
-  }
-
-  //Override
-  _getLv2Blocks (lv1BlockId) {
-    const me = this
-    const pageId = me._pageId
-    const parents = me._parents
-    const friends = me._friends
-    const children = me._children
-    const lv2Builder = new EcoNotionBuilderNav1Lv2(pageId, lv1BlockId)
-    return lv2Builder.getBlocks(parents, friends, children)
   }
 
   async #processExistingLv3Block (lv3Block, existingRelatedPageIds) {
@@ -177,7 +168,9 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
       const fullRelatedPageIds = await me.#processLv2BlockNewChildren(
         lv2Block.newChildren
       )
-      const existingRelatedPageIds = await me.#processLv2BlockExistingChildren(lv2Block)
+      const existingRelatedPageIds = await me.#processLv2BlockExistingChildren(
+        lv2Block
+      )
 
       const needAppendRefPageIds = me.#getMissingId(
         fullRelatedPageIds,

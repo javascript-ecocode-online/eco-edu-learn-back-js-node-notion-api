@@ -55,6 +55,19 @@ export class EcoNotionServiceBuildBlockBase extends Base {
     }
   }
 
+  async deleteBlock (id) {
+    const me = this
+    me._logLines('🔥 Start delete block...', id)
+    const rs = await me._blocks.update({
+      block_id: id,
+      archived: true,
+    })
+    me._logLines('🔥 Deleted block:', rs)
+    return rs
+  }
+
+
+ 
   /**
    * Xóa tất cả block con của một toggle block
    * @param {string} toggleBlockId - ID của toggle block

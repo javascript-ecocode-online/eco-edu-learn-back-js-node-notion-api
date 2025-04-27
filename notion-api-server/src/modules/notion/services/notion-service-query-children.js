@@ -1,7 +1,7 @@
 import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.js'
 export class EcoNotionServiceQueryChildren extends Base {
   constructor () {
-    super({ name: 'NotionQueryChildren', isDebug: true, level: 'info' })
+    super({ name: 'NotionQueryChildren', isDebug: false, level: 'info' })
   }
 
   get #list () {
@@ -73,7 +73,7 @@ export class EcoNotionServiceQueryChildren extends Base {
     return rs
   }
 
-  async getToggleChildrenById (reason, blockId) {
-    return await this.getAllChildrenById(reason, blockId, 'toggle')
-  }
+  // async getToggleChildrenById (reason, blockId) {
+  //   return await this.getAllChildrenById(reason, blockId, 'toggle')
+  // }
 }

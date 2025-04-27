@@ -35,7 +35,7 @@ export class EcoNotionServiceBuildPage extends Base {
       buildCfg
     )
     const blocks = await nav1Builder.execute()
-    const rs = { success: true, 'new-lv2-block': blocks }
+    const rs = { success: true, 'built block': blocks }
 
     me._logInfoEnd(logName, blocks)
     return rs

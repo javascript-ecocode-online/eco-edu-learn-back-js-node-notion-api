@@ -13,4 +13,13 @@ export class EcoTextUtil {
           .toLowerCase()
       : ''
   }
+  static getEmojiString (text) {
+    // Regex để match emoji
+    //const emojiRegex = /[\p{Emoji_Presentation}\p{Emoji}\uFE0F]/gu
+    const emojiRegex = /[\p{Emoji_Presentation}\uFE0F]/gu
+
+    // Tìm tất cả emoji và nối lại thành chuỗi
+    const emojis = text.match(emojiRegex)
+    return emojis ? emojis.join('') : ''
+  }
 }

@@ -1,0 +1,22 @@
+import { EcoBuilderBlockComparer as Base } from '../base/builder-block-comparer.js'
+
+export class EcoNotionBuilderNav1Lv2Comparer extends Base {
+  constructor (
+    logCfg = {
+      isDebug: false,
+      name: 'EcoNotionBuilderNav1Lv2Comparer',
+      level: 'info',
+    }
+  ) {
+    super(logCfg)
+  }
+  prepare () {
+    return this._prepare_Text_Emoji()
+  }
+  isMatchContent (block) {
+    return this._isMatch_RawText_OrEmoji(block)
+  }
+  needUpdateRichText (block) {
+    return !this._isEqual_RawText_Emoji(block)
+  }
+}
