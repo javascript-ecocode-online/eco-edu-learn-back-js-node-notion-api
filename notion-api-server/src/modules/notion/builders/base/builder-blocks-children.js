@@ -1,7 +1,7 @@
 import { EcoBase as Base } from '../../../../base/eco-base.js'
 import { EcoNotionServiceQueryChildren as QueryService } from '../../services/notion-service-query-children.js'
 import { NotionMissionBlocksCompare } from './notion-mission-blocks-compare.js'
-
+import { EcoNotionFromBlockTextBuilder } from './builder-from-block-text-builder.js'
 //TODO: change import
 import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-build-block-toggle.js'
 
@@ -27,8 +27,26 @@ export class EcoBuilderBlocksChildren extends Base {
     throw new Error('Need implement _getLv2Blocks')
   }
 
-  get _textComparer () {
+  _getNewTextComparer () {
     throw new Error('Need implement _getBlockComparer')
+  }
+
+  // Can override
+  _getFromBlockTextBuilder (iBlock) {
+    return new EcoNotionFromBlockTextBuilder(iBlock)
+  }
+
+  // Can override
+  _getBlocksComparer(){
+    const me = this
+    
+    const cs = new NotionMissionBlocksCompare((index, iBlock) =>{
+        console.log('🥂 _getTextComparer for: ', index)
+        const comparer = me._getNewTextComparer()
+        const textBuilder = me._getFromBlockTextBuilder(iBlock)
+        return comparer.setTextBuilder(textBuilder).prepare()
+    })
+    return cs
   }
 
   async _removeChildren (block) {
@@ -45,12 +63,10 @@ export class EcoBuilderBlocksChildren extends Base {
     const existingAllBlocks = await nqc.getAllChildrenById(reason, blockId)
     return existingAllBlocks
   }
-  #compareBlocks(iBlocks, eBlocks){
+  #compareBlocks (iBlocks, eBlocks) {
     const me = this
-    const textComparer = me._textComparer
-    const cs = new NotionMissionBlocksCompare(textComparer)
-    const rsCompare = cs.compareNotionBlocks(iBlocks, eBlocks)
-    return rsCompare
+    const cs = me._getBlocksComparer()
+    return cs.compareNotionBlocks(iBlocks, eBlocks)
   }
   async execute (lv, block, rs) {
     if (!block) return

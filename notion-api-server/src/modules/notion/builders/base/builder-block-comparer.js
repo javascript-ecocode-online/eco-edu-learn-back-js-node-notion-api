@@ -11,48 +11,62 @@ export class EcoBuilderBlockComparer extends Base {
   #numc
   #spec
   _textBuilder
-  
-  
+
+  #resetParts () {
+    const me = this
+    me.#txtc = null
+    me.#emjc = null
+    me.#lnkc = null
+    me.#numc = null
+    me.#spec = null
+    return me
+  }
+
   constructor (
     logConfig = { isDebug: false, name: 'EcoBuilderBlockQuery', level: 'info' }
   ) {
     super(logConfig)
   }
-  
-  get _txtc(){
+
+  get _txtc () {
     const me = this
-    if(!me.#txtc) me.#txtc = new EcoBuilderBlockComparerTextRaw(me._textBuilder)
+    if (!me.#txtc)
+      me.#txtc = new EcoBuilderBlockComparerTextRaw(me._textBuilder)
     return me.#txtc
   }
 
-  get _emjc(){
+  get _emjc () {
     const me = this
-    if(!me.#emjc) me.#emjc = new EcoBuilderBlockComparerTextEmojis(me._textBuilder)
+    if (!me.#emjc)
+      me.#emjc = new EcoBuilderBlockComparerTextEmojis(me._textBuilder)
     return me.#emjc
   }
 
-  get _lnkc(){
+  get _lnkc () {
     const me = this
-    if(!me.#lnkc) me.#lnkc = new EcoBuilderBlockComparerTextLinks(me._textBuilder)
+    if (!me.#lnkc)
+      me.#lnkc = new EcoBuilderBlockComparerTextLinks(me._textBuilder)
     return me.#lnkc
   }
 
-  get _numc(){
+  get _numc () {
     const me = this
-    if(!me.#numc) me.#numc = new EcoBuilderBlockComparerNumCount(me._textBuilder)
+    if (!me.#numc)
+      me.#numc = new EcoBuilderBlockComparerNumCount(me._textBuilder)
     return me.#numc
   }
 
-  get _spec(){
+  get _spec () {
     const me = this
-    if(!me.#spec) me.#spec = new EcoBuilderBlockComparerTextSpecial(me._textBuilder)
+    if (!me.#spec)
+      me.#spec = new EcoBuilderBlockComparerTextSpecial(me._textBuilder)
     return me.#spec
   }
 
   setTextBuilder (textBuilder) {
     const me = this
     me._textBuilder = textBuilder
-    return me
+    return me.#resetParts()
   }
 
   prepare () {
@@ -92,7 +106,7 @@ export class EcoBuilderBlockComparer extends Base {
     me._numc.prepare()
     return me
   }
-  #prepareSpecialText(){
+  #prepareSpecialText () {
     const me = this
     me._spec.prepare()
     return me
@@ -104,21 +118,18 @@ export class EcoBuilderBlockComparer extends Base {
     return this.#prepareRawText().#prepareEmojis()
   }
   _prepare_Text_Emoji_Count () {
-    return this.#prepareRawText()
-      .#prepareEmojis()
-      .#prepareCountNumber()
+    return this.#prepareRawText().#prepareEmojis().#prepareCountNumber()
   }
   _prepare_Text_Emoji_Links () {
-    return this.#prepareRawText()
-      .#prepareTextLinks()
-      .#prepareEmojis()
+    return this.#prepareRawText().#prepareTextLinks().#prepareEmojis()
   }
   _prepare_Text_Emoji_Links_Special () {
     return this.#prepareRawText()
       .#prepareTextLinks()
-      .#prepareEmojis().#prepareSpecialText()
+      .#prepareEmojis()
+      .#prepareSpecialText()
   }
-  
+
   _isMatch_RawText_OrLinks (block) {
     const me = this
     const isMatchRawTextOnly = me._txtc.isMatch(block)
@@ -130,6 +141,8 @@ export class EcoBuilderBlockComparer extends Base {
     const me = this
     const isMatchRawTextOnly = me._txtc.isMatch(block)
     const isMatchEmojisOnly = me._emjc.isMatch(block)
+    console.log('_isMatch_RawText_OrEmoji')
+    console.log(isMatchRawTextOnly, isMatchEmojisOnly)
     return isMatchRawTextOnly || isMatchEmojisOnly
   }
 

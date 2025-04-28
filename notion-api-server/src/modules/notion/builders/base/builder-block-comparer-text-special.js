@@ -37,8 +37,8 @@ export class EcoBuilderBlockComparerTextSpecial extends Base {
   #isMatchRawContent (block, inputCompareText) {
     const me = this
     const existingCompareText = me.#getDefaultRichTextCompareString(block)
-    console.log(' ✨ isMatchRawContent > displayTex > special:')
-    console.log(inputCompareText, existingCompareText)
+    //console.log(' ✨ isMatchRawContent > displayTex > special:')
+    //console.log(inputCompareText, existingCompareText)
     return me._compareTextAndText(inputCompareText, existingCompareText)
   }
 
@@ -46,11 +46,11 @@ export class EcoBuilderBlockComparerTextSpecial extends Base {
       //const me = this
       const richTexts = (block ? block[block.type]?.rich_text : []) || []
       const plainText = mt.getBlockDisplayTextFromNotionRichTextArr(richTexts)
-      console.log(' ✨ plainText: ', plainText)
+      //console.log(' ✨ plainText: ', plainText)
       //console.log('🌽 plainText', plainText)
       //console.log('💎 rich_text', block.toggle.rich_text)
       const rsText = uTxt.getSpecialCharacters(plainText)
-      console.log(' ✨ rsText: ', rsText)
+      //console.log(' ✨ rsText: ', rsText)
       //console.log('🌱 #getDefaultRichTextCompareString', existingCompareText)
       return rsText
     }

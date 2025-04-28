@@ -1,8 +1,8 @@
 import { EcoBase } from '../../../../base/eco-base.js'
-import { EcoNotionInputTextBuilder } from './builder-input-text-builder.js'
 export class NotionMissionBlocksCompare extends EcoBase {
-    _textComparer
-  constructor (textComparer,
+  _getTextComparer
+  constructor (
+    getTextComparer,
     logConfig = {
       isDebug: false,
       name: 'NotionMissionBlocksCompare',
@@ -10,81 +10,22 @@ export class NotionMissionBlocksCompare extends EcoBase {
     }
   ) {
     super(logConfig)
-    this._textComparer = textComparer
+    this._getTextComparer = getTextComparer
   }
 
-  #isResetTxtLine (iBlock, eBlock, comparer) {
+  #compareNotionObjects (index, iBlock, eBlock) {
     const me = this
-   
-    //console.log('🪺 iBlock', iBlock)
-    //console.log('🪺 iBlock > toggle > rich_text', iBlock?.toggle?.rich_text)
-    //console.log('🪺 eBlock', eBlock)
-    // me._logLines(
-    //   '🍎 #isResetTxtLine...',
-    //   dataBlock.==,
-    //   notionBlock.type
-    // )
-    const rs = comparer?.isMatchContent(eBlock) && comparer?.needUpdateRichText(eBlock)
-    //console.log('🪺 isResetTxtLine', rs)
-    //console.log('-------------------- needResetTextLine: ', rs)
-    return rs
-  }
-  #isResetRTxt (dataRichText, notionRichtext) {
-    const me = this
-    const richText1 = dataRichText || []
-    const richText2 = notionRichtext || []
-    // me._logLines(
-    //   '🌴 #checkIfNeedResetRichText...',
-    //   richText1.length,
-    //   richText2.length
-    // )
-    const rs =
-      richText1.length !== richText2.length ||
-      !richText1.every((text, index) => {
-        const txt1 = text.plain_text
-        const txt2 = richText2[index]?.plain_text
-        //me._logLines('🐆 ===', txt1, txt2, '🦄 ===')
-        return txt1 === txt2
-      })
-    //console.log('-------------------- needResetRichText', rs)
-    return rs
+    //console.log('🍋 textBuilder: ', iBlock.toggle.rich_text)
+
+    const comparer = me._getTextComparer(index, iBlock)
+    const isMatch = comparer?.isMatchContent(eBlock)
+    const isUpdate = comparer?.needUpdateRichText(eBlock)
+    const isReset = isMatch && isUpdate
+    const isDiff = iBlock.type !== eBlock.type || !isMatch
+    //console.log(index, `isMatch: ${isMatch} / isUpdate: ${isUpdate}`)
+    return { isDiff: isDiff, isReset: isReset }
   }
 
-  #isResetChildren (dataChildren, notionChildren) {
-    const me = this
-    const children1 = dataChildren || []
-    const children2 = notionChildren || []
-    const l1 = children1.length
-    const l2 = children2.length
-    //me._logLines('🪿 #checkIfNeedResetChildren...', l1, l2)
-    const rs = l1 !== l2
-    //console.log('-------------------- #checkIfNeedResetChildren', rs)
-    return rs
-  }
-
-  #compareNotionObjects (iBlock, eBlock) {
-    const me = this
-    const rs = {
-      resetTextLine: false,
-      resetRichText: false,
-      resetChildren: false,
-      resetAll: false,
-    }
-
-    const textBuilder = new EcoNotionInputTextBuilder(iBlock)
-    const comparer = me._textComparer.setTextBuilder(textBuilder).prepare()
-
-    if (me.#isResetTxtLine?.(iBlock, eBlock, comparer)) rs.resetTextLine = true
-
-    if (me.#isResetRTxt(iBlock?.rich_text, eBlock?.rich_text)) rs.resetRichText = true
-
-    if (me.#isResetChildren(iBlock?.children, eBlock?.children)) rs.resetChildren = true
-
-    // needReset chỉ true khi TẤT CẢ đều true
-    rs.resetAll = rs.resetTextLine && rs.resetRichText && rs.resetChildren
-
-    return rs
-  }
   compareNotionBlocks (iBlocks, eBlocks) {
     const me = this
     // me._logLines(
@@ -94,69 +35,82 @@ export class NotionMissionBlocksCompare extends EcoBase {
     // )
     const minLength = Math.min(iBlocks.length, eBlocks.length)
 
-    const resetTextLineBlocks = []
-    const resetRichTextBlocks = []
-    const resetChildrenBlocks = []
-
+    const needChangeRichTextBlocks = []
+    const needReplaceBlocks = []
+    const skipBlocks = []
+    let isDiffAssigned = false
     for (let i = 0; i < minLength; i++) {
-      const comparison = me.#compareNotionObjects(
-        iBlocks[i],
-        eBlocks[i]
-      )
-
-      if (comparison.resetAll) {
-        return {
-          needReset: true,
-          reason: comparison,
-          index: i,
-          dataBlock: iBlocks[i],
-          existingBlock: eBlocks[i],
-        }
+      const crs = me.#compareNotionObjects(i, iBlocks[i], eBlocks[i])
+      const isBegin = !isDiffAssigned
+      if (crs.isDiff) {
+        isDiffAssigned = true
       }
-
-      if (comparison.resetTextLine) {
-        resetTextLineBlocks.push({
-          index: i,
-          dataBlock: iBlocks[i],
-          existingBlock: eBlocks[i],
-        })
-      }
-
-      if (comparison.resetRichText) {
-        resetRichTextBlocks.push({
-          index: i,
-          dataBlock: iBlocks[i],
-          existingBlock: eBlocks[i],
-        })
-      }
-
-      if (comparison.resetChildren) {
-        resetChildrenBlocks.push({
-          index: i,
-          dataBlock: iBlocks[i],
-          existingBlock: eBlocks[i],
-        })
+      const obj = { index: i, iBlock: iBlocks[i], eBlock: eBlocks[i] }
+      if (isDiffAssigned) {
+        // 🇻🇳 Chỉ cần 1 lần diff là từ đó về sau phải xóa đi add lại
+        obj.reason =
+          isBegin && crs.isDiff
+            ? 'first diff'
+            : crs.isDiff
+            ? 'next diff: ' + crs.isReset
+            : 'equal but after diff'
+        needReplaceBlocks.push(obj)
+      } else if (crs.isReset) {
+        // 🇻🇳 resetRichTextBlocks luôn phải là các blocks đứng trước reAddRichTextBlocks
+        needChangeRichTextBlocks.push(obj)
+      } else {
+        skipBlocks.push(obj)
       }
     }
-
+    const noChangeRichText = needChangeRichTextBlocks.length === 0
+    const noReplace = needReplaceBlocks.length === 0
+    const isInMinNoChange = noChangeRichText && noReplace
+    const isLengthEqual = iBlocks.length === eBlocks.length
+    const isEqualAll = isLengthEqual && isInMinNoChange
     const result = {
-      resetTextLineBlocks,
-      resetRichTextBlocks,
-      resetChildrenBlocks,
+      isEqualAll: isEqualAll,
+      skipBlocks: skipBlocks,
+      needChangeRichTextBlocks: needChangeRichTextBlocks,
+      needReplaceBlocks: needReplaceBlocks,
     }
 
     if (iBlocks.length > eBlocks.length) {
-      result.needAddItems = iBlocks.slice(eBlocks.length)
+      result.needAddBlocks = iBlocks.slice(eBlocks.length)
     } else if (eBlocks.length > iBlocks.length) {
-      result.needRemoveItems = eBlocks.slice(iBlocks.length)
-    } else if (
-      resetTextLineBlocks.length === 0 &&
-      resetRichTextBlocks.length === 0 &&
-      resetChildrenBlocks.length === 0
-    ) {
-      result.equal = true
+      result.needRemoveBlocks = eBlocks.slice(iBlocks.length)
     }
-   
+
+    me.#logArrayBlocks(
+      'needChangeRichTextBlocks',
+      result.needChangeRichTextBlocks
+    )
+    // me.#logArrayBlocks('needReplaceBlocks', result.needReplaceBlocks)
+    // me.#logArrayBlocks('needAddBlocks', result.needAddBlocks)
+    // me.#logArrayBlocks('needRemoveBlocks', result.needRemoveBlocks)
+    // me.#logArrayBlocks('skipBlocks', result.skipBlocks)
     return result
+  }
+  #logArrayBlocks (name, blocks) {
+    if (!blocks || blocks.length === 0) return
+    console.log('===== 🥥 Begin log: ', name)
+    blocks?.forEach((element, index) => {
+      console.log(`--- 🦯 begin block: ${index}`)
+      const iRt = element?.iBlock
+        ? element?.iBlock[element?.iBlock?.type]?.rich_text
+        : null
+      if (iRt) console.log('iBlock richText: ', iRt)
+      const eRt = element?.eBlock
+        ? element?.eBlock[element?.eBlock?.type]?.rich_text
+        : null
+      if (eRt) console.log('eBlock richText: ', eRt)
+
+      if (!iRt && !eRt) {
+        const xRt = element ? element[element?.type]?.rich_text : null
+        if (xRt) console.log('xBlock richText: ', xRt)
+      }
+      console.log('element: ', element) // hoặc gọi hàm của bạn ở đây
+      console.log(`--- end block: ${index}`)
+    })
+    console.log('===== End log: ', name)
   }
 }

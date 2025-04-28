@@ -18,6 +18,7 @@ export class EcoBuilderBlockComparerTextRaw extends Base {
   prepare () {
     const me = this
     me._inputCompareText = me.#getDefaultInputCompareString()
+   
     return me
   }
 
@@ -37,6 +38,10 @@ export class EcoBuilderBlockComparerTextRaw extends Base {
   #isMatchRawContent (block, inputCompareText) {
     const me = this
     const existingCompareText = me.#getDefaultRichTextCompareString(block)
+    // console.log()
+    // console.log('inputCompareText: ', inputCompareText)
+    // console.log('existingCompareText: ', existingCompareText)
+    // console.log()
     return me._compareTextAndText(inputCompareText, existingCompareText)
   }
 

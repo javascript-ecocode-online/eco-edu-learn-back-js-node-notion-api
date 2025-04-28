@@ -23,12 +23,10 @@ export class EcoNotionBuilderNav1Lv1Children extends Base {
     me._children = children
     return me
   }
-  //EcoNotionBuilderNav1Lv2DataText
+ 
   //Override
-  get _textComparer () {
-    // const textComparer = me._textComparer.setTextBuilder(textBuilder).prepare()
-    const cp = new EcoNotionBuilderNav1Lv2Comparer()
-    return cp
+  _getNewTextComparer () {   
+    return new EcoNotionBuilderNav1Lv2Comparer()
   }
   //Override
   _getInputBlocks (lv1BlockId) {
