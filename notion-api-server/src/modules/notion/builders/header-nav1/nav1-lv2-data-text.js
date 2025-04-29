@@ -1,7 +1,7 @@
-import { EcoNotionBuilderDataText as Base} from '../base/builder-data-text.js'
+import { EcoNotionBuilderDataText as Base } from '../base/builder-data-text.js'
 
 export class EcoNotionBuilderNav1Lv2DataText extends Base {
-    constructor (logCfg) {
-        super(logCfg)
-      }
+  constructor (logCfg) {
+    super(logCfg)
+  }
 }

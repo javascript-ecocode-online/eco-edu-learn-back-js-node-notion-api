@@ -1,4 +1,4 @@
-import { EcoBuilderBlockQuery as Base } from './builder-block-query.js'
+import { EcoBuilderBlockFind as Base } from './builder-block-find.js'
 import { EcoNotionServiceBuildBlockAny as bb } from '../../services/notion-service-build-block-any.js'
 /**
  * 🇻🇳 Lớp này làm lớp cha chứa các hàm xử lý 1 block

@@ -13,6 +13,17 @@ export class EcoTextUtil {
           .toLowerCase()
       : ''
   }
+  static getContentNumInText (text) {
+    return text
+    ? text
+        .replace(/\([^)]*\)/g, '') // Bỏ nội dung trong ngoặc ()
+        .replace(
+          /([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF])/g,
+          ''
+        ) // Bỏ emoji
+        .replace(/[^0-9]/g, '') // Bỏ tất cả trừ số
+    : '';
+  }
   static getEmojiString (text) {
     // Regex để match emoji
     //const emojiRegex = /[\p{Emoji_Presentation}\p{Emoji}\uFE0F]/gu

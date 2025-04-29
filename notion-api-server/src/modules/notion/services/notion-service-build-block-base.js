@@ -66,20 +66,29 @@ export class EcoNotionServiceBuildBlockBase extends Base {
     return rs
   }
 
+  async removeBlockAndChildren (block) {
+    const me = this
+    const id = block.id
+    const hasChildren = block.has_children
+    if (hasChildren) {
+      await me.deleteAllChildBlocks(id)
+    }
+    const removedBlock = await me.deleteBlock(id)
+    return removedBlock
+  }
 
- 
   /**
    * Xóa tất cả block con của một toggle block
-   * @param {string} toggleBlockId - ID của toggle block
+   * @param {string} blockId - ID của toggle block
    */
-  async deleteAllChildBlocks (toggleBlockId) {
+  async deleteAllChildBlocks (blockId) {
     const me = this
     let cursor = undefined
     let hasMore = true
 
     while (hasMore) {
       const response = await me._children.list({
-        block_id: toggleBlockId,
+        block_id: blockId,
         start_cursor: cursor,
       })
 
@@ -99,7 +108,7 @@ export class EcoNotionServiceBuildBlockBase extends Base {
       cursor = response.next_cursor
     }
 
-    console.log('🎉 Đã xóa toàn bộ block con của block:', toggleBlockId)
-    return await me._blocks.retrieve({ block_id: toggleBlockId });
+    console.log('🎉 Đã xóa toàn bộ block con của block:', blockId)
+    return await me._blocks.retrieve({ block_id: blockId })
   }
 }

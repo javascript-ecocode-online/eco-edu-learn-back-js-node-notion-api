@@ -2,13 +2,13 @@ import { EcoBuilderBlockComparerBase as Base } from './builder-block-comparer-ba
 import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
 import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
 
-export class EcoBuilderBlockComparerTextRaw extends Base {
+export class EcoBuilderBlockComparerTextNum extends Base {
   _inputCompareText
   constructor (
     textBuilder,
     logConfig = {
       isDebug: false,
-      name: 'EcoBuilderBlockComparerTextRaw',
+      name: 'EcoBuilderBlockComparerTextNum',
       level: 'info',
     }
   ) {
@@ -32,15 +32,15 @@ export class EcoBuilderBlockComparerTextRaw extends Base {
     const me = this
     const displayText = me._displayText()
     //console.log('🎋 displayText', displayText)
-    return uTxt.normalizeText(displayText)
+    return uTxt.getContentNumInText(displayText)
   }
 
   #isMatchRawContent (block, inputCompareText) {
     const me = this
     const existingCompareText = me.#getDefaultRichTextCompareString(block)
     console.log()
-    console.log('🥖 inputCompareText: ', inputCompareText)
-    console.log('🥖 existingCompareText: ', existingCompareText)
+    console.log('💍 inputCompareText: ', inputCompareText)
+    console.log('💍 existingCompareText: ', existingCompareText)
     console.log()
     return me._compareTextAndText(inputCompareText, existingCompareText)
   }
@@ -51,7 +51,7 @@ export class EcoBuilderBlockComparerTextRaw extends Base {
       const plainText = mt.getBlockDisplayTextFromNotionRichTextArr(richTexts)
       //console.log('🌽 plainText', plainText)
       //console.log('💎 rich_text', block.toggle.rich_text)
-      const rsText = uTxt.normalizeText(plainText)
+      const rsText = uTxt.getContentNumInText(plainText)
       //console.log('🌱 #getDefaultRichTextCompareString', existingCompareText)
       return rsText
     }
