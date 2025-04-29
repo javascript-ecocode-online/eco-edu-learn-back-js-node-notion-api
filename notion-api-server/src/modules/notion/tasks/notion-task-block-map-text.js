@@ -1,7 +1,10 @@
 export class EcoNotionTaskBlockMapText {
   static getRichTextItemDisplayTextFromRaw (rt) {
     if (rt.type === 'text') return rt.text.content
-    if (rt.type === 'mention') return rt.plain_text // hoặc mô tả tùy ý
+    if (rt.type === 'mention') {
+      //console.log('🔥 mention rich_text: ', rt)
+      return rt.plain_text 
+    }
     if (rt.type === 'equation') return rt.equation.expression
     return ''
   }

@@ -7,7 +7,7 @@ import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-
 import { EcoBuilderBlockUpdateRichText as Updater } from './builder-block-update-rich-text.js'
 import { EcoBuilderBlockCrudRemove as Remover } from './builder-block-crud-remove.js'
 import { EcoBuilderBlockCrudAdd as Appender } from './builder-block-crud-add.js'
-export class EcoBuilderBlocksChildren extends Base {
+export class EcoBuilderBlocksMaster extends Base {
   constructor (
     logConfig = {
       isDebug: false,
@@ -20,17 +20,22 @@ export class EcoBuilderBlocksChildren extends Base {
   get _nqc () {
     return QueryService.instance
   }
+
+  get _childrenBuilder () {
+    return undefined
+  }
+
   // Có thể override: luôn true / luôn false / tự động tính
 
   //   get _isResetChildren () {
   //     return false
   //   }
-  async _getInputBlocks () {
-    throw new Error('Need implement _getLv2Blocks')
+  async _getInputBlocks (block, parentIdChildrenMap) {
+    throw new Error('Need implement _getInputBlocks')
   }
 
   _getNewTextComparer () {
-    throw new Error('Need implement _getBlockComparer')
+    throw new Error('Need implement _getNewTextComparer')
   }
 
   // Can override
@@ -43,7 +48,7 @@ export class EcoBuilderBlocksChildren extends Base {
     const me = this
 
     const cs = new NotionMissionBlocksCompare((index, iBlock) => {
-      console.log('🥂 _getTextComparer for: ', index)
+      //console.log('🥂 _getTextComparer for: ', index)
       const comparer = me._getNewTextComparer()
       const textBuilder = me._getFromBlockTextBuilder(iBlock)
       return comparer.setTextBuilder(textBuilder).prepare()
@@ -79,11 +84,18 @@ export class EcoBuilderBlocksChildren extends Base {
     return await u.execute()
   }
   async #processAddBlock (parentId, iBlock) {
-    if(iBlock && iBlock[iBlock?.type]?.children){
-        iBlock[iBlock.type].children = undefined
+   
+    let children = undefined
+    if (iBlock && iBlock[iBlock?.type]?.children) {
+      children = iBlock[iBlock.type].children
+      iBlock[iBlock.type].children = undefined
     }
     const u = new Appender(parentId, iBlock)
-    return await u.execute()
+    const block = await u.execute()
+    if(children){
+      iBlock[iBlock.type].children = children
+    }
+    return block
   }
   #processNeedChangeRichTextBlocks (promises, rsCompare) {
     const me = this
@@ -118,36 +130,41 @@ export class EcoBuilderBlocksChildren extends Base {
     }
     return me
   }
-  async #processAddNeedAddAndReplaceBlocks (addResults, parentId, rsCompare) {
+  async #processAddNeedAddAndReplaceBlocks (addResults, parentId, rsCompare, idChildrenMap) {
     const me = this
+    //#prepareIdChildrenMapForBlock
     const needReplaceBlocks = rsCompare?.needReplaceBlocks
     const needAddBlocks = rsCompare?.needAddBlocks
     if (needReplaceBlocks?.length) {
-      console.log('🔥 add > needReplaceBlocks', needReplaceBlocks)
+      //console.log('🔥 add > needReplaceBlocks', needReplaceBlocks)
 
       for (const obj of needReplaceBlocks) {
         const addReplaceRs = await me.#processAddBlock(parentId, obj.iBlock)
+        console.log('🔥 add for replace', addReplaceRs)
+        me.#prepareIdChildrenMapForBlock(idChildrenMap, addReplaceRs, obj.iBlock)
         addResults.push(addReplaceRs)
       }
     }
     if (needAddBlocks?.length) {
-      console.log('🔥 add > needAddBlocks', needAddBlocks)
+     
       for (const iBlock of needAddBlocks) {
         const addNewRs = await me.#processAddBlock(parentId, iBlock)
+        console.log('🔥 add for add', addNewRs)
+        me.#prepareIdChildrenMapForBlock(idChildrenMap, addNewRs, iBlock)
         addResults.push(addNewRs)
       }
     }
     return me
   }
 
-  async #processCompareResult (parentId, rsCompare) {
+  async #processCompareResult (parentId, rsCompare, idChildrenMap) {
     const me = this
     const rs = {}
     if (rsCompare.isEqualAll) {
       rs.isEqualAll = true
       return rs
     }
-    console.log('rsCompare', rsCompare)
+    //console.log('rsCompare', rsCompare)
 
     const updatePromises = []
     me.#processNeedChangeRichTextBlocks(updatePromises, rsCompare)
@@ -164,30 +181,83 @@ export class EcoBuilderBlocksChildren extends Base {
     rs.RemoveResults = removeResults
 
     const addResults = []
-    await me.#processAddNeedAddAndReplaceBlocks(addResults, parentId, rsCompare)
+    await me.#processAddNeedAddAndReplaceBlocks(addResults, parentId, rsCompare, idChildrenMap)
 
     rs.AddResults = addResults
 
     //TODO: Process children for all blocks
     return rs
   }
-  async execute (lv, block, rs) {
+
+  #prepareIdChildrenMapForArr (idChildrenMap, arr) {
+    const me = this
+    arr?.forEach((obj, idx) => {
+      me.#prepareIdChildrenMapForObj(idChildrenMap, obj)
+    })
+  }
+  #prepareIdChildrenMapForObj (idChildrenMap, obj){
+    const me = this
+    me.#prepareIdChildrenMapForBlock(idChildrenMap, obj?.eBlock, obj?.iBlock)
+    if (obj?.eBlock?.id && obj?.iBlock?.type) {
+      idChildrenMap[obj.eBlock.id] = obj.iBlock[obj.iBlock.type].children
+    }
+  }
+  #prepareIdChildrenMapForBlock (idChildrenMap, eBlock, iBlock){
+    if (eBlock?.id && iBlock?.type) {
+      idChildrenMap[eBlock.id] = iBlock[iBlock.type].children
+    }
+  }
+  #prepareIdChildrenMap (rsCompare) {
+    const me = this
+    const idChildrenMap = {}
+   
+    me.#prepareIdChildrenMapForArr(idChildrenMap, rsCompare?.skipBlocks)
+    me.#prepareIdChildrenMapForArr(idChildrenMap, rsCompare?.needChangeRichTextBlocks)
+
+    //console.log('🐞 rsCompare', rsCompare)
+    //console.log('🐞 idChildrenMap', idChildrenMap)
+    return idChildrenMap
+  }
+  async execute (lv, block, rs, parentIdChildrenMap) {
     if (!block) return
-    //console.log('🌻 execute children of', block)
+    //console.log(`🌻 execute children at level ${lv} for block:`, block)
     const me = this
 
     const blockId = block.id
     const eBlocks = await me.#getAllExistingBlocks(blockId)
     //console.log('eBlocks', eBlocks)
 
-    const iBlocks = me._getInputBlocks(blockId)
+    const iBlocks = me._getInputBlocks(block, parentIdChildrenMap)
     //console.log('iBlocks', iBlocks)
 
     const rsCompare = me.#compareBlocks(iBlocks, eBlocks)
-    const results = await me.#processCompareResult(blockId, rsCompare)
+    const idChildrenMap = me.#prepareIdChildrenMap(rsCompare)
+    const nextLevel = lv + 1
+    if (rsCompare.isEqualAll) {
+      await me.#runNextLevel(nextLevel, eBlocks, rs, idChildrenMap)
+    } else {
+      const results = await me.#processCompareResult(
+        blockId,
+        rsCompare,
+        idChildrenMap
+      )
+      rs[`level-${lv}-rs`] = results
+      const finalBlocks = await me.#getAllExistingBlocks(blockId)
+      await me.#runNextLevel(nextLevel, finalBlocks, rs, idChildrenMap)
+    }
 
     //if (me._isResetChildren) {
     //block = await me._removeChildren(block)
     //}
+  }
+
+  async #runNextLevel (nextLevel, eBlocks, rs, idChildrenMap) {
+    const me = this
+    //console.log('🍋 execute next level for: ', eBlocks)
+    if (!eBlocks) return
+    for (const eBlock of eBlocks ?? []) {
+      const master = me._childrenBuilder
+      if (master?.execute) await master.execute(nextLevel, eBlock, rs, idChildrenMap)
+    }
   }
 }

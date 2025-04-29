@@ -1,7 +1,8 @@
-import { EcoNotionBuilderLv1Children as Base } from '../base/builder-lv1-children.js'
+import { EcoNotionBuilderLv2Master as Base } from '../base/builder-lv2-master.js'
 import { EcoNotionBuilderNav1Lv2Data } from './builder-nav1-lv2-data.js'
 import { EcoNotionBuilderNav1Lv2Comparer } from './builder-nav1-lv2-comparer.js'
-export class EcoNotionBuilderNav1Lv1Children extends Base {
+import { EcoNotionBuilderNav1Lv3Master as Lv3} from './builder-nav1-lv3-master.js'
+export class EcoNotionBuilderNav1Lv2Master extends Base {
   _parents
   _friends
   _children
@@ -29,8 +30,9 @@ export class EcoNotionBuilderNav1Lv1Children extends Base {
     return new EcoNotionBuilderNav1Lv2Comparer()
   }
   //Override
-  _getInputBlocks (lv1BlockId) {
+  _getInputBlocks (parentBlock, parentIdChildrenMap) {
     const me = this
+    const lv1BlockId = parentBlock?.id
     const pageId = me._pageId
     const parents = me._parents
     const friends = me._friends
@@ -38,4 +40,9 @@ export class EcoNotionBuilderNav1Lv1Children extends Base {
     const builder = new EcoNotionBuilderNav1Lv2Data(pageId, lv1BlockId)
     return builder.getBlocks(parents, friends, children)
   }
+
+  get _childrenBuilder () {
+    return new Lv3()
+  }
+
 }

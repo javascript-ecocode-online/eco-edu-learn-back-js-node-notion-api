@@ -56,9 +56,11 @@ export class NotionMissionBlocksCompare extends EcoBase {
             : 'equal but after diff'
         needReplaceBlocks.push(obj)
       } else if (crs.isReset) {
+       
         // 🇻🇳 resetRichTextBlocks luôn phải là các blocks đứng trước reAddRichTextBlocks
         needChangeRichTextBlocks.push(obj)
       } else {
+        //console.log('🐞 skipBlock', obj)
         skipBlocks.push(obj)
       }
     }
@@ -80,10 +82,10 @@ export class NotionMissionBlocksCompare extends EcoBase {
       result.needRemoveBlocks = eBlocks.slice(iBlocks.length)
     }
 
-    me.#logArrayBlocks(
-      'needChangeRichTextBlocks',
-      result.needChangeRichTextBlocks
-    )
+    // me.#logArrayBlocks(
+    //   'needChangeRichTextBlocks',
+    //   result.needChangeRichTextBlocks
+    // )
     // me.#logArrayBlocks('needReplaceBlocks', result.needReplaceBlocks)
     // me.#logArrayBlocks('needAddBlocks', result.needAddBlocks)
     // me.#logArrayBlocks('needRemoveBlocks', result.needRemoveBlocks)

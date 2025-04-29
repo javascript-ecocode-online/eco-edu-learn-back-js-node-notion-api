@@ -1,9 +1,9 @@
 //import { Lv0Builder } from './lv0Builder.js'
-import { EcoBuilderBlocksChildren as Base } from './builder-blocks-children.js'
+import { EcoBuilderBlocksMaster as Base } from './builder-blocks-master.js'
 import { NotionMissionBlocksCompare } from './notion-mission-blocks-compare.js'
 import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
 
-export class EcoNotionBuilderLv1Children extends Base {
+export class EcoNotionBuilderLv2Master extends Base {
   _pageId
   constructor (logCfg) {
     super(logCfg)
@@ -29,7 +29,7 @@ export class EcoNotionBuilderLv1Children extends Base {
     const me = this
     const lv1BlockId = block.id
     const isResetChildren = me._isResetChildren
-    const newLv2Blocks = me._getInputBlocks(lv1BlockId)
+    const newLv2Blocks = me._getInputBlocks(block)
 
     //console.log('newLv2Blocks', newLv2Blocks)
     // Lọc các block mới không trùng text

@@ -25,7 +25,7 @@ export class EcoNotionMissionBlockCompare extends Base {
     const rawBlockText = block?.paragraph?.rich_text
       .map(rt => rt.plain_text)
       .join('')
-      console.log('🥖 rawBlockText: ', rawBlockText)
+      //console.log('🥖 rawBlockText: ', rawBlockText)
     return me.#getCompareText(rawBlockText, separator)
   }
   #isEqualInputText (block, inputCompareText, separator) {

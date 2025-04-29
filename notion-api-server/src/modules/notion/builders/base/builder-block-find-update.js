@@ -35,10 +35,10 @@ export class EcoBuilderBlockFindUpdate extends Base {
     let needUpdateRichText = findResult.needUpdateRichText
     if (!block) return rs
     if (needUpdateRichText) block = await me._updateBlockText(block)
-    rs[`level-${lv}`] = block
+    rs[`level-${lv}-rs`] = block
     const childrenBuilder = me._childrenBuilder
     if (childrenBuilder) {
-      await childrenBuilder.execute(lv, block, rs)
+      await childrenBuilder.execute(lv + 1, block, rs)
     }
 
     //await me._onExecuteDone(lv1BlockId)

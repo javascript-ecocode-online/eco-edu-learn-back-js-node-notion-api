@@ -2,7 +2,7 @@ import { EcoNtbdNav14Blocks } from './ntbd-nav14-blocks.js'
 import { Lv1NavBuilder } from '../base/lv1NavBuilder.js'
 import { EcoNotionTaskBlockChildren as tc } from '../../tasks/notion-task-block-children.js'
 import { EcoNotionBuilderNav1Lv1DataText } from './nav1-lv1-data-text.js'
-import { EcoNotionBuilderNav1Lv1Children } from './builder-nav1-lv1-children.js'
+import { EcoNotionBuilderNav1Lv2Master } from './builder-nav1-lv2-master.js'
 import { EcoNotionBuilderNav1Lv1Comparer as Comparer} from './builder-nav1-lv1-comparer.js'
 export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
   #textBuilder
@@ -39,7 +39,7 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
     const friends = me._friends
     const children = me._children
     const buildCfg = me._buildCfg
-    return new EcoNotionBuilderNav1Lv1Children()
+    return new EcoNotionBuilderNav1Lv2Master()
       .setPageId(pageId)
       .setParents(parents)
       .setFriends(friends)

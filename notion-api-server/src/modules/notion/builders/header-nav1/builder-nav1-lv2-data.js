@@ -28,6 +28,7 @@ export class EcoNotionBuilderNav1Lv2Data extends EcoNotionLv2Builder {
     const blocks = me.#blocks
     const pageId = me.#pageId
     const toggle = me.#createToggle(pageId, label, items)
+    //console.log('🌈 toggle: ', toggle)
     blocks.push(toggle)
     return this
   }

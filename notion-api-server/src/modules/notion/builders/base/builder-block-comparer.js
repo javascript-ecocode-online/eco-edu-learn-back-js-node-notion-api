@@ -148,20 +148,29 @@ export class EcoBuilderBlockComparer extends Base {
       .#prepareSpecialText()
   }
 
+  _isMatch_Links (block) {
+    const me = this
+    const isMatchTextLinksOnly = me._lnkc.isMatch(block)
+    const rs = isMatchTextLinksOnly
+    return rs
+  }
+
   _isMatch_RawText_OrLinks (block) {
     const me = this
     const isMatchRawTextOnly = me._txtc.isMatch(block)
     const isMatchTextLinksOnly = me._lnkc.isMatch(block)
-    return isMatchRawTextOnly || isMatchTextLinksOnly
+    const rs = isMatchRawTextOnly || isMatchTextLinksOnly
+    return rs
   }
 
   _isMatch_RawText_OrEmoji (block) {
     const me = this
     const isMatchRawTextOnly = me._txtc.isMatch(block)
     const isMatchEmojisOnly = me._emjc.isMatch(block)
-    console.log('_isMatch_RawText_OrEmoji')
-    console.log(isMatchRawTextOnly, isMatchEmojisOnly)
-    return isMatchRawTextOnly || isMatchEmojisOnly
+    //console.log('_isMatch_RawText_OrEmoji')
+    //console.log(isMatchRawTextOnly, isMatchEmojisOnly)
+    const rs = isMatchRawTextOnly || isMatchEmojisOnly
+    return rs
   }
 
   _isMatch_RawText_OrLinks_OrEmoji (block) {
@@ -172,21 +181,24 @@ export class EcoBuilderBlockComparer extends Base {
     //console.log('🌙 isMatchRawTextOnly', isMatchRawTextOnly)
     //console.log('🌙 isMatchTextLinksOnly', isMatchTextLinksOnly)
     //console.log('🌙 isMatchEmojiLinksOnly', isMatchEmojiLinksOnly)
-    return isMatchRawTextOnly || isMatchTextLinksOnly || isMatchEmojisOnly
+    const rs = isMatchRawTextOnly || isMatchTextLinksOnly || isMatchEmojisOnly
+    return rs
   }
 
   _isEqual_RawText_Links (block) {
     const me = this
     const isMatchRawTextOnly = me._txtc.isMatch(block)
     const isMatchTextLinksOnly = me._lnkc.isMatch(block)
-    return isMatchRawTextOnly && isMatchTextLinksOnly
+    const rs = isMatchRawTextOnly && isMatchTextLinksOnly
+    return rs
   }
 
   _isEqual_RawText_Emoji (block) {
     const me = this
     const isMatchRawTextOnly = me._txtc.isMatch(block)
     const isMatchEmojisOnly = me._emjc.isMatch(block)
-    return isMatchRawTextOnly && isMatchEmojisOnly
+    const rs = isMatchRawTextOnly && isMatchEmojisOnly
+    return rs
   }
 
   _isEqual_RawText_Emoji_Number (block) {
@@ -194,7 +206,8 @@ export class EcoBuilderBlockComparer extends Base {
     const isMatchRawTextOnly = me._txtc.isMatch(block)
     const isMatchEmojisOnly = me._emjc.isMatch(block)
     const isMatchCountNumberOnly = me._numc.isMatch(block)
-    return isMatchRawTextOnly && isMatchEmojisOnly && isMatchCountNumberOnly
+    const rs = isMatchRawTextOnly && isMatchEmojisOnly && isMatchCountNumberOnly
+    return rs
   }
 
   _isEqual_Text_Num_Emoji_Number (block) {
@@ -203,7 +216,8 @@ export class EcoBuilderBlockComparer extends Base {
     const isMatchEmojisOnly = me._emjc.isMatch(block)
     const isMatchCountNumberOnly = me._numc.isMatch(block)
     const isMatchContentNumberOnly = me._txnc.isMatch(block)
-    return isMatchRawTextOnly && isMatchEmojisOnly && isMatchCountNumberOnly && isMatchContentNumberOnly
+    const rs = isMatchRawTextOnly && isMatchEmojisOnly && isMatchCountNumberOnly && isMatchContentNumberOnly
+    return rs
   }
 
   _isEqual_RawText_Links_Emoji (block) {
@@ -211,8 +225,22 @@ export class EcoBuilderBlockComparer extends Base {
     const isMatchRawText = me._txtc.isMatch(block)
     const isMatchTextLinks = me._lnkc.isMatch(block)
     const isMatchEmojis = me._emjc.isMatch(block)
-    return isMatchRawText && isMatchTextLinks && isMatchEmojis
+    const rs = isMatchRawText && isMatchTextLinks && isMatchEmojis
+    return rs
   }
+
+  _isEqual_Links_Emoji (block) {
+    const me = this
+    const isMatchTextLinks = me._lnkc.isMatch(block)
+    const isMatchEmojis = me._emjc.isMatch(block)
+    const rs = isMatchTextLinks && isMatchEmojis
+
+    console.log('🥥 block: ', block.id)
+    console.log('isMatchTextLinks: ', isMatchTextLinks)
+    console.log('isMatchEmojis: ', isMatchEmojis)
+    return rs
+  }
+  
 
   _isEqual_RawText_Links_Emoji_Special (block) {
     const me = this
@@ -220,6 +248,13 @@ export class EcoBuilderBlockComparer extends Base {
     const isMatchTextLinks = me._lnkc.isMatch(block)
     const isMatchEmojis = me._emjc.isMatch(block)
     const isMatchSpecial = me._spec.isMatch(block)
-    return isMatchRawText && isMatchTextLinks && isMatchEmojis && isMatchSpecial
+    const rs = isMatchRawText && isMatchTextLinks && isMatchEmojis && isMatchSpecial
+
+    console.log('🥥 block: ', block.id)
+    console.log('isMatchRawText: ', isMatchRawText)
+    console.log('isMatchTextLinks: ', isMatchTextLinks)
+    console.log('isMatchEmojis: ', isMatchEmojis)
+    console.log('isMatchSpecial: ', isMatchSpecial)
+    return rs
   }
 }
