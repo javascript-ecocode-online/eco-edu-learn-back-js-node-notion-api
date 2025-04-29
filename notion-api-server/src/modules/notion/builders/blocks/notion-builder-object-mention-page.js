@@ -17,4 +17,12 @@ export class EcoNotionBuilderObjectMentionPage extends EcoNotionBuilderObjectMen
     oPropMain[me._mentionType] = { id: id }
     return me
   }
+  setTitle(title){
+    const me = this
+    //const oPropMain = me._oPropMainSafe
+    const o = me._oObjSafe
+    o['plain_text'] = title
+    //oPropMain['plain_text'] = title
+    return me
+  }
 }

@@ -30,7 +30,7 @@ export class EcoBuilderBlockComparerTextEmojis extends Base {
   #getDefaultInputCompareEmojiString () {
     const me = this
     const displayText = me._displayText()
-    //console.log('🎋 displayText', displayText)
+    //console.log('💥 emoji displayText 1', displayText)
     return uTxt.getEmojiString(displayText)
   }
 
@@ -38,6 +38,8 @@ export class EcoBuilderBlockComparerTextEmojis extends Base {
   #isMatchEmojiString (block, inputCompareEmojiText) {
     const me = this
     const existingCompareText = me.#getRichTextEmojiString(block)
+    console.log('💥 emoji isMatchEmojiString')
+    console.log(inputCompareEmojiText, existingCompareText)
     return me._compareTextAndText(inputCompareEmojiText, existingCompareText)
   }
 
@@ -47,6 +49,7 @@ export class EcoBuilderBlockComparerTextEmojis extends Base {
       //console.log('🐸 #getRichTextEmojiString', richTexts)
   
       const plainText = mt.getBlockDisplayTextFromNotionRichTextArr(richTexts)
+      //console.log('💥 emoji displayText 2', plainText)
       //console.log('🌽 plainText', plainText)
       //console.log('💎 rich_text', block.toggle.rich_text)
       const rsText = uTxt.getEmojiString(plainText)

@@ -97,15 +97,17 @@ export class EcoBuilderBlocksMaster extends Base {
     }
     return block
   }
-  #processNeedChangeRichTextBlocks (promises, rsCompare) {
+  async #processNeedChangeRichTextBlocks (updateResults, rsCompare) {
     const me = this
     const arr = rsCompare?.needChangeRichTextBlocks
     if (arr?.length) {
-      //console.log('🔥 needChangeRichTextBlocks', arr)
-      arr.forEach((e, i) => {
-        const promise = me.#processUpdateRichText(e)
-        promises.push(promise)
-      })
+      console.log('🔥 needChangeRichTextBlocks', arr)
+
+      for (const e of arr) {
+        const updateResult = await me.#processUpdateRichText(e)
+        updateResults.push(updateResult)
+      }
+      
     }
     return me
   }
@@ -116,14 +118,14 @@ export class EcoBuilderBlocksMaster extends Base {
     const replaceBlocks = rsCompare?.needReplaceBlocks.map(b => b.eBlock)
     if (removeBlocks?.length) {
       removeBlocks?.forEach((eBlock, i) => {
-        //console.log('🔥 remove removeBlock ', eBlock)
+        console.log('🔥 remove removeBlock ', eBlock)
         const promise = me.#processRemoveBlock(eBlock)
         promises.push(promise)
       })
     }
     if (replaceBlocks?.length) {
       replaceBlocks?.forEach((eBlock, i) => {
-        //console.log('🔥 remove replaceBlock ', eBlock)
+        console.log('🔥 remove replaceBlock ', eBlock)
         const promise = me.#processRemoveBlock(eBlock)
         promises.push(promise)
       })
@@ -166,11 +168,8 @@ export class EcoBuilderBlocksMaster extends Base {
     }
     //console.log('rsCompare', rsCompare)
 
-    const updatePromises = []
-    me.#processNeedChangeRichTextBlocks(updatePromises, rsCompare)
-    const updateResults = updatePromises.length
-      ? await Promise.all(updatePromises)
-      : null
+    const updateResults = []
+    await me.#processNeedChangeRichTextBlocks(updateResults, rsCompare)
     rs.UpdateResults = updateResults
 
     const removePromises = []

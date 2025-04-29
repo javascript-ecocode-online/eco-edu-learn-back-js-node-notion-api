@@ -14,9 +14,11 @@ export class EcoNotionBuilderNav1Lv3 extends Lv0Builder {
   }
   #formatItem (pageId, item) {
     const me = this
+    //console.log('getLv3Blocks item ', item)
     const itemId = item.id
+    const itemTitle = item.title
     const arr = [
-      new EcoNotionBuilderObjectMentionPage().setPageId(itemId).oObjSafe,
+      new EcoNotionBuilderObjectMentionPage().setPageId(itemId).setTitle(itemTitle).oObjSafe,
       me.#getRichTextText(pageId, itemId),
     ]
     const block = new EcoNotionBuilderBlockToggle().setRichTextArray(arr).oBlockSafe

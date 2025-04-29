@@ -45,8 +45,9 @@ export class EcoNotionServiceBuildBlockBase extends Base {
       rich_text: richTextArr,
     }
     try {
+      console.log(`✍️ Chuẩn bị cập nhật block:`, data)
       const response = await me._blocks.update(data)
-      //console.log(`✍️ Đã cập nhật block ${type}:`, response)
+      
       //console.log(`> ${type} rich text:`, response?.toggle?.rich_text)
       return response
     } catch (error) {
