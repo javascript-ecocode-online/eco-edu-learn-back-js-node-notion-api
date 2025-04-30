@@ -16,8 +16,10 @@ export class EcoNotionBuilderObjectText extends EcoNotionBuilderObjectBase {
   }
   setLink (url) {
     const me = this
-    const oPropMain = me._oPropMainSafe
-    oPropMain['link'] = { url: url }
+    if(url){
+      const oPropMain = me._oPropMainSafe
+      oPropMain['link'] = { url: url }
+    }
     return me
   }
 }

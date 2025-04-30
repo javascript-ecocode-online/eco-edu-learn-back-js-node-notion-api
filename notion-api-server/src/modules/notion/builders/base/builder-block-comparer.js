@@ -178,10 +178,14 @@ export class EcoBuilderBlockComparer extends Base {
     const isMatchRawTextOnly = me._txtc.isMatch(block)
     const isMatchTextLinksOnly = me._lnkc.isMatch(block)
     const isMatchEmojisOnly = me._emjc.isMatch(block)
+    //console.log('🪺 isMatchContent: ', block)
+    
+    const rs = isMatchRawTextOnly || isMatchTextLinksOnly || isMatchEmojisOnly
+
     //console.log('🌙 isMatchRawTextOnly', isMatchRawTextOnly)
     //console.log('🌙 isMatchTextLinksOnly', isMatchTextLinksOnly)
-    //console.log('🌙 isMatchEmojiLinksOnly', isMatchEmojiLinksOnly)
-    const rs = isMatchRawTextOnly || isMatchTextLinksOnly || isMatchEmojisOnly
+    //console.log('🌙 isMatchEmojiLinksOnly', isMatchEmojisOnly)
+    //console.log('🌙 _isMatch_RawText_OrLinks_OrEmoji', rs)
     return rs
   }
 

@@ -28,13 +28,9 @@ export class NotionMissionBlocksCompare extends EcoBase {
 
   compareNotionBlocks (iBlocks, eBlocks) {
     const me = this
-    // me._logLines(
-    //   '🪺 compareNotionBlocks: ',
-    //   dataBlocks.length,
-    //   existingBlocks.length
-    // )
-    const minLength = Math.min(iBlocks.length, eBlocks.length)
-
+    //me._logLines('🪺 compareNotionBlocks 1: ', iBlocks.length, eBlocks.length)
+    const minLength = Math.min(iBlocks?.length ?? 0, eBlocks?.length ?? 0)
+    //me._logLines('🪺 minLength: ', minLength)
     const needChangeRichTextBlocks = []
     const needReplaceBlocks = []
     const skipBlocks = []
@@ -56,7 +52,6 @@ export class NotionMissionBlocksCompare extends EcoBase {
             : 'equal but after diff'
         needReplaceBlocks.push(obj)
       } else if (crs.isReset) {
-       
         // 🇻🇳 resetRichTextBlocks luôn phải là các blocks đứng trước reAddRichTextBlocks
         needChangeRichTextBlocks.push(obj)
       } else {
@@ -67,7 +62,7 @@ export class NotionMissionBlocksCompare extends EcoBase {
     const noChangeRichText = needChangeRichTextBlocks.length === 0
     const noReplace = needReplaceBlocks.length === 0
     const isInMinNoChange = noChangeRichText && noReplace
-    const isLengthEqual = iBlocks.length === eBlocks.length
+    const isLengthEqual = iBlocks?.length === eBlocks?.length
     const isEqualAll = isLengthEqual && isInMinNoChange
     const result = {
       isEqualAll: isEqualAll,
@@ -75,11 +70,14 @@ export class NotionMissionBlocksCompare extends EcoBase {
       needChangeRichTextBlocks: needChangeRichTextBlocks,
       needReplaceBlocks: needReplaceBlocks,
     }
-
-    if (iBlocks.length > eBlocks.length) {
-      result.needAddBlocks = iBlocks.slice(eBlocks.length)
-    } else if (eBlocks.length > iBlocks.length) {
-      result.needRemoveBlocks = eBlocks.slice(iBlocks.length)
+    //console.log('----', (iBlocks?.length ?? 0))
+    //console.log('----', (eBlocks?.length ?? 0))
+    if ((iBlocks?.length ?? 0) > (eBlocks?.length ?? 0)) {
+      //console.log('----')
+      result.needAddBlocks = iBlocks.slice(eBlocks?.length ?? 0)
+    } else if ((eBlocks?.length ?? 0) > (iBlocks?.length ?? 0)) {
+      //if (iBlocks?.length)
+      result.needRemoveBlocks = eBlocks.slice(iBlocks?.length ?? 0)
     }
 
     // me.#logArrayBlocks(

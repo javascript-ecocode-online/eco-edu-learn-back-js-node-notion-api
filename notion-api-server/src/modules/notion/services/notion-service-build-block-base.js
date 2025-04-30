@@ -46,7 +46,7 @@ export class EcoNotionServiceBuildBlockBase extends Base {
   //toggle
   async _updateRichText (type, blockId, richTextArr) {
     const me = this
-    me._logLines('🔥 Start update block rich text ...', blockId)
+    me._logLines('🔥 Start update block rich text ...', richTextArr)
     const data = {
       block_id: blockId,
     }

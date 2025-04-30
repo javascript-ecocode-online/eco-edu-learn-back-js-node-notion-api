@@ -17,7 +17,12 @@ export class EcoNotionNav2Lv1Comparer extends Base {
     return this._prepare_Text_Emoji_Links_Special()
   }
   isMatchContent (block) {
-    return this._isMatch_RawText_OrLinks_OrEmoji(block)
+    
+    const match = this._isMatch_RawText_OrLinks_OrEmoji(block)
+    //console.log('✨ match ? block.toggle.rich_text: ', block.toggle.rich_text)
+    //console.log('✨ match: ', match)
+    //this._logDeep('block', block)
+    return match
   }
   needUpdateRichText (block) {
     return !this._isEqual_RawText_Links_Emoji_Special(block)

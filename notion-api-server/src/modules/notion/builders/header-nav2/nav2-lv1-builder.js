@@ -36,12 +36,12 @@ export class EcoNotionNav2Lv1Builder extends Lv1NavBuilder {
       }
       get _childrenBuilder () {
         const me = this
+       
         const pageId = me._pageId
        
         return new EcoNotionNav2Lv2Builder()
           .setPageId(pageId)
         
-          
       }
     
      

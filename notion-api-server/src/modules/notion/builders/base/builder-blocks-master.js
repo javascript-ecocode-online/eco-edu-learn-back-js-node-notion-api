@@ -25,7 +25,6 @@ export class EcoBuilderBlocksMaster extends Base {
     return undefined
   }
 
-  
   async _getInputBlocks (block, parentIdChildrenMap) {
     throw new Error('Need implement _getInputBlocks')
   }
@@ -80,7 +79,6 @@ export class EcoBuilderBlocksMaster extends Base {
     return await u.execute()
   }
   async #processAddBlock (parentId, iBlock) {
-   
     let children = undefined
     if (iBlock && iBlock[iBlock?.type]?.children) {
       children = iBlock[iBlock.type].children
@@ -88,13 +86,14 @@ export class EcoBuilderBlocksMaster extends Base {
     }
     const u = new Appender(parentId, iBlock)
     const block = await u.execute()
-    if(children){
+    if (children) {
       iBlock[iBlock.type].children = children
     }
     return block
   }
-  async #processNeedChangeRichTextBlocks (updateResults, rsCompare) {
+  async #processNeedChangeRichTextBlocks (rsCompare) {
     const me = this
+    const updateResults = []
     const arr = rsCompare?.needChangeRichTextBlocks
     if (arr?.length) {
       //console.log('🔥 needChangeRichTextBlocks', arr)
@@ -103,33 +102,36 @@ export class EcoBuilderBlocksMaster extends Base {
         const updateResult = await me.#processUpdateRichText(e)
         updateResults.push(updateResult)
       }
-      
     }
-    return me
+    return updateResults
   }
 
-  #removeRemoveAndRepaceBlocks (promises, rsCompare) {
+  async #removeRemoveAndRepaceBlocks (rsCompare) {
     const me = this
+    const removeResults = []
     const removeBlocks = rsCompare?.needRemoveBlocks
     const replaceBlocks = rsCompare?.needReplaceBlocks.map(b => b.eBlock)
     if (removeBlocks?.length) {
-      removeBlocks?.forEach((eBlock, i) => {
-        //console.log('🔥 remove removeBlock ', eBlock)
-        const promise = me.#processRemoveBlock(eBlock)
-        promises.push(promise)
-      })
+      for (const eBlock of removeBlocks) {
+        const removeResult = await me.#processRemoveBlock(eBlock)
+        removeResults.push(removeResult)
+      }
     }
     if (replaceBlocks?.length) {
-      replaceBlocks?.forEach((eBlock, i) => {
-        //console.log('🔥 remove replaceBlock ', eBlock)
-        const promise = me.#processRemoveBlock(eBlock)
-        promises.push(promise)
-      })
+      for (const eBlock of replaceBlocks) {
+        const removeResult = await me.#processRemoveBlock(eBlock)
+        removeResults.push(removeResult)
+      }
     }
-    return me
+    return removeResults
   }
-  async #processAddNeedAddAndReplaceBlocks (addResults, parentId, rsCompare, idChildrenMap) {
+  async #processAddNeedAddAndReplaceBlocks (
+    parentId,
+    rsCompare,
+    idChildrenMap
+  ) {
     const me = this
+    const addResults = []
     //#prepareIdChildrenMapForBlock
     const needReplaceBlocks = rsCompare?.needReplaceBlocks
     const needAddBlocks = rsCompare?.needAddBlocks
@@ -139,12 +141,15 @@ export class EcoBuilderBlocksMaster extends Base {
       for (const obj of needReplaceBlocks) {
         const addReplaceRs = await me.#processAddBlock(parentId, obj.iBlock)
         //console.log('🔥 add for replace', addReplaceRs)
-        me.#prepareIdChildrenMapForBlock(idChildrenMap, addReplaceRs, obj.iBlock)
+        me.#prepareIdChildrenMapForBlock(
+          idChildrenMap,
+          addReplaceRs,
+          obj.iBlock
+        )
         addResults.push(addReplaceRs)
       }
     }
     if (needAddBlocks?.length) {
-     
       for (const iBlock of needAddBlocks) {
         const addNewRs = await me.#processAddBlock(parentId, iBlock)
         //console.log('🔥 add for add', addNewRs)
@@ -152,7 +157,7 @@ export class EcoBuilderBlocksMaster extends Base {
         addResults.push(addNewRs)
       }
     }
-    return me
+    return addResults
   }
 
   async #processCompareResult (parentId, rsCompare, idChildrenMap) {
@@ -162,25 +167,13 @@ export class EcoBuilderBlocksMaster extends Base {
       rs.isEqualAll = true
       return rs
     }
-    //console.log('rsCompare', rsCompare)
-
-    const updateResults = []
-    await me.#processNeedChangeRichTextBlocks(updateResults, rsCompare)
-    rs.UpdateResults = updateResults
-
-    const removePromises = []
-    me.#removeRemoveAndRepaceBlocks(removePromises, rsCompare)
-    const removeResults = removePromises.length
-      ? await Promise.all(removePromises)
-      : null
-    rs.RemoveResults = removeResults
-
-    const addResults = []
-    await me.#processAddNeedAddAndReplaceBlocks(addResults, parentId, rsCompare, idChildrenMap)
-
-    rs.AddResults = addResults
-
-    //TODO: Process children for all blocks
+    rs.UpdateResults = await me.#processNeedChangeRichTextBlocks(rsCompare)
+    rs.RemoveResults = await me.#removeRemoveAndRepaceBlocks(rsCompare)
+    rs.AddResults = await me.#processAddNeedAddAndReplaceBlocks(
+      parentId,
+      rsCompare,
+      idChildrenMap
+    )
     return rs
   }
 
@@ -190,14 +183,14 @@ export class EcoBuilderBlocksMaster extends Base {
       me.#prepareIdChildrenMapForObj(idChildrenMap, obj)
     })
   }
-  #prepareIdChildrenMapForObj (idChildrenMap, obj){
+  #prepareIdChildrenMapForObj (idChildrenMap, obj) {
     const me = this
     me.#prepareIdChildrenMapForBlock(idChildrenMap, obj?.eBlock, obj?.iBlock)
     if (obj?.eBlock?.id && obj?.iBlock?.type) {
       idChildrenMap[obj.eBlock.id] = obj.iBlock[obj.iBlock.type].children
     }
   }
-  #prepareIdChildrenMapForBlock (idChildrenMap, eBlock, iBlock){
+  #prepareIdChildrenMapForBlock (idChildrenMap, eBlock, iBlock) {
     if (eBlock?.id && iBlock?.type) {
       idChildrenMap[eBlock.id] = iBlock[iBlock.type].children
     }
@@ -205,9 +198,12 @@ export class EcoBuilderBlocksMaster extends Base {
   #prepareIdChildrenMap (rsCompare) {
     const me = this
     const idChildrenMap = {}
-   
+
     me.#prepareIdChildrenMapForArr(idChildrenMap, rsCompare?.skipBlocks)
-    me.#prepareIdChildrenMapForArr(idChildrenMap, rsCompare?.needChangeRichTextBlocks)
+    me.#prepareIdChildrenMapForArr(
+      idChildrenMap,
+      rsCompare?.needChangeRichTextBlocks
+    )
 
     //console.log('🐞 rsCompare', rsCompare)
     //console.log('🐞 idChildrenMap', idChildrenMap)
@@ -215,7 +211,8 @@ export class EcoBuilderBlocksMaster extends Base {
   }
   async execute (lv, block, rs, parentIdChildrenMap) {
     if (!block) return
-    console.log(`🌻 execute children at level ${lv} for block:`, block?.id)
+    console.log()
+    console.log(`🌳 ***** execute children at level ${lv} for block: *****`, block?.id)
     const me = this
 
     const blockId = block.id
@@ -223,9 +220,9 @@ export class EcoBuilderBlocksMaster extends Base {
     //console.log('eBlocks', eBlocks)
 
     const iBlocks = await me._getInputBlocks(block, parentIdChildrenMap)
-    //console.log('iBlocks', iBlocks)
 
     const rsCompare = me.#compareBlocks(iBlocks, eBlocks)
+    console.log('🌓 > rsCompare', rsCompare)
     const idChildrenMap = me.#prepareIdChildrenMap(rsCompare)
     const nextLevel = lv + 1
     if (rsCompare.isEqualAll) {
@@ -240,17 +237,16 @@ export class EcoBuilderBlocksMaster extends Base {
       const finalBlocks = await me.#getAllExistingBlocks(blockId)
       await me.#runNextLevel(nextLevel, finalBlocks, rs, idChildrenMap)
     }
-
-   
   }
 
   async #runNextLevel (nextLevel, eBlocks, rs, idChildrenMap) {
     const me = this
-    
+
     if (!eBlocks) return
     for (const eBlock of eBlocks ?? []) {
       const master = me._childrenBuilder
-      if (master?.execute) await master.execute(nextLevel, eBlock, rs, idChildrenMap)
+      if (master?.execute)
+        await master.execute(nextLevel, eBlock, rs, idChildrenMap)
     }
   }
 }

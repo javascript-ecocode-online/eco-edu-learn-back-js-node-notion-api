@@ -5,4 +5,10 @@ export class EcoNotionBlocksConfig {
         friend: '❄️ Friend Pages',
         children: '👶 Children Pages'
     }
+
+    static nav2Lv2Labels = {
+        parent: '📂 Text 1',
+        friend: '❄️ Text 2',
+        children: '👶 Text 3'
+    }
 }

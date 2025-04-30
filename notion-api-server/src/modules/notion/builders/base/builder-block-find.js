@@ -41,13 +41,13 @@ export class EcoBuilderBlockFind extends Base {
     //Move
 
     const results = await nqc.getAllChildrenById(reason, parentId, type)
-
+   
     const foundBlock = results?.find(block => tcp.isMatchContent(block))
-    // me.logDeep('📍 ----- foundBlock: -----', foundBlock)
+    //me._logDeep('📍 ----- foundBlock: -----', foundBlock)
     const needUpdateRichText = foundBlock
       ? tcp.needUpdateRichText(foundBlock)
       : false
-    const rs = {block : foundBlock, needUpdateRichText: needUpdateRichText}
+    const rs = { block: foundBlock, needUpdateRichText: needUpdateRichText }
     //console.log('🍋 _findWorkingBlock', rs)
     return rs
   }

@@ -23,6 +23,7 @@ export class EcoBuilderBlockFindUpdate extends Base {
     const type = me._blockType
     const svc = bb.instance
     const richTextArr = textBuilder.getRichTextData()
+    
     return await svc.updateRichText(type, block.id, richTextArr)
   }
   async execute (lv = 1) {
@@ -31,6 +32,7 @@ export class EcoBuilderBlockFindUpdate extends Base {
     let findResult = await me._findWorkingBlock(
       'EcoBuilderBlockFindUpdate > execute'
     )
+   
     let block = findResult.block
     let needUpdateRichText = findResult.needUpdateRichText
     if (!block) return rs

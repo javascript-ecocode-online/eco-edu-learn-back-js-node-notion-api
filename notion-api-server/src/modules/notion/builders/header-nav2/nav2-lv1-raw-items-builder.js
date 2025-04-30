@@ -50,12 +50,12 @@ export class EcoNotionNav2Lv1RawItemsBuilder extends Base {
       {
         emoji: tpl.back.emoji,
         label: tpl.back.label,
-        url: nUrl.getNotionUrl(parentId),
+        url: eUrl.getEcoBuildUrl(parentId),
       },
       {
         emoji: tpl.end.emoji,
         label: tpl.end.label,
-        url: eUrl.getEcoBuildUrl(cleanId),
+        url: nUrl.getNotionUrl(cleanId),
       },
       {
         emoji: tpl.chid.emoji,
