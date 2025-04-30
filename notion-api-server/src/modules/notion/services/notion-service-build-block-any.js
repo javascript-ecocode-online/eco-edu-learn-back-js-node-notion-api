@@ -11,10 +11,13 @@ export class EcoNotionServiceBuildBlockAny extends Base {
 
   async deleteBlock (blockId) {
     const me = this
-    return await me._blocks.update({
+    me._logLines('🔥 Start deleteBlock ...', blockId)
+    const rs = await me._blocks.update({
       block_id: blockId,
       archived: true,
     })
+    me._logLines('🔥 Delete block:', rs)
+    return rs
   }
 
   async updateRichText (type, blockId, richTextArr) {

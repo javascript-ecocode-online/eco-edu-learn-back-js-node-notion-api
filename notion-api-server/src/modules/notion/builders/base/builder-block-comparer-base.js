@@ -20,13 +20,9 @@ export class EcoBuilderBlockComparerBase extends Base {
   }
   _compareTextAndText (inputCompareText, existingCompareText) {
     // if(this._logName === 'EcoNotionBuilderNav1Lv2Comparer'){
-    //     console.log(
-    //         '🪭 _compareTextAndText',
-    //          this._logName
-    //        )
-    //        console.log('- ipt: ', inputCompareText)
-    //        console.log('- ext: ', existingCompareText)
-    // }
+    //console.log('🪭 _compareTextAndText', this._logName)
+    //console.log('- ipt: ', inputCompareText)
+    //console.log('- ext: ', existingCompareText)
 
     return inputCompareText === existingCompareText
   }

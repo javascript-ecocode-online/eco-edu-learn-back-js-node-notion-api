@@ -215,7 +215,7 @@ export class EcoBuilderBlocksMaster extends Base {
   }
   async execute (lv, block, rs, parentIdChildrenMap) {
     if (!block) return
-    //console.log(`🌻 execute children at level ${lv} for block:`, block)
+    console.log(`🌻 execute children at level ${lv} for block:`, block?.id)
     const me = this
 
     const blockId = block.id
@@ -246,7 +246,7 @@ export class EcoBuilderBlocksMaster extends Base {
 
   async #runNextLevel (nextLevel, eBlocks, rs, idChildrenMap) {
     const me = this
-    //console.log('🍋 execute next level for: ', eBlocks)
+    
     if (!eBlocks) return
     for (const eBlock of eBlocks ?? []) {
       const master = me._childrenBuilder
