@@ -4,7 +4,7 @@ import { EcoNotionServiceQueryPage } from './notion-service-query-page.js'
 import { EcoNotionServiceQueryParents } from './notion-service-query-parents.js'
 import { EcoNotionServiceQueryChildren } from './notion-service-query-children.js'
 import { EcoNotionServiceQuerySiblings } from './notion-service-query-siblings.js'
-import { EcoNotionBuilderNav1Lv1 } from '../builders/header-nav1/notion-builder-nav1-lv1.js'
+import { EcoNotionNav1Lv1Builder } from '../builders/header-nav1/nav1-lv1-builder.js'
 
 export class EcoNotionServiceBuildPage extends Base {
   constructor () {
@@ -26,7 +26,7 @@ export class EcoNotionServiceBuildPage extends Base {
       nqPage.getPageInfo(reason, pageId)
     ])
 
-    const nav1Builder = new EcoNotionBuilderNav1Lv1(
+    const nav1Builder = new EcoNotionNav1Lv1Builder(
       pageId,
       info,
       parents,

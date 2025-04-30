@@ -5,10 +5,14 @@ import { EcoTaskUrl as eUrl } from '../../../eco/tasks/eco-task-url.js'
 import { NotionUrlHelper as nUrl } from '../../helpers/id/notion-url-helper.js'
 import { NotionIdHelper as nId } from '../../helpers/id/notion-id-helper.js'
 // Lớp này chịu trách nhiêm tạo dữ liệu cho dòng text nav1 lv1
-export class EcoNotionBuilderNav1Lv1DataText extends Base {
+export class EcoNotionNav1Lv1RawItemsBuilder extends Base {
   _pageId
   _parents
-  constructor (logCfg) {
+  constructor (logCfg = {
+    isDebug: false,
+    name: 'EcoNotionNav1Lv1RawItemsBuilder',
+    level: 'info',
+  }) {
     super(logCfg)
   }
   setPageId (pageId) {

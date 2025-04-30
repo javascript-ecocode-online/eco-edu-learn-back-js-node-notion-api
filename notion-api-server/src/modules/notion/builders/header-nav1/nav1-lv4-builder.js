@@ -1,8 +1,12 @@
 import { EcoBuilderBlocksMaster as Base } from '../base/builder-blocks-master.js'
-import { EcoNotionBuilderNav1Lv4Comparer as Comparer } from './builder-nav1-lv4-comparer.js'
+import { EcoNotionNav1Lv4Comparer as Comparer } from './nav1-lv4-comparer.js'
 
-export class EcoNotionBuilderNav1Lv4Master extends Base {
-  constructor (logCfg) {
+export class EcoNotionNav1Lv4Builder extends Base {
+  constructor (logCfg = {
+    isDebug: false,
+    name: 'EcoNotionNav1Lv4Builder',
+    level: 'info',
+  }) {
     super(logCfg)
   }
   _getNewTextComparer () {

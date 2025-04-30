@@ -3,7 +3,7 @@ import { NotionBuilderLv4DataLearnLinks } from './lv4/notion-builder-lv4-data-le
 import { NotionBuilderLv4DataBuildLink } from './lv4/notion-builder-lv4-data-build-link.js'
 import { NotionBuilderLv4DataImageLink } from './lv4/notion-builder-lv4-data-image-link.js'
 
-export class EcoNotionBuilderNav1Lv4Data extends Lv0Builder {
+export class EcoNotionNav1Lv4RawBlocksBuilder extends Lv0Builder {
   constructor () {
     super({
       name: 'EcoNotionBuilderNav1Lv4Data',

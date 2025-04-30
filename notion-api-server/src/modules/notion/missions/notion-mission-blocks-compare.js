@@ -1,4 +1,4 @@
-import { EcoBase } from '../../../../base/eco-base.js'
+import { EcoBase } from '../../../base/eco-base.js'
 export class NotionMissionBlocksCompare extends EcoBase {
   _getTextComparer
   constructor (

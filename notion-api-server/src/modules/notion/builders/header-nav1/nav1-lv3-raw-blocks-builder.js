@@ -2,11 +2,11 @@ import { Lv0Builder } from '../base/lv0Builder.js'
 import { EcoNotionBuilderObjectText } from '../blocks/notion-builder-object-text.js'
 import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
 import { EcoNotionBuilderObjectMentionPage } from '../blocks/notion-builder-object-mention-page.js'
-import { EcoNotionBuilderNav1Lv4Data } from './builder-nav1-lv4-data.js'
-export class EcoNotionBuilderNav1Lv3Data extends Lv0Builder {
+import { EcoNotionNav1Lv4RawBlocksBuilder } from './nav1-lv4-raw-blocks-builder.js'
+export class EcoNotionNav1Lv3RawBlocksBuilder extends Lv0Builder {
   constructor () {
     super({
-      name: 'EcoNotionBuilderNav1Lv3Data',
+      name: 'EcoNotionNav1Lv3RawBlocksBuilder',
       isDebug: false,
       level: 'info',
     })
@@ -19,7 +19,7 @@ export class EcoNotionBuilderNav1Lv3Data extends Lv0Builder {
     return children
   }
   async #getChildrenLv4Blocks(relatedPageId){
-    const db = EcoNotionBuilderNav1Lv4Data.instance
+    const db = EcoNotionNav1Lv4RawBlocksBuilder.instance
     return await db.getNav1Lv4Blocks(relatedPageId)
   }
  async #formatItem (currentPageId, item) {

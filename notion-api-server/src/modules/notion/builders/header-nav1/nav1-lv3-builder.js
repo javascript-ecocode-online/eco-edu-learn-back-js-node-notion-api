@@ -1,9 +1,13 @@
 import { EcoBuilderBlocksMaster as Base } from '../base/builder-blocks-master.js'
-import { EcoNotionBuilderNav1Lv3Comparer as Comparer } from './builder-nav1-lv3-comparer.js'
-import { EcoNotionBuilderNav1Lv4Master as Lv4} from './builder-nav1-lv4-master.js'
+import { EcoNotionNav1Lv3Comparer as Comparer } from './nav1-lv3-comparer.js'
+import { EcoNotionNav1Lv4Builder as Lv4} from './nav1-lv4-builder.js'
 
-export class EcoNotionBuilderNav1Lv3Master extends Base {
-  constructor (logCfg) {
+export class EcoNotionNav1Lv3Builder extends Base {
+  constructor (logCfg  = {
+    isDebug: false,
+    name: 'EcoNotionNav1Lv3Builder',
+    level: 'info',
+  }) {
     super(logCfg)
   }
    //Override

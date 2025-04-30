@@ -1,5 +1,4 @@
 import { EcoNotionBuilderLv1Master } from './builder-lv1-master.js'
-import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-build-block-toggle.js'
 import { EcoNotionBlocksConfig as cfg} from '../../configs/notion-blocks-config.js'
 export class Lv1NavBuilder extends EcoNotionBuilderLv1Master {
   get _linksDivider () {
@@ -8,10 +7,5 @@ export class Lv1NavBuilder extends EcoNotionBuilderLv1Master {
   constructor (name, pageId, buildCfg) {
     super(name, pageId, buildCfg)
   }
-
-  
-
- 
- 
 
 }

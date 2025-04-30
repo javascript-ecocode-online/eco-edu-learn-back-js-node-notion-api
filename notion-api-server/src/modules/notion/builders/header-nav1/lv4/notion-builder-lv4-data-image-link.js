@@ -8,7 +8,7 @@ export class NotionBuilderLv4DataImageLink extends Base {
 
   async #getImageUrl (targetPageId) {
     const nqPage = EcoNotionServiceQueryPage.instance
-    const reason = 'NotionBuilderLv4ItemImageLink > addImageLink'
+    const reason = 'NotionBuilderLv4DataImageLink > addImageLink'
     const imageUrl = await nqPage.getPageCoverImageUrl(reason, targetPageId)
     return imageUrl
   }

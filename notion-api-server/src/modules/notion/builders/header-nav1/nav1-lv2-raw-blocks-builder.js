@@ -1,15 +1,15 @@
 import { EcoNotionLv2Builder } from '../base/lv2-builder.js'
 import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
 
-import { EcoNotionBuilderNav1Lv3Data } from './builder-nav1-lv3-data.js'
+import { EcoNotionNav1Lv3RawBlocksBuilder } from './nav1-lv3-raw-blocks-builder.js'
 import { EcoNotionBlocksConfig as cfg } from '../../configs/notion-blocks-config.js'
 
-export class EcoNotionBuilderNav1Lv2Data extends EcoNotionLv2Builder {
+export class EcoNotionNav1Lv2RawBlocksBuilder extends EcoNotionLv2Builder {
   _lv2Text = ''
   #blocks
   #pageId
   constructor (pageId, lv1BlockId) {
-    super('EcoNotionBuilderNav1Lv2', lv1BlockId)
+    super('EcoNotionNav1Lv2RawBlocksBuilder', lv1BlockId)
     this.#blocks = []
     this.#pageId = pageId
   }
@@ -39,7 +39,7 @@ export class EcoNotionBuilderNav1Lv2Data extends EcoNotionLv2Builder {
   }
 
   async #getLv3Blocks (pageId, items) {
-    const lv3 = EcoNotionBuilderNav1Lv3Data.instance
+    const lv3 = EcoNotionNav1Lv3RawBlocksBuilder.instance
     return await lv3.getLv3Blocks(pageId, items)
   }
 

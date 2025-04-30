@@ -1,12 +1,16 @@
 import { EcoNotionBuilderLv2Master as Base } from '../base/builder-lv2-master.js'
-import { EcoNotionBuilderNav1Lv2Data } from './builder-nav1-lv2-data.js'
-import { EcoNotionBuilderNav1Lv2Comparer } from './builder-nav1-lv2-comparer.js'
-import { EcoNotionBuilderNav1Lv3Master as Lv3} from './builder-nav1-lv3-master.js'
-export class EcoNotionBuilderNav1Lv2Master extends Base {
+import { EcoNotionNav1Lv2RawBlocksBuilder } from './nav1-lv2-raw-blocks-builder.js'
+import { EcoNotionNav1Lv2Comparer } from './nav1-lv2-comparer.js'
+import { EcoNotionNav1Lv3Builder as Lv3} from './nav1-lv3-builder.js'
+export class EcoNotionNav1Lv2Builder extends Base {
   _parents
   _friends
   _children
-  constructor (logCfg) {
+  constructor (logCfg = {
+    isDebug: false,
+    name: 'EcoNotionNav1Lv2Builder',
+    level: 'info',
+  }) {
     super(logCfg)
   }
   setParents (parents) {
@@ -27,7 +31,7 @@ export class EcoNotionBuilderNav1Lv2Master extends Base {
  
   //Override
   _getNewTextComparer () {   
-    return new EcoNotionBuilderNav1Lv2Comparer()
+    return new EcoNotionNav1Lv2Comparer()
   }
   //Override
   async _getInputBlocks (parentBlock, parentIdChildrenMap) {
@@ -37,7 +41,7 @@ export class EcoNotionBuilderNav1Lv2Master extends Base {
     const parents = me._parents
     const friends = me._friends
     const children = me._children
-    const builder = new EcoNotionBuilderNav1Lv2Data(pageId, lv1BlockId)
+    const builder = new EcoNotionNav1Lv2RawBlocksBuilder(pageId, lv1BlockId)
     return await builder.getBlocks(parents, friends, children)
   }
 

@@ -2,12 +2,12 @@ import { EcoBuilderBlockComparer as Base } from '../base/builder-block-comparer.
 //import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
 //import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
 
-export class EcoNotionBuilderNav1Lv1Comparer extends Base {
+export class EcoNotionNav1Lv1Comparer extends Base {
   
   constructor (
     logCfg = {
       isDebug: false,
-      name: 'EcoNotionBuilderNav1Lv1Comparer',
+      name: 'EcoNotionNav1Lv1Comparer',
       level: 'info',
     }
   ) {

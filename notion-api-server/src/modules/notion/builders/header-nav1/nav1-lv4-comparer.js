@@ -1,9 +1,9 @@
 import { EcoBuilderBlockComparer as Base } from '../base/builder-block-comparer.js'
-export class EcoNotionBuilderNav1Lv4Comparer extends Base {
+export class EcoNotionNav1Lv4Comparer extends Base {
   constructor (
     logCfg = {
       isDebug: false,
-      name: 'EcoNotionBuilderNav1Lv4Comparer',
+      name: 'EcoNotionNav1Lv4Comparer',
       level: 'info',
     }
   ) {

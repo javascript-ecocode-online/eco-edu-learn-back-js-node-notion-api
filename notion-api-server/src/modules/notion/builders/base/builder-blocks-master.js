@@ -1,6 +1,6 @@
 import { EcoBase as Base } from '../../../../base/eco-base.js'
 import { EcoNotionServiceQueryChildren as QueryService } from '../../services/notion-service-query-children.js'
-import { NotionMissionBlocksCompare } from './notion-mission-blocks-compare.js'
+import { NotionMissionBlocksCompare } from '../../missions/notion-mission-blocks-compare.js'
 import { EcoNotionFromBlockTextBuilder } from './builder-from-block-text-builder.js'
 //TODO: change import
 import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-build-block-toggle.js'

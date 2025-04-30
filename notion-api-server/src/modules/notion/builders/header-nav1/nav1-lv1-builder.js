@@ -1,13 +1,11 @@
-import { EcoNtbdNav14Blocks } from './ntbd-nav14-blocks.js'
 import { Lv1NavBuilder } from '../base/lv1NavBuilder.js'
-import { EcoNotionTaskBlockChildren as tc } from '../../tasks/notion-task-block-children.js'
-import { EcoNotionBuilderNav1Lv1DataText } from './nav1-lv1-data-text.js'
-import { EcoNotionBuilderNav1Lv2Master } from './builder-nav1-lv2-master.js'
-import { EcoNotionBuilderNav1Lv1Comparer as Comparer} from './builder-nav1-lv1-comparer.js'
-export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
+import { EcoNotionNav1Lv1RawItemsBuilder } from './nav1-lv1-raw-items-builder.js'
+import { EcoNotionNav1Lv2Builder } from './nav1-lv2-builder.js'
+import { EcoNotionNav1Lv1Comparer as Comparer} from './nav1-lv1-comparer.js'
+export class EcoNotionNav1Lv1Builder extends Lv1NavBuilder {
   #textBuilder
   constructor (pageId, info, parents, friends, children, buildCfg) {
-    super('EcoNotionBuilderNav1Lv1', pageId, buildCfg)
+    super('EcoNotionNav1Lv1Builder', pageId, buildCfg)
     this._info = info
     this._parents = parents
     this._friends = friends
@@ -26,7 +24,7 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
     if (!me.#textBuilder) {
       const pageId = me._pageId
       const parents = me._parents
-      me.#textBuilder = new EcoNotionBuilderNav1Lv1DataText()
+      me.#textBuilder = new EcoNotionNav1Lv1RawItemsBuilder()
         .setPageId(pageId)
         .setParents(parents)
     }
@@ -39,7 +37,7 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
     const friends = me._friends
     const children = me._children
     const buildCfg = me._buildCfg
-    return new EcoNotionBuilderNav1Lv2Master()
+    return new EcoNotionNav1Lv2Builder()
       .setPageId(pageId)
       .setParents(parents)
       .setFriends(friends)
@@ -197,26 +195,6 @@ export class EcoNotionBuilderNav1Lv1 extends Lv1NavBuilder {
     return lv3ExistingAllBlocks
   }
 
-  //Override
-  async _onExecuteDone (lv1BlockId) {
-    await this.#processLv3BlocksFromLv1Block(lv1BlockId)
-  }
+  
 
-  async #processLv3BlocksFromLv1Block (lv1BlockId) {
-    const me = this
-    const b14 = new EcoNtbdNav14Blocks(me._isResetChildren)
-    const name = 'nav11 > _onExecuteDone > processLv3BlocksFromLv1Block'
-    const lv2Type = 'toggle'
-    const lv3Type = 'toggle'
-    console.log('Đang bổ sung các blocks level > 3...')
-    await tc.processLv3BlocksFromLv1(
-      name,
-      lv1BlockId,
-      lv2Type,
-      lv3Type,
-      async lv3Block => {
-        await b14.execute(lv3Block)
-      }
-    )
-  }
 }
