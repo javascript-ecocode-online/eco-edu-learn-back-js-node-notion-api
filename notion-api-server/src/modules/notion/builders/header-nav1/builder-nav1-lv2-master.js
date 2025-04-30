@@ -30,7 +30,7 @@ export class EcoNotionBuilderNav1Lv2Master extends Base {
     return new EcoNotionBuilderNav1Lv2Comparer()
   }
   //Override
-  _getInputBlocks (parentBlock, parentIdChildrenMap) {
+  async _getInputBlocks (parentBlock, parentIdChildrenMap) {
     const me = this
     const lv1BlockId = parentBlock?.id
     const pageId = me._pageId
@@ -38,7 +38,7 @@ export class EcoNotionBuilderNav1Lv2Master extends Base {
     const friends = me._friends
     const children = me._children
     const builder = new EcoNotionBuilderNav1Lv2Data(pageId, lv1BlockId)
-    return builder.getBlocks(parents, friends, children)
+    return await builder.getBlocks(parents, friends, children)
   }
 
   get _childrenBuilder () {

@@ -226,7 +226,7 @@ export class EcoBuilderBlocksMaster extends Base {
     const eBlocks = await me.#getAllExistingBlocks(blockId)
     //console.log('eBlocks', eBlocks)
 
-    const iBlocks = me._getInputBlocks(block, parentIdChildrenMap)
+    const iBlocks = await me._getInputBlocks(block, parentIdChildrenMap)
     //console.log('iBlocks', iBlocks)
 
     const rsCompare = me.#compareBlocks(iBlocks, eBlocks)

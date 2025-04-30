@@ -15,8 +15,7 @@ export class EcoNotionTaskBlockMapText {
 
   static getBlockDisplayTextFromInputRichTextArr (richTextArray) {
     const me = this
-    const text = richTextArray
-      .map(rt => me.getRichTextItemDisplayTextFromRaw(rt))
+    const text = richTextArray?.map(rt => me.getRichTextItemDisplayTextFromRaw(rt))
       .join('')
     //console.log('+⛵️ getBlockDisplayTextFromInputRichTextArr: ', text)
     return text
@@ -35,9 +34,8 @@ export class EcoNotionTaskBlockMapText {
 
   static getTextLinksFromRichText (richTexts) {
     //const me = this
-    const arr = richTexts
-      .filter(rt => rt && rt.type === 'text' && (rt.href || rt.text?.link?.url))
-      .map(rt => rt.href? rt.href: rt.text?.link?.url)
+    const arr = richTexts?.filter(rt => rt && rt.type === 'text' && (rt.href || rt.text?.link?.url))
+      ?.map(rt => rt.href? rt.href: rt.text?.link?.url)
 
     //console.log('🔗 getTextLinksFromRichText: ', arr)
     // if(arr.length === 0){

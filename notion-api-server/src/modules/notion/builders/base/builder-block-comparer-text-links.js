@@ -41,7 +41,7 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
 
   #getDefaultRichTextCompareLinks (block) {
     //const me = this
-    const richTexts = block.toggle.rich_text || []
+    const richTexts = block[block.type].rich_text || []
     const arrLinks = mt.getTextLinksFromRichText(richTexts)
 
     return arrLinks
@@ -61,8 +61,8 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
     // console.log('- ext: ', existingCompareTextLinks)
     const arr1 = inputCompareLinks
     const arr2 = existingCompareTextLinks
-    if (arr1.length || arr2.length) console.log(arr1, arr2)
-    if (arr1.length !== arr2.length) return false // khác độ dài => khác chắc chắn
+    if (arr1?.length || arr2?.length) console.log(arr1, arr2)
+    if (arr1?.length !== arr2?.length) return false // khác độ dài => khác chắc chắn
 
     for (let i = 0; i < arr1.length; i++) {
       if (me.#cleanUrl(arr1[i]) !== me.#cleanUrl(arr2[i])) {

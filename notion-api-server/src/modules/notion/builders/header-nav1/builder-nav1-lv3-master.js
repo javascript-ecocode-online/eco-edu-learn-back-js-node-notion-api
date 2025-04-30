@@ -1,5 +1,6 @@
 import { EcoBuilderBlocksMaster as Base } from '../base/builder-blocks-master.js'
 import { EcoNotionBuilderNav1Lv3Comparer as Comparer } from './builder-nav1-lv3-comparer.js'
+import { EcoNotionBuilderNav1Lv4Master as Lv4} from './builder-nav1-lv4-master.js'
 
 export class EcoNotionBuilderNav1Lv3Master extends Base {
   constructor (logCfg) {
@@ -10,13 +11,13 @@ export class EcoNotionBuilderNav1Lv3Master extends Base {
       return new Comparer()
     }
   //Override
-    _getInputBlocks (parentBlock, parentIdChildrenMap) {
+    async _getInputBlocks (parentBlock, parentIdChildrenMap) {
       const me = this
-      const lv2BlockId = parentBlock?.id
+      const parentBlockId = parentBlock?.id
       //console.log('🍊 parentBlock: ', parentBlock)
       //console.log('🥑 parentBlock.toggle.rich_text: ', parentBlock.toggle.rich_text)
       //console.log(`💦 parentIdChildrenMap: ${lv2BlockId}`)
-      const childrenBlocks = parentIdChildrenMap ? parentIdChildrenMap[lv2BlockId]: []
+      const childrenBlocks = parentIdChildrenMap ? parentIdChildrenMap[parentBlockId]: []
       //console.log(`⛵️ childrenBlocks: `, childrenBlocks)
       // Object.entries(parentIdChildrenMap).forEach(([key, arr]) => {
       //   console.log(`${key}: `);
@@ -31,5 +32,9 @@ export class EcoNotionBuilderNav1Lv3Master extends Base {
     //   const children = me._children
     //   const builder = new EcoNotionBuilderNav1Lv2Data(pageId, lv1BlockId)
       return childrenBlocks
+    }
+
+    get _childrenBuilder () {
+      return new Lv4()
     }
 }

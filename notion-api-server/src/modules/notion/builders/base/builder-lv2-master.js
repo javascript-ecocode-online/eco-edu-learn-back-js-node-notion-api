@@ -29,7 +29,7 @@ export class EcoNotionBuilderLv2Master extends Base {
     const me = this
     const lv1BlockId = block.id
     const isResetChildren = me._isResetChildren
-    const newLv2Blocks = me._getInputBlocks(block)
+    const newLv2Blocks = await me._getInputBlocks(block)
 
     //console.log('newLv2Blocks', newLv2Blocks)
     // Lọc các block mới không trùng text

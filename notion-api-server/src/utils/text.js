@@ -30,23 +30,23 @@ export class EcoTextUtil {
     const emojiRegex = /[\p{Emoji_Presentation}\uFE0F]/gu
 
     // Tìm tất cả emoji và nối lại thành chuỗi
-    const emojis = text.match(emojiRegex)
+    const emojis = text?.match(emojiRegex)
     return emojis ? emojis.join('') : ''
   }
 
   static getCountNumberString (text) {
-    const match = text.match(/\((\d+)\)/)
+    const match = text?.match(/\((\d+)\)/)
     return match ? match[1] : ''
   }
   static getSpecialCharacters (text) {
     // Bước 1: Xóa emoji
-    const noEmoji = text.replace(
+    const noEmoji = text?.replace(
       /[\p{Emoji_Presentation}\p{Emoji}\uFE0F]/gu,
       ''
     )
     //console.log(' ✨ noEmoji: ', noEmoji)
     // Bước 2: Xóa số, chữ cái thường, chữ cái hoa, chữ có dấu tiếng Việt và khoảng trắng
-    const noLetters = noEmoji.replace(
+    const noLetters = noEmoji?.replace(
       /[0-9a-zA-Z\s\u00C0-\u024F\u1E00-\u1EFF]/g,
       ''
     )
