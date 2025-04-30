@@ -8,10 +8,10 @@ export class EcoNotionTemplateLv1 {
   }
   static get nav2Template () {
     return {
-      back: { emoji: '🫲', label: '_Back_' },
+      back: { emoji: '🫲', label: '_Back_', parent: '🫷' },
       end: { emoji: '👇', label: '_End_' },
-      chid: { emoji: '👇', label: '_Chid_' },
-      next: { emoji: '🫱', label: '_Next_' },
+      chid: { emoji: '🫳', label: '_Chid_', parent: '👇' },
+      next: { emoji: '🫱', label: '_Next_', parent: '🫸' },
     }
   }
   static get nav3Template () {

@@ -20,11 +20,12 @@ export class EcoNotionServiceBuildPage extends Base {
     const nQChildren = EcoNotionServiceQueryChildren.instance
     const nQParents = EcoNotionServiceQueryParents.instance
     const nQSiblings = EcoNotionServiceQuerySiblings.instance
-    const [parents, friends, children, info] = await Promise.all([
+    const [parents, friends, children, info, pageBlocks] = await Promise.all([
       nQParents.getAllParentPages(reason, pageId),
       nQSiblings.getSiblingPages(reason, pageId),
       nQChildren.getChildrenPages(reason, pageId),
       nqPage.getPageInfo(reason, pageId),
+      nQChildren.getPageBlocks(reason, pageId),
     ])
     const obj = {}
     if (options.buildNav1) {
@@ -34,7 +35,8 @@ export class EcoNotionServiceBuildPage extends Base {
         info,
         parents,
         friends,
-        children
+        children,
+        pageBlocks
       )
       obj['nav1'] = await nav1Builder.execute()
       console.log('👍 ----- Build Nav1 done!')
@@ -48,7 +50,8 @@ export class EcoNotionServiceBuildPage extends Base {
         info,
         parents,
         friends,
-        children
+        children,
+        pageBlocks
       )
       obj['nav2'] = await nav2Builder.execute()
       console.log('👍 ----- Build Nav2 done!')

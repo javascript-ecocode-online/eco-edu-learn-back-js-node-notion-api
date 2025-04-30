@@ -28,7 +28,7 @@ export class EcoNotionBuilderRichTextLinks extends Base {
 
   #getLinkObj (label, url) {
     label = label.trim()
-    url = url.trim()
+    url = url?.trim()
     if (!label && url) label = url
     return label ? this.#getBuilder(label).setLink(url).oObjSafe : null
   }

@@ -17,9 +17,11 @@ export class EcoNotionNav2Lv2RawBlocksBuilder extends EcoNotionLv2Builder {
     //return null
     const me = this
     const lbl = cfg.nav2Lv2Labels
-    await me.#createBlock(lbl.parent)
-    await me.#createBlock(lbl.friend)
-    await me.#createBlock(lbl.children)
+    await me.#createBlock(lbl.listening)
+    await me.#createBlock(lbl.speaking)
+    await me.#createBlock(lbl.reading)
+    await me.#createBlock(lbl.writing)
+    await me.#createBlock(lbl.tesing)
     return me.#blocks
   }
 

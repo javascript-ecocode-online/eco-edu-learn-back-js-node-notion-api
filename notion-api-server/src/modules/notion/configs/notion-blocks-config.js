@@ -7,8 +7,10 @@ export class EcoNotionBlocksConfig {
     }
 
     static nav2Lv2Labels = {
-        parent: '📂 Text 1',
-        friend: '❄️ Text 2',
-        children: '👶 Text 3'
+        listening: '🔈 Listening',
+        speaking: '👄 Speaking',
+        reading: '✨ Reading',
+        writing: '✍️ Writing',
+        tesing: '🌳 Tesing',
     }
 }

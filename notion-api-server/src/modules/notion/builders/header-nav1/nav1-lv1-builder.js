@@ -4,12 +4,13 @@ import { EcoNotionNav1Lv2Builder } from './nav1-lv2-builder.js'
 import { EcoNotionNav1Lv1Comparer as Comparer} from './nav1-lv1-comparer.js'
 export class EcoNotionNav1Lv1Builder extends Lv1NavBuilder {
   #textBuilder
-  constructor (pageId, info, parents, friends, children) {
+  constructor (pageId, info, parents, friends, children, pageBlocks) {
     super('EcoNotionNav1Lv1Builder', pageId)
     this._info = info
     this._parents = parents
     this._friends = friends
     this._children = children
+    this._pageBlocks = pageBlocks
   }
   // Override from EcoBuilderBlockQuery
   get _blockType () {

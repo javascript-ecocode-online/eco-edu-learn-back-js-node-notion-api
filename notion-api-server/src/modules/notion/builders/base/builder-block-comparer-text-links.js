@@ -57,21 +57,24 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
     //   '💥 compareLinksAndLinks',
     //   'inputCompareLinks vs existingCompareTextLinks'
     // )
-    // console.log('- ipt: ', inputCompareLinks)
-    // console.log('- ext: ', existingCompareTextLinks)
+     
     const arr1 = inputCompareLinks
     const arr2 = existingCompareTextLinks
+    if(!arr1?.length && !arr2?.length) return false
     //if (arr1?.length || arr2?.length) console.log(arr1, arr2)
     if (arr1?.length !== arr2?.length) return false // khác độ dài => khác chắc chắn
 
     for (let i = 0; i < arr1.length; i++) {
-      if (me.#cleanUrl(arr1[i]) !== me.#cleanUrl(arr2[i])) {
+      const url1 = me.#cleanUrl(arr1[i])
+      const url2 = me.#cleanUrl(arr2[i])
+      if (url1 !== url2) {
         //console.log('- compareLinksAndLinks diff: ')
 
         return false // chỉ cần khác 1 phần tử => khác
       }
     }
-    //console.log('- rs: ', true)
+    //console.log('- ipt: ', inputCompareLinks)
+    //console.log('- ext: ', existingCompareTextLinks)
     return true
   }
 }

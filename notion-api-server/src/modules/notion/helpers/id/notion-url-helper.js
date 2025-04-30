@@ -4,5 +4,10 @@ export class NotionUrlHelper {
     const cleanId = hp.cleanId(pageId)
     return `https://www.notion.so/${cleanId}`
   }
+  static getNotionBlockUrl (pageId, blockId) {
+    const cleanPageId = hp.cleanId(pageId)
+    const cleanBlockId = hp.cleanId(blockId)
+    return `https://www.notion.so/${cleanPageId}#${cleanBlockId}`
+  }
 }
 //nUrlHelper
