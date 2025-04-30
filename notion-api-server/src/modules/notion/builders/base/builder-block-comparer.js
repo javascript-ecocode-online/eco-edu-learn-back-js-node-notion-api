@@ -235,9 +235,9 @@ export class EcoBuilderBlockComparer extends Base {
     const isMatchEmojis = me._emjc.isMatch(block)
     const rs = isMatchTextLinks && isMatchEmojis
 
-    console.log('🥥 block: ', block.id)
-    console.log('isMatchTextLinks: ', isMatchTextLinks)
-    console.log('isMatchEmojis: ', isMatchEmojis)
+    // console.log('🥥 block: ', block.id)
+    // console.log('isMatchTextLinks: ', isMatchTextLinks)
+    // console.log('isMatchEmojis: ', isMatchEmojis)
     return rs
   }
   
@@ -250,11 +250,11 @@ export class EcoBuilderBlockComparer extends Base {
     const isMatchSpecial = me._spec.isMatch(block)
     const rs = isMatchRawText && isMatchTextLinks && isMatchEmojis && isMatchSpecial
 
-    console.log('🥥 block: ', block.id)
-    console.log('isMatchRawText: ', isMatchRawText)
-    console.log('isMatchTextLinks: ', isMatchTextLinks)
-    console.log('isMatchEmojis: ', isMatchEmojis)
-    console.log('isMatchSpecial: ', isMatchSpecial)
+    // console.log('🥥 block: ', block.id)
+    // console.log('isMatchRawText: ', isMatchRawText)
+    // console.log('isMatchTextLinks: ', isMatchTextLinks)
+    // console.log('isMatchEmojis: ', isMatchEmojis)
+    // console.log('isMatchSpecial: ', isMatchSpecial)
     return rs
   }
 }

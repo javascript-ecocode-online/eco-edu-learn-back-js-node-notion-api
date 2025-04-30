@@ -11,7 +11,7 @@ export class EcoNotionServiceBuildPage extends Base {
     super({ name: 'NotionBuildPage', isDebug: false, level: 'info' })
   }
 
-  async buildPage (reason, pageId, buildCfg) {
+  async buildPage (reason, pageId) {
     const me = this
     const logName = `> buildPage > ${reason}`
     me._logInfoBegin(logName, pageId)
@@ -31,8 +31,7 @@ export class EcoNotionServiceBuildPage extends Base {
       info,
       parents,
       friends,
-      children,
-      buildCfg
+      children
     )
     const blocks = await nav1Builder.execute()
     const rs = { success: true, 'built block': blocks }

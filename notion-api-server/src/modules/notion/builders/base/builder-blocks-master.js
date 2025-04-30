@@ -25,11 +25,7 @@ export class EcoBuilderBlocksMaster extends Base {
     return undefined
   }
 
-  // Có thể override: luôn true / luôn false / tự động tính
-
-  //   get _isResetChildren () {
-  //     return false
-  //   }
+  
   async _getInputBlocks (block, parentIdChildrenMap) {
     throw new Error('Need implement _getInputBlocks')
   }
@@ -101,7 +97,7 @@ export class EcoBuilderBlocksMaster extends Base {
     const me = this
     const arr = rsCompare?.needChangeRichTextBlocks
     if (arr?.length) {
-      console.log('🔥 needChangeRichTextBlocks', arr)
+      //console.log('🔥 needChangeRichTextBlocks', arr)
 
       for (const e of arr) {
         const updateResult = await me.#processUpdateRichText(e)
@@ -118,14 +114,14 @@ export class EcoBuilderBlocksMaster extends Base {
     const replaceBlocks = rsCompare?.needReplaceBlocks.map(b => b.eBlock)
     if (removeBlocks?.length) {
       removeBlocks?.forEach((eBlock, i) => {
-        console.log('🔥 remove removeBlock ', eBlock)
+        //console.log('🔥 remove removeBlock ', eBlock)
         const promise = me.#processRemoveBlock(eBlock)
         promises.push(promise)
       })
     }
     if (replaceBlocks?.length) {
       replaceBlocks?.forEach((eBlock, i) => {
-        console.log('🔥 remove replaceBlock ', eBlock)
+        //console.log('🔥 remove replaceBlock ', eBlock)
         const promise = me.#processRemoveBlock(eBlock)
         promises.push(promise)
       })
@@ -142,7 +138,7 @@ export class EcoBuilderBlocksMaster extends Base {
 
       for (const obj of needReplaceBlocks) {
         const addReplaceRs = await me.#processAddBlock(parentId, obj.iBlock)
-        console.log('🔥 add for replace', addReplaceRs)
+        //console.log('🔥 add for replace', addReplaceRs)
         me.#prepareIdChildrenMapForBlock(idChildrenMap, addReplaceRs, obj.iBlock)
         addResults.push(addReplaceRs)
       }
@@ -151,7 +147,7 @@ export class EcoBuilderBlocksMaster extends Base {
      
       for (const iBlock of needAddBlocks) {
         const addNewRs = await me.#processAddBlock(parentId, iBlock)
-        console.log('🔥 add for add', addNewRs)
+        //console.log('🔥 add for add', addNewRs)
         me.#prepareIdChildrenMapForBlock(idChildrenMap, addNewRs, iBlock)
         addResults.push(addNewRs)
       }
@@ -245,9 +241,7 @@ export class EcoBuilderBlocksMaster extends Base {
       await me.#runNextLevel(nextLevel, finalBlocks, rs, idChildrenMap)
     }
 
-    //if (me._isResetChildren) {
-    //block = await me._removeChildren(block)
-    //}
+   
   }
 
   async #runNextLevel (nextLevel, eBlocks, rs, idChildrenMap) {

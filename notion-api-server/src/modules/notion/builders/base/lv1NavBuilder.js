@@ -4,8 +4,8 @@ export class Lv1NavBuilder extends EcoNotionBuilderLv1Master {
   get _linksDivider () {
     return cfg.linksDivider
   }
-  constructor (name, pageId, buildCfg) {
-    super(name, pageId, buildCfg)
+  constructor (name, pageId) {
+    super(name, pageId)
   }
 
 }

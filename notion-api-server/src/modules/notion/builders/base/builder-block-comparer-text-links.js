@@ -61,7 +61,7 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
     // console.log('- ext: ', existingCompareTextLinks)
     const arr1 = inputCompareLinks
     const arr2 = existingCompareTextLinks
-    if (arr1?.length || arr2?.length) console.log(arr1, arr2)
+    //if (arr1?.length || arr2?.length) console.log(arr1, arr2)
     if (arr1?.length !== arr2?.length) return false // khác độ dài => khác chắc chắn
 
     for (let i = 0; i < arr1.length; i++) {

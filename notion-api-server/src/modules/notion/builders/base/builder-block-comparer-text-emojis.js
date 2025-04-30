@@ -38,8 +38,8 @@ export class EcoBuilderBlockComparerTextEmojis extends Base {
   #isMatchEmojiString (block, inputCompareEmojiText) {
     const me = this
     const existingCompareText = me.#getRichTextEmojiString(block)
-    console.log('💥 emoji isMatchEmojiString')
-    console.log(inputCompareEmojiText, existingCompareText)
+    //console.log('💥 emoji isMatchEmojiString')
+    //console.log(inputCompareEmojiText, existingCompareText)
     return me._compareTextAndText(inputCompareEmojiText, existingCompareText)
   }
 

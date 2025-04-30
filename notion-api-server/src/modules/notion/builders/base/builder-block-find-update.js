@@ -29,7 +29,7 @@ export class EcoBuilderBlockFindUpdate extends Base {
     const me = this
     let rs = {}
     let findResult = await me._findWorkingBlock(
-      'EcoNotionBuilderLv1Master > execute'
+      'EcoBuilderBlockFindUpdate > execute'
     )
     let block = findResult.block
     let needUpdateRichText = findResult.needUpdateRichText
@@ -40,9 +40,6 @@ export class EcoBuilderBlockFindUpdate extends Base {
     if (childrenBuilder) {
       await childrenBuilder.execute(lv + 1, block, rs)
     }
-
-    //await me._onExecuteDone(lv1BlockId)
-    //TODO:
     return rs
   }
 }
