@@ -1,4 +1,4 @@
-import { EcoNotionBuilderLv1DataText as Base } from '../base/builder-lv1-data-text.js'
+import { EcoNotionBuilderLv1DataText as Base } from '../base/level/builder-lv1-data-text.js'
 import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
 
 export class EcoNotionEndItemsBuilder extends Base {

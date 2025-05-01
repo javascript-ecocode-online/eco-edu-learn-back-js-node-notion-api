@@ -1,4 +1,4 @@
-import { EcoBase as Base } from '../../../../base/eco-base.js'
+import { EcoBase as Base } from '../../../../../base/eco-base.js'
 
 export class EcoBuilderBlockComparerBase extends Base {
   _textBuilder

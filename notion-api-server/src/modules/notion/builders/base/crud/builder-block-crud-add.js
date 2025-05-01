@@ -1,5 +1,5 @@
-import { EcoBase as Base } from '../../../../base/eco-base.js'
-import { EcoNotionServiceBuildBlockParent as bb } from '../../services/notion-service-build-block-parent.js'
+import { EcoBase as Base } from '../../../../../base/eco-base.js'
+import { EcoNotionServiceBuildBlockParent as bb } from '../../../services/notion-service-build-block-parent.js'
 
 export class EcoBuilderBlockCrudAdd extends Base {
   _parentId

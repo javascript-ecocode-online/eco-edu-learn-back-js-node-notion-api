@@ -1,6 +1,6 @@
-import { EcoBase as Base } from '../../../../base/eco-base.js'
-import { EcoNotionServiceQueryChildren as QueryService } from '../../services/notion-service-query-children.js'
-import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
+import { EcoBase as Base } from '../../../../../base/eco-base.js'
+import { EcoNotionServiceQueryChildren as QueryService } from '../../../services/notion-service-query-children.js'
+import { EcoTextUtil as uTxt } from '../../../../../utils/text.js'
 
 export class EcoBuilderBlockFind extends Base {
   _parentId
@@ -41,14 +41,15 @@ export class EcoBuilderBlockFind extends Base {
     //Move
 
     const results = await nqc.getAllChildrenById(reason, parentId, type)
-   
-    const foundBlock = results?.find(block => tcp.isMatchContent(block))
+    
+    const foundBlock = results?.find(block => tcp.isMatchContent(block, '_findWorkingBlock'))
+    
     //me._logDeep('📍 ----- foundBlock: -----', foundBlock)
     const needUpdateRichText = foundBlock
       ? tcp.needUpdateRichText(foundBlock)
       : false
     const rs = { block: foundBlock, needUpdateRichText: needUpdateRichText }
-    //console.log('🍋 _findWorkingBlock', rs)
+   
     return rs
   }
 }

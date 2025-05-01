@@ -1,6 +1,6 @@
 import { EcoBuilderBlockComparerBase as Base } from './builder-block-comparer-base.js'
-import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
-import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
+import { EcoTextUtil as uTxt } from '../../../../../utils/text.js'
+import { EcoNotionTaskBlockMapText as mt } from '../../../tasks/notion-task-block-map-text.js'
 
 export class EcoBuilderBlockComparerNumCount extends Base {
   _inputCompareCountNumberText
@@ -18,7 +18,7 @@ export class EcoBuilderBlockComparerNumCount extends Base {
   prepare () {
     const me = this
     me._inputCompareCountNumberText =
-      me.#getDefaultInputCompareCountNumberString()
+      me.#getIText()
     return me
   }
   isMatch (block) {
@@ -26,21 +26,24 @@ export class EcoBuilderBlockComparerNumCount extends Base {
     const inputCompareCountNumberText = me._inputCompareCountNumberText
     return me.#isMatchCountNumberString(block, inputCompareCountNumberText)
   }
-  #getDefaultInputCompareCountNumberString () {
+  #getIText () {
     const me = this
     const displayText = me._displayText()
+    
     //console.log('🎋 displayText', displayText)
-    return uTxt.getCountNumberString(displayText)
+    const rs = uTxt.getCountNumberString(displayText)
+    console.log('🛸 num count itext', rs)
+    return rs
   }
   #isMatchCountNumberString (block, inputCompareCountNumberText) {
     const me = this
-    const existingCompareText = me.#getRichTextCountNumberString(block)
+    const existingCompareText = me.#getEText(block)
     return me._compareTextAndText(
       inputCompareCountNumberText,
       existingCompareText
     )
   }
-  #getRichTextCountNumberString (block) {
+  #getEText (block) {
     //const me = this
     const richTexts = (block ? block[block.type]?.rich_text : []) || []
     //console.log('🐸 #getRichTextCountNumberString', richTexts)
@@ -50,7 +53,7 @@ export class EcoBuilderBlockComparerNumCount extends Base {
     //console.log('💎 rich_text', block.toggle.rich_text)
     const rsText = uTxt.getCountNumberString(plainText)
     //console.log('> existingCompareEmojiText', existingCompareEmojiText)
-
+    console.log('🛸 num count etext', rsText)
     return rsText
   }
 }

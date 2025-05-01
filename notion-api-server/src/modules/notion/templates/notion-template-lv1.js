@@ -16,10 +16,10 @@ export class EcoNotionTemplateLv1 {
   }
   static get nav3Template () {
     return {
-      back: { emoji: '🫲', label: '_Back_' },
+      back: { emoji: '🫲', label: '_Back_', parent: '🫷' },
       top: { emoji: '👆', label: '_Top_' },
-      child: { emoji: '👇', label: '_Child_' },
-      next: { emoji: '🫱', label: '_Next_' },
+      child: { emoji: '👇', label: '_Child_', parent: '👇' },
+      next: { emoji: '🫱', label: '_Next_', parent: '🫸' },
     }
   }
 }

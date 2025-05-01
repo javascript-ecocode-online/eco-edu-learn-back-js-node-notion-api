@@ -1,4 +1,4 @@
-import { EcoBuilderBlockComparer as Base } from '../base/builder-block-comparer.js'
+import { EcoBuilderBlockComparer as Base } from '../base/compare/builder-block-comparer.js'
 //import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
 //import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
 
@@ -16,9 +16,10 @@ export class EcoNotionNav2Lv1Comparer extends Base {
   prepare () {
     return this._prepare_Text_Emoji_Links_Special()
   }
-  isMatchContent (block) {
+  isMatchContent (block, reason) {
     
     const match = this._isMatch_RawText_OrLinks_OrEmoji(block)
+    console.log(`✨ isMatchContent EcoNotionNav2Lv1Comparer > ${reason}:`, match)
     //console.log('✨ match ? block.toggle.rich_text: ', block.toggle.rich_text)
     //console.log('✨ match: ', match)
     //this._logDeep('block', block)

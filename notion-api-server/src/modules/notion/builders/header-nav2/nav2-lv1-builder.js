@@ -1,4 +1,4 @@
-import { Lv1NavBuilder } from '../base/lv1NavBuilder.js'
+import { Lv1NavBuilder } from '../base/level/lv1NavBuilder.js'
 import { EcoNotionNav2Lv1RawItemsBuilder } from './nav2-lv1-raw-items-builder.js'
 import { EcoNotionNav2Lv2Builder } from './nav2-lv2-builder.js'
 import { EcoNotionNav2Lv1Comparer as Comparer} from './nav2-lv1-comparer.js'

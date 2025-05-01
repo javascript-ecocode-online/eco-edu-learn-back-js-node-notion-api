@@ -1,10 +1,10 @@
-import { EcoNotionBuilderLv1DataText as Base } from '../base/builder-lv1-data-text.js'
+import { EcoNotionBuilderLv1DataText as Base } from '../base/level/builder-lv1-data-text.js'
 import { NotionJsonArrayHelper } from '../../helpers/object/notion-object-array-helper.js'
 import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
 //import { EcoTaskUrl as eUrl } from '../../../eco/tasks/eco-task-url.js'
 import { NotionUrlHelper as nUrl } from '../../helpers/id/notion-url-helper.js'
-import { EcoNotionEndComparer } from '../header-nav/end-comparer.js'
-import { EcoNotionEndItemsBuilder } from '../header-nav/end-items-builder.js'
+import { EcoNotionTopComparer } from '../header-nav/top-comparer.js'
+import { EcoNotionTopItemsBuilder } from '../header-nav/top-items-builder.js'
 // Lớp này chịu trách nhiêm tạo dữ liệu cho dòng text nav1 lv1
 export class EcoNotionNav3Lv1RawItemsBuilder extends Base {
   _pageId
@@ -47,9 +47,9 @@ export class EcoNotionNav3Lv1RawItemsBuilder extends Base {
     return me
   }
 
-  #getEndBlockComparer () {
-    const textBuilder = new EcoNotionEndItemsBuilder()
-    const cp = new EcoNotionEndComparer()
+  #getTopBlockComparer () {
+    const textBuilder = new EcoNotionTopItemsBuilder()
+    const cp = new EcoNotionTopComparer()
     cp.setTextBuilder(textBuilder).prepare()
     return cp
   }
@@ -57,6 +57,7 @@ export class EcoNotionNav3Lv1RawItemsBuilder extends Base {
   //Override
   getMenuItemData () {
     const me = this
+    
     const helper = NotionJsonArrayHelper
     const backPage = helper.getBackPageId(me._pageId, me._friends, me._parents)
     const backPageId = backPage?.id
@@ -68,20 +69,23 @@ export class EcoNotionNav3Lv1RawItemsBuilder extends Base {
 
     const childPageId = helper.getFirstChildPageId(me._children)
 
-    const comparer = me.#getEndBlockComparer()
-    const endBlockId = helper.getEndNavBlockId(me._pageBlocks, comparer)
+    const comparer = me.#getTopBlockComparer()
+    //console.log('### 🐠 Begin: topBlockId')
+    const topBlockId = helper.getTopNavBlockId(me._pageBlocks, comparer)
+    //const topBlockId = null
+    //console.log('### 🐠 End: topBlockId', topBlockId)
     //const pageId = me._pageId
     const tpl = EcoNotionTemplateLv1.nav3Template
     const backUrl = backPageId ? nUrl.getNotionUrl(backPageId) : undefined
-    const endUrl = endBlockId
-      ? nUrl.getNotionBlockUrl(me._pageId, endBlockId)
+    const topUrl = topBlockId
+      ? nUrl.getNotionBlockUrl(me._pageId, topBlockId)
       : undefined
     let chidUrl = childPageId ? nUrl.getNotionUrl(childPageId) : undefined
     const nextUrl = nextPageId ? nUrl.getNotionUrl(nextPageId) : undefined
 
     let ischildPageEnd = false
     if (!chidUrl) {
-      chidUrl = endUrl
+      chidUrl = topUrl
       ischildPageEnd = true
     }
     //const cleanId = nId.cleanId(pageId)
@@ -94,10 +98,10 @@ export class EcoNotionNav3Lv1RawItemsBuilder extends Base {
       {
         emoji: tpl.top.emoji,
         label: tpl.top.label,
-        url: endUrl,
+        url: topUrl,
       },
       {
-        emoji: ischildPageEnd ? tpl.chid.parent : tpl.chid.emoji,
+        emoji: ischildPageEnd ? tpl.child.parent : tpl.child.emoji,
         label: tpl.child.label,
         url: chidUrl,
       },
@@ -107,6 +111,7 @@ export class EcoNotionNav3Lv1RawItemsBuilder extends Base {
         url: nextUrl,
       },
     ]
+   
     return items
   }
 }

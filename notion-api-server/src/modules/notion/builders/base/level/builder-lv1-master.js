@@ -1,4 +1,4 @@
-import { EcoBuilderBlockFindUpdate as Base } from './builder-block-find-update.js'
+import { EcoBuilderBlockFindUpdate as Base } from '../crud/builder-block-find-update.js'
 
 export class EcoNotionBuilderLv1Master extends Base {
   _pageId

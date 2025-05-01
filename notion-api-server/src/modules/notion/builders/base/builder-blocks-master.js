@@ -4,9 +4,9 @@ import { NotionMissionBlocksCompare } from '../../missions/notion-mission-blocks
 import { EcoNotionFromBlockTextBuilder } from './builder-from-block-text-builder.js'
 //TODO: change import
 import { EcoNotionServiceBuildBlockToggle } from '../../services/notion-service-build-block-toggle.js'
-import { EcoBuilderBlockUpdateRichText as Updater } from './builder-block-update-rich-text.js'
-import { EcoBuilderBlockCrudRemove as Remover } from './builder-block-crud-remove.js'
-import { EcoBuilderBlockCrudAdd as Appender } from './builder-block-crud-add.js'
+import { EcoBuilderBlockUpdateRichText as Updater } from './crud/builder-block-update-rich-text.js'
+import { EcoBuilderBlockCrudRemove as Remover } from './crud/builder-block-crud-remove.js'
+import { EcoBuilderBlockCrudAdd as Appender } from './crud/builder-block-crud-add.js'
 export class EcoBuilderBlocksMaster extends Base {
   constructor (
     logConfig = {

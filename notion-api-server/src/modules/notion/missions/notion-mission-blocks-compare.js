@@ -18,7 +18,11 @@ export class NotionMissionBlocksCompare extends EcoBase {
     //console.log('🍋 textBuilder: ', iBlock.toggle.rich_text)
 
     const comparer = me._getTextComparer(index, iBlock)
-    const isMatch = comparer?.isMatchContent(eBlock)
+    const isMatch = comparer?.isMatchContent(eBlock, 'compareNotionObjects')
+    //if (isMatch) {
+      //console.log('> 👕 eBlock: ', eBlock)
+    //}
+
     const isUpdate = comparer?.needUpdateRichText(eBlock)
     const isReset = isMatch && isUpdate
     const isDiffType = iBlock.type !== eBlock.type

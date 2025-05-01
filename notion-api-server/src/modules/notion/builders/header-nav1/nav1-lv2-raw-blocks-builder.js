@@ -1,4 +1,4 @@
-import { EcoNotionLv2Builder } from '../base/lv2-builder.js'
+import { EcoNotionLv2Builder } from '../base/level/lv2-builder.js'
 import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
 
 import { EcoNotionNav1Lv3RawBlocksBuilder } from './nav1-lv3-raw-blocks-builder.js'

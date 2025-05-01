@@ -1,14 +1,14 @@
 import { EcoBuilderBlockComparerBase as Base } from './builder-block-comparer-base.js'
-import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
-import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
+import { EcoTextUtil as uTxt } from '../../../../../utils/text.js'
+import { EcoNotionTaskBlockMapText as mt } from '../../../tasks/notion-task-block-map-text.js'
 
-export class EcoBuilderBlockComparerTextRaw extends Base {
+export class EcoBuilderBlockComparerTextNum extends Base {
   _inputCompareText
   constructor (
     textBuilder,
     logConfig = {
       isDebug: false,
-      name: 'EcoBuilderBlockComparerTextRaw',
+      name: 'EcoBuilderBlockComparerTextNum',
       level: 'info',
     }
   ) {
@@ -17,7 +17,7 @@ export class EcoBuilderBlockComparerTextRaw extends Base {
 //_txtc
   prepare () {
     const me = this
-    me._inputCompareText = me.#getDefaultInputCompareString()
+    me._inputCompareText = me.#getIText()
    
     return me
   }
@@ -28,30 +28,33 @@ export class EcoBuilderBlockComparerTextRaw extends Base {
     return me.#isMatchRawContent(block, inputCompareText)
   }
 
-  #getDefaultInputCompareString () {
+  #getIText () {
     const me = this
     const displayText = me._displayText()
     //console.log('🎋 displayText', displayText)
-    return uTxt.normalizeText(displayText)
+    const rs = uTxt.getContentNumInText(displayText)
+    console.log('🛸 num itext', rs)
+    return rs
   }
 
   #isMatchRawContent (block, inputCompareText) {
     const me = this
-    const existingCompareText = me.#getDefaultRichTextCompareString(block)
+    const existingCompareText = me.#getEText(block)
     // console.log()
-     //console.log('🥖 inputCompareText: ', inputCompareText)
-     //console.log('🥖 existingCompareText: ', existingCompareText)
+    // console.log('💍 inputCompareText: ', inputCompareText)
+    // console.log('💍 existingCompareText: ', existingCompareText)
     // console.log()
     return me._compareTextAndText(inputCompareText, existingCompareText)
   }
 
-  #getDefaultRichTextCompareString (block) {
+  #getEText (block) {
       //const me = this
       const richTexts = (block ? block[block.type]?.rich_text : []) || []
       const plainText = mt.getBlockDisplayTextFromNotionRichTextArr(richTexts)
       //console.log('🌽 plainText', plainText)
       //console.log('💎 rich_text', block.toggle.rich_text)
-      const rsText = uTxt.normalizeText(plainText)
+      const rsText = uTxt.getContentNumInText(plainText)
+      console.log('🛸 num etext', rsText)
       //console.log('🌱 #getDefaultRichTextCompareString', existingCompareText)
       return rsText
     }

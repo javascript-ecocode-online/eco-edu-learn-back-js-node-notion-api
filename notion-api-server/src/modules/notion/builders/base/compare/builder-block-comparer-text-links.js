@@ -1,6 +1,6 @@
 import { EcoBuilderBlockComparerBase as Base } from './builder-block-comparer-base.js'
 
-import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
+import { EcoNotionTaskBlockMapText as mt } from '../../../tasks/notion-task-block-map-text.js'
 
 export class EcoBuilderBlockComparerTextLinks extends Base {
   _inputCompareLinks
@@ -31,6 +31,7 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
     const me = this
     const textBuilder = me._textBuilder
     const links = textBuilder?.getTextLinks()
+    console.log('🛸 iLinks', links)
     //console.log('🔗 inputLinks', links)
     return links
   }
@@ -48,7 +49,7 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
     const richTexts = block[block.type].rich_text || []
     //console.log('getTextLinks 2: ', richTexts)
     const arrLinks = mt.getTextLinksFromRichText(richTexts)
-
+    console.log('🛸 eLinks', arrLinks)
     return arrLinks
   }
 

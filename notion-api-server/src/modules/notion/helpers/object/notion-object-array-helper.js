@@ -61,8 +61,38 @@ export class NotionJsonArrayHelper {
 
   static getEndNavBlockId (pageBlocks, textComparer) {
     if (!pageBlocks.length) return null
+    
     let foundBlock = pageBlocks?.find(
-      block => block.type == 'toggle' && textComparer.isMatchContent(block)
+      block => {
+        
+        const match = block.type == 'toggle' && textComparer.isMatchContent(block, 'getEndNavBlockId')
+        // if(match){
+        //   console.log('> 🐝 block: ',  block)
+        // }
+        return match
+      }
+    )
+    if(!foundBlock) {
+      foundBlock = pageBlocks[pageBlocks.length - 1]
+    }
+    const rs = foundBlock?.id
+
+   //console.log('⭐️ getEndNavBlockId: ', rs)
+    return rs
+  }
+
+  static getTopNavBlockId (pageBlocks, textComparer) {
+    if (!pageBlocks.length) return null
+    
+    let foundBlock = pageBlocks?.find(
+      block => {
+        
+        const match = block.type == 'toggle' && textComparer.isMatchContent(block, 'getTopNavBlockId')
+        // if(match){
+        //   console.log('> 🐝 block: ',  block)
+        // }
+        return match
+      }
     )
     if(!foundBlock) {
       foundBlock = pageBlocks[pageBlocks.length - 1]

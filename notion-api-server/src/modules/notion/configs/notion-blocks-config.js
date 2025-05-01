@@ -15,7 +15,7 @@ export class EcoNotionBlocksConfig {
     }
 
     static nav3Lv2Labels = {
-        listening: '🔈 Listening',
+        data: '💍 Data',
         speaking: '👄 Speaking',
         reading: '✨ Reading',
         writing: '✍️ Writing',

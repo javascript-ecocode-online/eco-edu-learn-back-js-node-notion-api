@@ -1,4 +1,4 @@
-import { Lv0Builder } from '../base/lv0Builder.js'
+import { Lv0Builder } from '../base/level/lv0Builder.js'
 import { NotionBuilderLv4DataLearnLinks } from './lv4/notion-builder-lv4-data-learn-links.js'
 import { NotionBuilderLv4DataBuildLink } from './lv4/notion-builder-lv4-data-build-link.js'
 import { NotionBuilderLv4DataImageLink } from './lv4/notion-builder-lv4-data-image-link.js'

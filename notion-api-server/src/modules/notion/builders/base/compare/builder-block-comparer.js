@@ -1,4 +1,4 @@
-import { EcoBase as Base } from '../../../../base/eco-base.js'
+import { EcoBase as Base } from '../../../../../base/eco-base.js'
 import { EcoBuilderBlockComparerTextEmojis } from './builder-block-comparer-text-emojis.js'
 import { EcoBuilderBlockComparerTextRaw } from './builder-block-comparer-text-raw.js'
 import { EcoBuilderBlockComparerTextLinks } from './builder-block-comparer-text-links.js'
@@ -97,7 +97,7 @@ export class EcoBuilderBlockComparer extends Base {
     throw new Error('🩸 EcoBuilderBlockComparer > prepare need implement!')
   }
 
-  isMatchContent (block) {
+  isMatchContent (block, reason) {
     throw new Error(
       '🩸 EcoBuilderBlockComparer > isMatchContent need implement!'
     )
@@ -210,18 +210,20 @@ export class EcoBuilderBlockComparer extends Base {
 
   _isMatch_RawText_OrLinks_OrEmoji (block) {
     const me = this
+    
     const isMatchRawTextOnly = me._txtc.isMatch(block)
     const isMatchTextLinksOnly = me._lnkc.isMatch(block)
     const isMatchEmojisOnly = me._emjc.isMatch(block)
     //console.log('🪺 isMatchContent: ', block)
 
     const rs = isMatchRawTextOnly || isMatchTextLinksOnly || isMatchEmojisOnly
-    // if (rs) {
-    //   console.log('🌙 isMatchRawTextOnly', isMatchRawTextOnly)
-    //   console.log('🌙 isMatchTextLinksOnly', isMatchTextLinksOnly)
-    //   console.log('🌙 isMatchEmojiLinksOnly', isMatchEmojisOnly)
-    //   console.log('🌙 _isMatch_RawText_OrLinks_OrEmoji', rs)
-    // }
+    if (rs) {
+      //console.log('-----')
+      //console.log('🌙 isMatchRawTextOnly', isMatchRawTextOnly)
+      //console.log('🌙 isMatchTextLinksOnly', isMatchTextLinksOnly)
+      //console.log('🌙 isMatchEmojisOnly', isMatchEmojisOnly)
+      //console.log('🌙 _isMatch_RawText_OrLinks_OrEmoji', rs)
+    }
 
     return rs
   }

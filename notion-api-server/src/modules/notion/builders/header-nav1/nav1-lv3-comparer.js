@@ -1,4 +1,4 @@
-import { EcoBuilderBlockComparer as Base } from '../base/builder-block-comparer.js'
+import { EcoBuilderBlockComparer as Base } from '../base/compare/builder-block-comparer.js'
 
 export class EcoNotionNav1Lv3Comparer extends Base {
   constructor (
@@ -13,10 +13,11 @@ export class EcoNotionNav1Lv3Comparer extends Base {
   prepare () {
     return this._prepare_Text_Emoji_Mention_Special()
   }
-  isMatchContent (block) {
-    const rs = this._isMatch_MentionIds(block)
+  isMatchContent (block, reason) {
+    const match = this._isMatch_MentionIds(block)
+    console.log(`✨ isMatchContent EcoNotionNav1Lv3Comparer > ${reason}:`, match)
     //console.log('- isMatchContent nav1-lv3: ', rs)
-    return rs
+    return match
   }
   needUpdateRichText (block) {
     return !this._isEqual_MentionIds_Emoji(block)

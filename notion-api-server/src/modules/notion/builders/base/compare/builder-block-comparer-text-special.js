@@ -1,6 +1,6 @@
 import { EcoBuilderBlockComparerBase as Base } from './builder-block-comparer-base.js'
-import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
-import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
+import { EcoTextUtil as uTxt } from '../../../../../utils/text.js'
+import { EcoNotionTaskBlockMapText as mt } from '../../../tasks/notion-task-block-map-text.js'
 
 export class EcoBuilderBlockComparerTextSpecial extends Base {
   _inputCompareText
@@ -17,7 +17,7 @@ export class EcoBuilderBlockComparerTextSpecial extends Base {
 //_txtc
   prepare () {
     const me = this
-    me._inputCompareText = me.#getDefaultInputCompareString()
+    me._inputCompareText = me.#getIText()
     return me
   }
 
@@ -27,22 +27,24 @@ export class EcoBuilderBlockComparerTextSpecial extends Base {
     return me.#isMatchRawContent(block, inputCompareText)
   }
 
-  #getDefaultInputCompareString () {
+  #getIText () {
     const me = this
     const displayText = me._displayText()
     
-    return uTxt.getSpecialCharacters(displayText)
+    const rs = uTxt.getSpecialCharacters(displayText)
+    console.log('🛸 special itext', rs)
+    return rs
   }
 
   #isMatchRawContent (block, inputCompareText) {
     const me = this
-    const existingCompareText = me.#getDefaultRichTextCompareString(block)
+    const existingCompareText = me.#getEText(block)
     //console.log(' ✨ isMatchRawContent > displayTex > special:')
     //console.log(inputCompareText, existingCompareText)
     return me._compareTextAndText(inputCompareText, existingCompareText)
   }
 
-  #getDefaultRichTextCompareString (block) {
+  #getEText (block) {
       //const me = this
       const richTexts = (block ? block[block.type]?.rich_text : []) || []
       const plainText = mt.getBlockDisplayTextFromNotionRichTextArr(richTexts)
@@ -50,6 +52,7 @@ export class EcoBuilderBlockComparerTextSpecial extends Base {
       //console.log('🌽 plainText', plainText)
       //console.log('💎 rich_text', block.toggle.rich_text)
       const rsText = uTxt.getSpecialCharacters(plainText)
+      console.log('🛸 special etext', rsText)
       //console.log(' ✨ rsText: ', rsText)
       //console.log('🌱 #getDefaultRichTextCompareString', existingCompareText)
       return rsText

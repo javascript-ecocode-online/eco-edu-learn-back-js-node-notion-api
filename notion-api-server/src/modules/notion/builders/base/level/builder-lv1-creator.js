@@ -1,7 +1,7 @@
 import { Lv0Builder } from './lv0Builder.js'
 
-import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
-import { EcoNotionServiceBuildBlockPage } from '../../services/notion-service-build-block-page.js'
+import { EcoNotionBuilderBlockToggle } from '../../blocks/notion-builder-block-toggle.js'
+import { EcoNotionServiceBuildBlockPage } from '../../../services/notion-service-build-block-page.js'
 // Lớp này có nhiêhm vụ tạo block lv1 
 export class EcoNotionBuilderLv1Creator extends Lv0Builder {
     _pageId

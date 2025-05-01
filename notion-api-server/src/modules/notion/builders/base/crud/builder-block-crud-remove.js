@@ -1,5 +1,5 @@
-import { EcoBase as Base } from '../../../../base/eco-base.js'
-import { EcoNotionServiceBuildBlockAny as bb } from '../../services/notion-service-build-block-any.js'
+import { EcoBase as Base } from '../../../../../base/eco-base.js'
+import { EcoNotionServiceBuildBlockAny as bb } from '../../../services/notion-service-build-block-any.js'
 
 export class EcoBuilderBlockCrudRemove extends Base {
   _eBlock

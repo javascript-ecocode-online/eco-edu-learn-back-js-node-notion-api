@@ -1,4 +1,4 @@
-import { EcoNotionBuilderLv2Master as Base } from '../base/builder-lv2-master.js'
+import { EcoNotionBuilderLv2Master as Base } from '../base/level/builder-lv2-master.js'
 import { EcoNotionNav3Lv2RawBlocksBuilder } from './nav3-lv2-raw-blocks-builder.js'
 import { EcoNotionNav3Lv2Comparer } from './nav3-lv2-comparer.js'
 //import { EcoNotionNav1Lv3Builder as Lv3} from './nav1-lv3-builder.js'

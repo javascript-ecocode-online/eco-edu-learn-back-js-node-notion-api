@@ -1,4 +1,4 @@
-import { Lv0Builder } from '../base/lv0Builder.js'
+import { Lv0Builder } from '../base/level/lv0Builder.js'
 import { EcoNotionBuilderObjectText } from '../blocks/notion-builder-object-text.js'
 import { EcoNotionBuilderBlockToggle } from '../blocks/notion-builder-block-toggle.js'
 import { EcoNotionBuilderObjectMentionPage } from '../blocks/notion-builder-object-mention-page.js'
