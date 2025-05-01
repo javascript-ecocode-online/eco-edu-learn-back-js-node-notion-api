@@ -2,7 +2,7 @@ import { EcoBuilderBlockComparer as Base } from '../base/builder-block-comparer.
 //import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
 //import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
 
-export class EcoNotionNav2Lv1EndComparer extends Base {
+export class EcoNotionNav3Lv1Comparer extends Base {
   
   constructor (
     logCfg = {
@@ -19,7 +19,7 @@ export class EcoNotionNav2Lv1EndComparer extends Base {
   isMatchContent (block) {
     
     const match = this._isMatch_RawText_OrLinks_OrEmoji(block)
-    //if(match) console.log('✨ match ? block.toggle.rich_text: ', block.toggle.rich_text)
+    //console.log('✨ match ? block.toggle.rich_text: ', block.toggle.rich_text)
     //console.log('✨ match: ', match)
     //this._logDeep('block', block)
     return match

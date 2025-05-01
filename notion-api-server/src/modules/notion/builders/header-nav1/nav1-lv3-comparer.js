@@ -11,12 +11,14 @@ export class EcoNotionNav1Lv3Comparer extends Base {
     super(logCfg)
   }
   prepare () {
-    return this._prepare_Text_Emoji_Links_Special()
+    return this._prepare_Text_Emoji_Mention_Special()
   }
   isMatchContent (block) {
-    return this._isMatch_Links(block)
+    const rs = this._isMatch_MentionIds(block)
+    //console.log('- isMatchContent nav1-lv3: ', rs)
+    return rs
   }
   needUpdateRichText (block) {
-    return !this._isEqual_Links_Emoji(block)
+    return !this._isEqual_MentionIds_Emoji(block)
   }
 }

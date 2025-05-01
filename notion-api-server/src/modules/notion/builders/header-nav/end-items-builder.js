@@ -1,7 +1,7 @@
 import { EcoNotionBuilderLv1DataText as Base } from '../base/builder-lv1-data-text.js'
 import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
 
-export class EcoNotionNav2Lv1EndItemsBuilder extends Base {
+export class EcoNotionEndItemsBuilder extends Base {
   constructor (
     logCfg = {
       isDebug: false,

@@ -21,8 +21,9 @@ export class NotionMissionBlocksCompare extends EcoBase {
     const isMatch = comparer?.isMatchContent(eBlock)
     const isUpdate = comparer?.needUpdateRichText(eBlock)
     const isReset = isMatch && isUpdate
-    const isDiff = iBlock.type !== eBlock.type || !isMatch
-    //console.log(index, `isMatch: ${isMatch} / isUpdate: ${isUpdate}`)
+    const isDiffType = iBlock.type !== eBlock.type
+    const isDiff = isDiffType || !isMatch
+    //console.log(`index: ${index}`, `isDiffType: ${isDiffType} / !isMatch: ${!isMatch}`)
     return { isDiff: isDiff, isReset: isReset }
   }
 

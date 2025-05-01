@@ -22,7 +22,17 @@ export class EcoNotionBuilderDataText extends EcoBase {
   getTextLinks () {
     const me = this
     const richTextArray = me.getRichTextData()
+    //console.log('getTextLinks 1: ', richTextArray)
     const arr = mt.getTextLinksFromRichText(richTextArray)
+   
+    return arr
+  }
+  getMentionIds () {
+    const me = this
+    const richTextArray = me.getRichTextData()
+    //console.log('getMentionIds 1: ', richTextArray)
+    const arr = mt.getMentionIdsFromRichText(richTextArray)
+   
     return arr
   }
   //Need Override

@@ -2,6 +2,7 @@ import { EcoBase as Base } from '../../../../base/eco-base.js'
 import { EcoBuilderBlockComparerTextEmojis } from './builder-block-comparer-text-emojis.js'
 import { EcoBuilderBlockComparerTextRaw } from './builder-block-comparer-text-raw.js'
 import { EcoBuilderBlockComparerTextLinks } from './builder-block-comparer-text-links.js'
+import { EcoBuilderBlockComparerTextMentions } from './builder-block-comparer-text-mentions.js'
 import { EcoBuilderBlockComparerNumCount } from './builder-block-comparer-num-count.js'
 import { EcoBuilderBlockComparerTextSpecial } from './builder-block-comparer-text-special.js'
 import { EcoBuilderBlockComparerTextNum } from './builder-block-comparer-text-num.js'
@@ -12,6 +13,7 @@ export class EcoBuilderBlockComparer extends Base {
   #numc
   #spec
   #txnc
+  #txmc
   _textBuilder
 
   #resetParts () {
@@ -22,6 +24,7 @@ export class EcoBuilderBlockComparer extends Base {
     me.#numc = null
     me.#spec = null
     me.#txnc = null
+    me.#txmc = null
     return me
   }
 
@@ -54,6 +57,13 @@ export class EcoBuilderBlockComparer extends Base {
     if (!me.#lnkc)
       me.#lnkc = new EcoBuilderBlockComparerTextLinks(me._textBuilder)
     return me.#lnkc
+  }
+
+  get _txmc () {
+    const me = this
+    if (!me.#txmc)
+      me.#txmc = new EcoBuilderBlockComparerTextMentions(me._textBuilder)
+    return me.#txmc
   }
 
   get _numc () {
@@ -115,6 +125,12 @@ export class EcoBuilderBlockComparer extends Base {
     me._lnkc.prepare()
     return me
   }
+  #prepareMentionIds () {
+    const me = this
+    me._txmc.prepare()
+    return me
+  }
+
   #prepareCountNumber () {
     const me = this
     me._numc.prepare()
@@ -154,11 +170,23 @@ export class EcoBuilderBlockComparer extends Base {
       .#prepareEmojis()
       .#prepareSpecialText()
   }
-
+  _prepare_Text_Emoji_Mention_Special () {
+    return this.#prepareRawText()
+      .#prepareMentionIds()
+      .#prepareEmojis()
+      .#prepareSpecialText()
+  }
   _isMatch_Links (block) {
     const me = this
     const isMatchTextLinksOnly = me._lnkc.isMatch(block)
     const rs = isMatchTextLinksOnly
+    return rs
+  }
+
+  _isMatch_MentionIds (block) {
+    const me = this
+    const isMatch = me._txmc.isMatch(block)
+    const rs = isMatch
     return rs
   }
 
@@ -251,6 +279,18 @@ export class EcoBuilderBlockComparer extends Base {
     const isMatchTextLinks = me._lnkc.isMatch(block)
     const isMatchEmojis = me._emjc.isMatch(block)
     const rs = isMatchTextLinks && isMatchEmojis
+
+    // console.log('🥥 block: ', block.id)
+    // console.log('isMatchTextLinks: ', isMatchTextLinks)
+    // console.log('isMatchEmojis: ', isMatchEmojis)
+    return rs
+  }
+
+  _isEqual_MentionIds_Emoji (block) {
+    const me = this
+    const m1 = me._txmc.isMatch(block)
+    const m2 = me._emjc.isMatch(block)
+    const rs = m1 && m2
 
     // console.log('🥥 block: ', block.id)
     // console.log('isMatchTextLinks: ', isMatchTextLinks)

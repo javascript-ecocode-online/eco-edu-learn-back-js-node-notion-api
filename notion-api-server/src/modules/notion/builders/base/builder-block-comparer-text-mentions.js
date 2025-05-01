@@ -2,19 +2,20 @@ import { EcoBuilderBlockComparerBase as Base } from './builder-block-comparer-ba
 
 import { EcoNotionTaskBlockMapText as mt } from '../../tasks/notion-task-block-map-text.js'
 
-export class EcoBuilderBlockComparerTextLinks extends Base {
+export class EcoBuilderBlockComparerTextMentions extends Base {
   _inputCompareLinks
   constructor (
     textBuilder,
     logConfig = {
       isDebug: false,
-      name: 'EcoBuilderBlockComparerTextLinks',
+      name: 'EcoBuilderBlockComparerTextMentions',
       level: 'info',
     }
   ) {
     super(textBuilder, logConfig)
   }
-
+//txmc
+//prepareMentionIds
   prepare () {
     const me = this
     me._inputCompareLinks = me.#inputLinks()
@@ -23,31 +24,31 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
 
   isMatch (block) {
     const me = this
-    const inputCompareLinks = me._inputCompareLinks
-    return me.#isMatchTextLinks(block, inputCompareLinks)
+    const iIds = me._inputCompareLinks
+    return me.#isMatchTextLinks(block, iIds)
   }
 
   #inputLinks () {
     const me = this
     const textBuilder = me._textBuilder
-    const links = textBuilder?.getTextLinks()
-    //console.log('🔗 inputLinks', links)
-    return links
+    const ids = textBuilder?.getMentionIds()
+    //console.log('🔗 inputLinks > mention ids', ids)
+    return ids
   }
 
-  #isMatchTextLinks (block, inputCompareLinks) {
+  #isMatchTextLinks (block, iIds) {
     const me = this
-    const existingCompareTextLinks = me.#getDefaultRichTextCompareLinks(block)
-    //console.log('🔗 existingCompareTextLinks', existingCompareTextLinks)
-    //console.log(block)
-    return me.#compareLinksAndLinks(inputCompareLinks, existingCompareTextLinks)
+    const eIds = me.#getDefaultRichTextCompareLinks(block)
+    //console.log('🔗 isMatchTextLinks> mention ids', eIds)
+    //onsole.log(block)
+    return me.#compareIdsAndIds(iIds, eIds)
   }
 
   #getDefaultRichTextCompareLinks (block) {
     //const me = this
     const richTexts = block[block.type].rich_text || []
     //console.log('getTextLinks 2: ', richTexts)
-    const arrLinks = mt.getTextLinksFromRichText(richTexts)
+    const arrLinks = mt.getMentionIdsFromRichText(richTexts)
 
     return arrLinks
   }
@@ -56,17 +57,14 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
     return url.replace(/\/\?/, '?') // thay "/?" thành "?"
   }
 
-  #compareLinksAndLinks (inputCompareLinks, existingCompareTextLinks) {
+  #compareIdsAndIds (iIds, eIds) {
     const me = this
-    // console.log(
-    //   '💥 compareLinksAndLinks',
-    //   'inputCompareLinks vs existingCompareTextLinks'
-    // )
-    // console.log(inputCompareLinks)
-    // console.log(existingCompareTextLinks)
+    //console.log('💥 compareIdsAndIds', 'iIds vs eIds')
+    //console.log(iIds)
+    //console.log(eIds)
 
-    const arr1 = inputCompareLinks
-    const arr2 = existingCompareTextLinks
+    const arr1 = iIds
+    const arr2 = eIds
     if (!arr1?.length && !arr2?.length) return false
     //if (arr1?.length || arr2?.length) console.log(arr1, arr2)
     if (arr1?.length !== arr2?.length) return false // khác độ dài => khác chắc chắn

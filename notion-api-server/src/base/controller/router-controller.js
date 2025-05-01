@@ -9,10 +9,12 @@ export class EcoRouterController {
   }
   #logBeginRequest (funcName) {
     const cfg = this.cfg
+    console.log()
     console.log(
-      `===== 🌳 EcoRouterController > ${cfg.name} > Begin request: =====`,
+      `🌳 EcoRouterController > ${cfg.name} > Begin request: =====`,
       funcName
     )
+    console.log()
   }
 
   async _execRequest (name, res, func) {
@@ -31,14 +33,19 @@ export class EcoRouterController {
 
   #logRequestError (funcName, err) {
     const cfg = this.cfg
-    console.log(` EcoRouterController > ${cfg.name} > Error ${funcName}: `, err)
+    console.log(
+      `🥵 EcoRouterController > ${cfg.name} > Error ${funcName}: `,
+      err
+    )
   }
 
   #logEndRequest (funcName) {
     const cfg = this.cfg
+    console.log()
     console.log(
-      `===== 🌳 EcoRouterController > ${cfg.name} > End request: =====`,
+      `🌳 EcoRouterController > ${cfg.name} > End request: =====`,
       funcName
     )
+    console.log()
   }
 }

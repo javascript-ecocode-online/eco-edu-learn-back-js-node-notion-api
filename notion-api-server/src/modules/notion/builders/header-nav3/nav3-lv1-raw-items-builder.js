@@ -6,7 +6,7 @@ import { NotionUrlHelper as nUrl } from '../../helpers/id/notion-url-helper.js'
 import { EcoNotionEndComparer } from '../header-nav/end-comparer.js'
 import { EcoNotionEndItemsBuilder } from '../header-nav/end-items-builder.js'
 // Lớp này chịu trách nhiêm tạo dữ liệu cho dòng text nav1 lv1
-export class EcoNotionNav2Lv1RawItemsBuilder extends Base {
+export class EcoNotionNav3Lv1RawItemsBuilder extends Base {
   _pageId
   _pageBlocks
   _parents
@@ -15,8 +15,8 @@ export class EcoNotionNav2Lv1RawItemsBuilder extends Base {
   constructor (
     logCfg = {
       isDebug: false,
-      name: 'EcoNotionNav2Lv1RawItemsBuilder',
-      level: 'info'
+      name: 'EcoNotionNav3Lv1RawItemsBuilder',
+      level: 'info',
     }
   ) {
     super(logCfg)
@@ -71,7 +71,7 @@ export class EcoNotionNav2Lv1RawItemsBuilder extends Base {
     const comparer = me.#getEndBlockComparer()
     const endBlockId = helper.getEndNavBlockId(me._pageBlocks, comparer)
     //const pageId = me._pageId
-    const tpl = EcoNotionTemplateLv1.nav2Template
+    const tpl = EcoNotionTemplateLv1.nav3Template
     const backUrl = backPageId ? nUrl.getNotionUrl(backPageId) : undefined
     const endUrl = endBlockId
       ? nUrl.getNotionBlockUrl(me._pageId, endBlockId)
@@ -92,12 +92,12 @@ export class EcoNotionNav2Lv1RawItemsBuilder extends Base {
         url: backUrl,
       },
       {
-        emoji: tpl.end.emoji,
-        label: tpl.end.label,
+        emoji: tpl.top.emoji,
+        label: tpl.top.label,
         url: endUrl,
       },
       {
-        emoji: ischildPageEnd ? tpl.child.parent : tpl.child.emoji,
+        emoji: ischildPageEnd ? tpl.chid.parent : tpl.chid.emoji,
         label: tpl.child.label,
         url: chidUrl,
       },

@@ -125,11 +125,7 @@ export class EcoBuilderBlocksMaster extends Base {
     }
     return removeResults
   }
-  async #processAddNeedAddAndReplaceBlocks (
-    parentId,
-    rsCompare,
-    idChildrenMap
-  ) {
+  async #processAddNeedAddAndReplaceBlocks (parentId, rsCompare, idChildrenMap) {
     const me = this
     const addResults = []
     //#prepareIdChildrenMapForBlock
@@ -211,8 +207,12 @@ export class EcoBuilderBlocksMaster extends Base {
   }
   async execute (lv, block, rs, parentIdChildrenMap) {
     if (!block) return
+    //if (lv > 3) return
     console.log()
-    console.log(`🌳 ***** execute children at level ${lv} for block: *****`, block?.id)
+    console.log(
+      `🍒 ***** execute children at level ${lv} for block: *****`,
+      block?.id
+    )
     const me = this
 
     const blockId = block.id
@@ -222,12 +222,14 @@ export class EcoBuilderBlocksMaster extends Base {
     const iBlocks = await me._getInputBlocks(block, parentIdChildrenMap)
 
     const rsCompare = me.#compareBlocks(iBlocks, eBlocks)
-    console.log('🌓 > rsCompare', rsCompare)
+    
     const idChildrenMap = me.#prepareIdChildrenMap(rsCompare)
     const nextLevel = lv + 1
     if (rsCompare.isEqualAll) {
+      console.log('🌓 > rsCompare', 'equal all')
       await me.#runNextLevel(nextLevel, eBlocks, rs, idChildrenMap)
     } else {
+      console.log('🌓 > rsCompare', rsCompare)
       const results = await me.#processCompareResult(
         blockId,
         rsCompare,
