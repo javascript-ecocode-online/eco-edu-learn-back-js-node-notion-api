@@ -5,11 +5,14 @@ import cors from 'cors';
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(cors({
+  origin: '*', //
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json()); // phải có dòng này trước khi các route được dùng
 app.use('/api/notion', notionRoutes);
-app.use(cors({
-  origin: 'https://notion-builder.ecocode.online', 
-}));
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
