@@ -4,6 +4,7 @@ import { EcoNotionParagraphLv2Comparer } from './paragraph-lv2-comparer.js'
 import { EcoNotionParagraphLv3Builder as Lv3 } from './paragraph-lv3-builder.js'
 export class EcoNotionParagraphLv2Builder extends Base {
   _rootBlock
+  _buildCase
   constructor (logCfg = {
     isDebug: false,
     name: 'EcoNotionParagraphLv2Builder',
@@ -16,6 +17,11 @@ export class EcoNotionParagraphLv2Builder extends Base {
     me._rootBlock = block
     return me
   }
+  setBuildCase (buildCase) {
+    const me = this
+    me._buildCase = buildCase
+    return me
+  }
  
   //Override
   _getNewTextComparer () {   
@@ -26,8 +32,8 @@ export class EcoNotionParagraphLv2Builder extends Base {
     const me = this
     const rootBlock = me._rootBlock
     const pageId = me._pageId
-   
-    const builder = new EcoNotionParagraphLv2RawBlocksBuilder(pageId, rootBlock)
+    const buildCase = me._buildCase
+    const builder = new EcoNotionParagraphLv2RawBlocksBuilder(pageId, rootBlock, buildCase)
     return await builder.getBlocks()
   }
 

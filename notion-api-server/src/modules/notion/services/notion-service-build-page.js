@@ -8,7 +8,7 @@ import { EcoNotionNav1Lv1Builder } from '../builders/header-nav1/nav1-lv1-builde
 import { EcoNotionNav2Lv1Builder } from '../builders/header-nav2/nav2-lv1-builder.js'
 import { EcoNotionNav3Lv1Builder } from '../builders/header-nav3/nav3-lv1-builder.js'
 import { EcoNotionParagraphLv0Builder } from '../builders/content/paragraph-lv0-builder.js'
-
+import { EcoNotionServiceBase as SB} from './notion-service-base.js'
 export class EcoNotionServiceBuildPage extends Base {
   constructor () {
     super({ name: 'NotionBuildPage', isDebug: false, level: 'info' })
@@ -16,6 +16,7 @@ export class EcoNotionServiceBuildPage extends Base {
 
   async buildPage (reason, pageId, options) {
     const me = this
+    SB.notionToken = options?.notionToken
     const logName = `> buildPage > ${reason}`
     me._logInfoBegin(logName, pageId)
     const nqPage = EcoNotionServiceQueryPage.instance

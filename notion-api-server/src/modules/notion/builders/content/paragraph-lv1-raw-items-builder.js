@@ -18,8 +18,10 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
     }
   ) {
     super(logCfg)
-    this._emoji1 = '🔥'
-    this._emoji2 = '🔥'
+  }
+  setBeginEmoji (emj) {
+    this._emoji1 = emj
+    this._emoji2 = emj
   }
   setPageId (pageId) {
     const me = this
@@ -41,32 +43,32 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
     return me
   }
 
-  #addFluteToSentences(content) {
-    const sentences = content.match(/[^.!?]+[.!?]?/g) || [];
-  
-    const isOnlyEmoji = (text) => {
+  #addFluteToSentences (content) {
+    const sentences = content.match(/[^.!?]+[.!?]?/g) || []
+
+    const isOnlyEmoji = text => {
       // Xoá khoảng trắng rồi kiểm tra toàn bộ là emoji
-      const noSpace = text.trim().replace(/\s/g, '');
-      return noSpace.length > 0 && /^[\p{Emoji}]+$/u.test(noSpace);
-    };
-  
+      const noSpace = text.trim().replace(/\s/g, '')
+      return noSpace.length > 0 && /^[\p{Emoji}]+$/u.test(noSpace)
+    }
+
     const processed = sentences.map((sentence, index) => {
-      const trimmed = sentence.trim();
-      
+      const trimmed = sentence.trim()
+
       // Nếu là câu cuối và chỉ có emoji => giữ nguyên, không thêm 🪈
       if (index === sentences.length - 1 && isOnlyEmoji(trimmed)) {
-        return trimmed;
+        return trimmed
       }
-  
+
       // Nếu đã có 🪈 ở đầu thì giữ nguyên
       if (trimmed.startsWith('🪈')) {
-        return trimmed;
+        return trimmed
       }
-  
-      return '🪈 ' + trimmed;
-    });
-  
-    return processed.join(' ');
+
+      return '🪈 ' + trimmed
+    })
+
+    return processed.join(' ')
   }
 
   #getFinalText (content, emj1, emj2) {
@@ -76,14 +78,15 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
     //content = this.#addFluteToSentences(content)
     const rs = content.replace(new RegExp(emj1, 'g'), emj2)
     console.log(' --- getFinalText ---', rs)
-    return this.#addFluteToSentences(rs)
+    //return this.#addFluteToSentences(rs)
+    return rs
   }
 
   #replaceFireWithWing (richTextArray) {
     const me = this
     const emj1 = me._emoji1
     const emj2 = me._emoji2
-   
+
     return richTextArray.map(rt => {
       // Sao chép object gốc để giữ nguyên annotations và các thuộc tính khác
       const newRt = { ...rt }

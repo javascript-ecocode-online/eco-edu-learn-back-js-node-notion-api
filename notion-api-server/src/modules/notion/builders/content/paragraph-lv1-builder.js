@@ -5,10 +5,12 @@ import { EcoNotionServiceBuildBlockAny as bb } from '../../services/notion-servi
 
 export class EcoNotionParagraphLv1Builder extends Base {
   #textBuilder
-  constructor (pageId, block) {
+  _buildCase
+  constructor (pageId, block, buildCase) {
     super('EcoNotionNav1Lv1Builder', pageId)
     this._block = block
     this._pageId = pageId
+    this._buildCase = buildCase
   }
   
   // Override from EcoBuilderBlockQuery
@@ -28,9 +30,11 @@ export class EcoNotionParagraphLv1Builder extends Base {
     const me = this
     const block = me._block
     const pageId = me._pageId
+    const buildCase = me._buildCase
     return new EcoNotionParagraphLv2Builder()
       .setPageId(pageId)
       .setRootBlock(block)
+      .setBuildCase(buildCase)
   }
 
    async #updateBlockText (textBuilder, block, emi) {
@@ -49,14 +53,16 @@ export class EcoNotionParagraphLv1Builder extends Base {
     let block = me._block
     if (!block) return rs
     const textBuilder = me._textBuilder
-    block = await me.#updateBlockText(textBuilder, block, '💥')
+    const buildCase = me._buildCase
+    textBuilder.setBeginEmoji(buildCase)
+    block = await me.#updateBlockText(textBuilder, block, '♨️')
     
     const childrenBuilder = me._childrenBuilder
     if (childrenBuilder) {
       await childrenBuilder.execute(lv + 1, block, rs)
     }
 
-    block = await me.#updateBlockText(textBuilder, block, '🫛')
+    block = await me.#updateBlockText(textBuilder, block, '🪞')
     rs[`level-${lv}-rs`] = block
     return rs
   }
