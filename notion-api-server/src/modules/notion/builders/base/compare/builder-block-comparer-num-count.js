@@ -32,7 +32,7 @@ export class EcoBuilderBlockComparerNumCount extends Base {
     
     //console.log('🎋 displayText', displayText)
     const rs = uTxt.getCountNumberString(displayText)
-    console.log('🛸 num count itext', rs)
+    //console.log('🛸 num count itext', rs)
     return rs
   }
   #isMatchCountNumberString (block, inputCompareCountNumberText) {
@@ -53,7 +53,7 @@ export class EcoBuilderBlockComparerNumCount extends Base {
     //console.log('💎 rich_text', block.toggle.rich_text)
     const rsText = uTxt.getCountNumberString(plainText)
     //console.log('> existingCompareEmojiText', existingCompareEmojiText)
-    console.log('🛸 num count etext', rsText)
+    //console.log('🛸 num count etext', rsText)
     return rsText
   }
 }

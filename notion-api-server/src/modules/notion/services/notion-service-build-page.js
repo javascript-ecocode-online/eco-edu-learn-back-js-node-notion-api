@@ -7,6 +7,7 @@ import { EcoNotionServiceQuerySiblings } from './notion-service-query-siblings.j
 import { EcoNotionNav1Lv1Builder } from '../builders/header-nav1/nav1-lv1-builder.js'
 import { EcoNotionNav2Lv1Builder } from '../builders/header-nav2/nav2-lv1-builder.js'
 import { EcoNotionNav3Lv1Builder } from '../builders/header-nav3/nav3-lv1-builder.js'
+import { EcoNotionParagraphLv0Builder } from '../builders/content/paragraph-lv0-builder.js'
 
 export class EcoNotionServiceBuildPage extends Base {
   constructor () {
@@ -71,6 +72,16 @@ export class EcoNotionServiceBuildPage extends Base {
       )
       obj['nav3'] = await nav3Builder.execute()
       console.log('👍 ----- Build Nav3 done!')
+    }
+
+    if (options.buildParagraphs) {
+      console.log('👉 ----- Start build Paragraphs...')
+      const paragrapsBuilder = new EcoNotionParagraphLv0Builder(
+        pageId,
+        pageBlocks
+      )
+      obj['paragraps'] = await paragrapsBuilder.execute()
+      console.log('👍 ----- Build Paragraphs done!')
     }
 
     //const nav2Blocks = []

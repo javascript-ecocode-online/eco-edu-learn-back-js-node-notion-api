@@ -15,10 +15,8 @@ export class EcoNotionBlocksConfig {
     }
 
     static nav3Lv2Labels = {
-        data: '💍 Data',
-        speaking: '👄 Speaking',
-        reading: '✨ Reading',
-        writing: '✍️ Writing',
-        tesing: '🌳 Tesing',
+        dataVersion: '💥 Data version: ',
+        buildToolVersion: '❄️ Build tool version: 2',
+        builtDate: '🪧 Buit date: '
     }
 }

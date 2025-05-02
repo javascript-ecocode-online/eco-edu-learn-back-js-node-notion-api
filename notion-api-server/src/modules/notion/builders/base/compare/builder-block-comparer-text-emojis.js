@@ -31,7 +31,7 @@ export class EcoBuilderBlockComparerTextEmojis extends Base {
     const me = this
     const displayText = me._displayText()
     const rs = uTxt.getEmojiString(displayText)
-    console.log('🛸 iEmoji: ', rs)
+    //console.log('🛸 iEmoji: ', rs)
     return rs
   }
 
@@ -60,7 +60,7 @@ export class EcoBuilderBlockComparerTextEmojis extends Base {
     //console.log('💎 rich_text', block.toggle.rich_text)
     const rsText = uTxt.getEmojiString(plainText)
     //console.log('> existingCompareEmojiText', existingCompareEmojiText)
-    console.log('🛸 eEmoji: ', rsText)
+    //console.log('🛸 eEmoji: ', rsText)
 
     return rsText
   }

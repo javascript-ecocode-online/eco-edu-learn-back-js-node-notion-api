@@ -33,7 +33,7 @@ export class EcoBuilderBlockComparerTextNum extends Base {
     const displayText = me._displayText()
     //console.log('🎋 displayText', displayText)
     const rs = uTxt.getContentNumInText(displayText)
-    console.log('🛸 num itext', rs)
+    //console.log('🛸 num itext', rs)
     return rs
   }
 
@@ -54,7 +54,7 @@ export class EcoBuilderBlockComparerTextNum extends Base {
       //console.log('🌽 plainText', plainText)
       //console.log('💎 rich_text', block.toggle.rich_text)
       const rsText = uTxt.getContentNumInText(plainText)
-      console.log('🛸 num etext', rsText)
+      //console.log('🛸 num etext', rsText)
       //console.log('🌱 #getDefaultRichTextCompareString', existingCompareText)
       return rsText
     }

@@ -31,7 +31,7 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
     const me = this
     const textBuilder = me._textBuilder
     const links = textBuilder?.getTextLinks()
-    console.log('🛸 iLinks', links)
+    //console.log('🛸 iLinks', links)
     //console.log('🔗 inputLinks', links)
     return links
   }
@@ -49,7 +49,7 @@ export class EcoBuilderBlockComparerTextLinks extends Base {
     const richTexts = block[block.type].rich_text || []
     //console.log('getTextLinks 2: ', richTexts)
     const arrLinks = mt.getTextLinksFromRichText(richTexts)
-    console.log('🛸 eLinks', arrLinks)
+    //console.log('🛸 eLinks', arrLinks)
     return arrLinks
   }
 

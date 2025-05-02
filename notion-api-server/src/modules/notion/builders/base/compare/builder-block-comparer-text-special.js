@@ -32,7 +32,7 @@ export class EcoBuilderBlockComparerTextSpecial extends Base {
     const displayText = me._displayText()
     
     const rs = uTxt.getSpecialCharacters(displayText)
-    console.log('🛸 special itext', rs)
+    //console.log('🛸 special itext', rs)
     return rs
   }
 
@@ -52,7 +52,7 @@ export class EcoBuilderBlockComparerTextSpecial extends Base {
       //console.log('🌽 plainText', plainText)
       //console.log('💎 rich_text', block.toggle.rich_text)
       const rsText = uTxt.getSpecialCharacters(plainText)
-      console.log('🛸 special etext', rsText)
+      //console.log('🛸 special etext', rsText)
       //console.log(' ✨ rsText: ', rsText)
       //console.log('🌱 #getDefaultRichTextCompareString', existingCompareText)
       return rsText

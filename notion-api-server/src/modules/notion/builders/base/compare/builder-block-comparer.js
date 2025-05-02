@@ -190,6 +190,7 @@ export class EcoBuilderBlockComparer extends Base {
     return rs
   }
 
+  
   _isMatch_RawText_OrLinks (block) {
     const me = this
     const isMatchRawTextOnly = me._txtc.isMatch(block)
@@ -205,6 +206,16 @@ export class EcoBuilderBlockComparer extends Base {
     //console.log('_isMatch_RawText_OrEmoji')
     //console.log(isMatchRawTextOnly, isMatchEmojisOnly)
     const rs = isMatchRawTextOnly || isMatchEmojisOnly
+    return rs
+  }
+
+  _isMatch_RawText_AndEmoji (block) {
+    const me = this
+    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchEmojisOnly = me._emjc.isMatch(block)
+    //console.log('_isMatch_RawText_OrEmoji')
+    //console.log(isMatchRawTextOnly, isMatchEmojisOnly)
+    const rs = isMatchRawTextOnly && isMatchEmojisOnly
     return rs
   }
 

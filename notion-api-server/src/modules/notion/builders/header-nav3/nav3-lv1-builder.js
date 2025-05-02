@@ -41,6 +41,8 @@ export class EcoNotionNav3Lv1Builder extends Lv1NavBuilder {
   get _childrenBuilder () {
     const me = this
     const pageId = me._pageId
-    return new EcoNotionNav3Lv2Builder().setPageId(pageId)
+    const pageBlocks = me._pageBlocks
+    const parentBlock = me._foundBlock
+    return new EcoNotionNav3Lv2Builder().setPageId(pageId).setParentBlock(parentBlock).setPageBlocks(pageBlocks)
   }
 }

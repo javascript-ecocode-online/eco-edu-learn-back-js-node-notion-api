@@ -5,6 +5,7 @@ import { EcoNotionServiceBuildBlockAny as bb } from '../../../services/notion-se
  * @class
  */
 export class EcoBuilderBlockFindUpdate extends Base {
+  _foundBlock
   constructor (
     parentId,
     logConfig = { isDebug: false, name: 'EcoBuilderBlockCrud', level: 'info' }
@@ -34,6 +35,7 @@ export class EcoBuilderBlockFindUpdate extends Base {
     )
    
     let block = findResult.block
+    me._foundBlock = block
     let needUpdateRichText = findResult.needUpdateRichText
     if (!block) return rs
     if (needUpdateRichText) block = await me._updateBlockText(block)
@@ -42,6 +44,7 @@ export class EcoBuilderBlockFindUpdate extends Base {
     if (childrenBuilder) {
       await childrenBuilder.execute(lv + 1, block, rs)
     }
+   
     return rs
   }
 }
