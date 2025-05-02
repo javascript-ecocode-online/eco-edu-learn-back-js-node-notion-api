@@ -1,14 +1,18 @@
+import {EcoNotionClientConfig as cfg } from '../../notion/configs/notion-client-config.js'
 export class EcoTaskUrl {
   static getEcoBuildUrl (cleanPageId) {
-    return `https://notion-builder.ecocode.online?id=${cleanPageId}`
+    const token = cfg.token
+    return `https://notion-builder.ecocode.online?id=${cleanPageId}&tk=${token}`
   }
 
   static getEcoLearnUrl (cleanPageId) {
-    return `https://notion-learn.ecocode.online?id=${cleanPageId}`
+    const token = cfg.token
+    return `https://notion-learn.ecocode.online?id=${cleanPageId}&tk=${token}`
   }
 
   static getEcoTestUrl (cleanPageId) {
-    return `https://notion-test.ecocode.online?id=${cleanPageId}`
+    const token = cfg.token
+    return `https://notion-test.ecocode.online?id=${cleanPageId}&tk=${token}`
   }
 }
 //eUrl

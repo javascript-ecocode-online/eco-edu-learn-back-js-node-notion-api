@@ -2,7 +2,7 @@
 import { Client } from '@notionhq/client';
 
 import { EcoBase } from '../../../base/eco-base.js'
-
+import { EcoNotionClientConfig as cfg} from '../configs/notion-client-config.js'
 export class EcoNotionServiceBase extends EcoBase {
 
   static nClient
@@ -10,6 +10,7 @@ export class EcoNotionServiceBase extends EcoBase {
    * @param {string} token
    */
   static set notionToken (token) {
+    cfg.token = token
     this.nClient = new Client({ auth: token });
   }
   constructor (logConfig) {
