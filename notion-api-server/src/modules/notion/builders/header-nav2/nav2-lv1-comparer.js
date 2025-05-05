@@ -26,7 +26,7 @@ export class EcoNotionNav2Lv1Comparer extends Base {
     return match
   }
   needUpdateRichText (block) {
-    return !this._isEqual_RawText_Links_Emoji_Special(block)
+    return !this._isEqual_RawText_Links_Emoji_Special(block, true)
   }
 }
 //_inputCompareEmojiText

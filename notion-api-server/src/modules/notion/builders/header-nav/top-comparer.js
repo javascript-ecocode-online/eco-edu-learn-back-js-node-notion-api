@@ -19,7 +19,7 @@ export class EcoNotionTopComparer extends Base {
   isMatchContent (block, reason) {
     
     const match = this._isMatch_RawText_OrLinks_OrEmoji(block)
-    console.log(`✨ isMatchContent EcoNotionTopComparer > ${reason}:`, match)
+    //console.log(`✨ isMatchContent EcoNotionTopComparer > ${reason}:`, match)
     //if(match) console.log('✨ match ? block.toggle.rich_text: ', block.toggle.rich_text)
     //console.log('✨ match: ', match)
     //this._logDeep('block', block)

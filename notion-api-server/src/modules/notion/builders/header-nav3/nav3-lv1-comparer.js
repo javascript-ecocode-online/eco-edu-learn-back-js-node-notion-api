@@ -19,9 +19,9 @@ export class EcoNotionNav3Lv1Comparer extends Base {
   isMatchContent (block, reason) {
     
     const match = this._isMatch_RawText_OrLinks_OrEmoji(block)
-    console.log(`✨ isMatchContent EcoNotionNav3Lv1Comparer > ${reason}:`, match)
+    console.log(`🌿 isMatchContent EcoNotionNav3Lv1Comparer > ${reason}:`, match)
 
-    //if(match)  console.log('🍋 _findWorkingBlock', block[block.type].rich_text)
+    if(match)  console.log('🍋 EcoNotionNav3Lv1Comparer', block[block.type].rich_text)
     //console.log('✨ match ? block.toggle.rich_text: ', block.toggle.rich_text)
     //console.log('✨ match: ', match)
     //this._logDeep('block', block)
@@ -29,7 +29,7 @@ export class EcoNotionNav3Lv1Comparer extends Base {
     return match
   }
   needUpdateRichText (block) {
-    return !this._isEqual_RawText_Links_Emoji_Special(block)
+    return !this._isEqual_RawText_Links_Emoji_Special(block, true)
   }
 }
 //_inputCompareEmojiText

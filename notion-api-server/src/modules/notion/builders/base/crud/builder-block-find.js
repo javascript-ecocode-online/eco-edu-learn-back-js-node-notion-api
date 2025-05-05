@@ -44,7 +44,7 @@ export class EcoBuilderBlockFind extends Base {
     
     const foundBlock = results?.find(block => tcp.isMatchContent(block, '_findWorkingBlock'))
     
-    //me._logDeep('📍 ----- foundBlock: -----', foundBlock)
+    if(foundBlock) me._logDeep('📍 ----- foundBlock: -----', foundBlock)
     const needUpdateRichText = foundBlock
       ? tcp.needUpdateRichText(foundBlock)
       : false

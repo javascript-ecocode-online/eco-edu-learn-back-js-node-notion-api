@@ -13,7 +13,7 @@ export class EcoNotionNav2Lv2Comparer extends Base {
   prepare () {
     return this._prepare_Text_num_Emoji_Count()
   }
-  isMatchContent (block) {
+  isMatchContent (block, reason) {
     const match = this._isMatch_RawText_OrEmoji(block)
     console.log(`✨ isMatchContent EcoNotionNav2Lv2Comparer > ${reason}:`, match)
     return match

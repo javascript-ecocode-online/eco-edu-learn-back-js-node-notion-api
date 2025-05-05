@@ -241,7 +241,7 @@ export class EcoBuilderBlockComparer extends Base {
 
   _isEqual_RawText_Links (block) {
     const me = this
-    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchRawTextOnly = me._txtc.isMatch(block, true)
     const isMatchTextLinksOnly = me._lnkc.isMatch(block)
     const rs = isMatchRawTextOnly && isMatchTextLinksOnly
     return rs
@@ -249,7 +249,7 @@ export class EcoBuilderBlockComparer extends Base {
 
   _isEqual_RawText_Emoji (block) {
     const me = this
-    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchRawTextOnly = me._txtc.isMatch(block, true)
     const isMatchEmojisOnly = me._emjc.isMatch(block)
     const rs = isMatchRawTextOnly && isMatchEmojisOnly
     return rs
@@ -257,7 +257,7 @@ export class EcoBuilderBlockComparer extends Base {
 
   _isEqual_RawText_Emoji_Number (block) {
     const me = this
-    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchRawTextOnly = me._txtc.isMatch(block, true)
     const isMatchEmojisOnly = me._emjc.isMatch(block)
     const isMatchCountNumberOnly = me._numc.isMatch(block)
     const rs = isMatchRawTextOnly && isMatchEmojisOnly && isMatchCountNumberOnly
@@ -266,7 +266,7 @@ export class EcoBuilderBlockComparer extends Base {
 
   _isEqual_Text_Num_Emoji_Number (block) {
     const me = this
-    const isMatchRawTextOnly = me._txtc.isMatch(block)
+    const isMatchRawTextOnly = me._txtc.isMatch(block, true)
     const isMatchEmojisOnly = me._emjc.isMatch(block)
     const isMatchCountNumberOnly = me._numc.isMatch(block)
     const isMatchContentNumberOnly = me._txnc.isMatch(block)
@@ -280,7 +280,7 @@ export class EcoBuilderBlockComparer extends Base {
 
   _isEqual_RawText_Links_Emoji (block) {
     const me = this
-    const isMatchRawText = me._txtc.isMatch(block)
+    const isMatchRawText = me._txtc.isMatch(block, true)
     const isMatchTextLinks = me._lnkc.isMatch(block)
     const isMatchEmojis = me._emjc.isMatch(block)
     const rs = isMatchRawText && isMatchTextLinks && isMatchEmojis
@@ -313,7 +313,7 @@ export class EcoBuilderBlockComparer extends Base {
 
   _isEqual_RawText_Links_Emoji_Special (block) {
     const me = this
-    const isMatchRawText = me._txtc.isMatch(block)
+    const isMatchRawText = me._txtc.isMatch(block, true)
     const isMatchTextLinks = me._lnkc.isMatch(block)
     const isMatchEmojis = me._emjc.isMatch(block)
     const isMatchSpecial = me._spec.isMatch(block)

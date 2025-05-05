@@ -10,7 +10,7 @@ export class EcoNotionTemplateLv1 {
     return {
       back: { emoji: '🫲', label: '_Back_', parent: '🫷' },
       end: { emoji: '👇', label: '_End_' },
-      child: { emoji: '🫳', label: '_Chid_', parent: '👇' },
+      child: { emoji: '🫳', label: '_Child_', parent: '👇' },
       next: { emoji: '🫱', label: '_Next_', parent: '🫸' },
     }
   }
