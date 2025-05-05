@@ -62,7 +62,7 @@ export class EcoNotionParagraphLv1Builder extends Base {
       await childrenBuilder.execute(lv + 1, block, rs)
     }
 
-    block = await me.#updateBlockText(textBuilder, block, '🪞')
+    block = await me.#updateBlockText(textBuilder, block, '🛫')
     rs[`level-${lv}-rs`] = block
     return rs
   }
