@@ -15,38 +15,38 @@ export class EcoNotionServiceBuildBlockBase extends Base {
   }
   async _appendChild (blockId, child) {
     const me = this
-    me._logLines('🔥 Start _appendChild ...', blockId, child)
+    me._logLines('⛵️ Start _appendChild ...', blockId, child)
     const rs = await me._children.append({
       block_id: blockId,
       children: [].concat(child),
     })
     if (rs.results?.length) {
       const finalRs = rs.results[0]
-      me._logLines('🔥 Block appened:', finalRs)
+      me._logLines('⛵️ Block appened:', finalRs)
       return finalRs
     }
-    me._logLines('🔥 No block appened!')
+    me._logLines('⛵️ No block appened!')
     return null
   }
   async _appendChildren (blockId, children) {
     const me = this
-    me._logLines('🔥 Start _appendChildren ...', blockId, children)
+    me._logLines('⛵️ Start _appendChildren ...', blockId, children)
     const rs = await me._children.append({
       block_id: blockId,
       children: children,
     })
     if (rs.results?.length) {
       const finalRs = rs.results[0]
-      me._logLines('🔥 Block appened:', finalRs)
+      me._logLines('⛵️ Block appened:', finalRs)
       return finalRs
     }
-    me._logLines('🔥 No block appened!')
+    me._logLines('⛵️ No block appened!')
     return null
   }
   //toggle
   async _updateRichText (type, blockId, richTextArr) {
     const me = this
-    me._logLines('🔥 Start update block rich text ...', richTextArr)
+    me._logLines('⛵️ Start update block rich text ...', richTextArr)
     const data = {
       block_id: blockId,
     }
@@ -56,7 +56,7 @@ export class EcoNotionServiceBuildBlockBase extends Base {
     try {
       
       const response = await me._blocks.update(data)
-      me._logLines('🔥 Block rich text updated:', response)
+      me._logLines('⛵️ Block rich text updated:', response)
       //console.log(`> ${type} rich text:`, response?.toggle?.rich_text)
       return response
     } catch (error) {
@@ -67,18 +67,18 @@ export class EcoNotionServiceBuildBlockBase extends Base {
 
   async deleteBlock (id) {
     const me = this
-    me._logLines('🔥 Start delete block...', id)
+    me._logLines('⛵️ Start delete block...', id)
     const rs = await me._blocks.update({
       block_id: id,
       archived: true,
     })
-    me._logLines('🔥 Deleted block:', rs)
+    me._logLines('⛵️ Deleted block:', rs)
     return rs
   }
 
   async removeBlockAndChildren (block) {
     const me = this
-    me._logLines('🔥 Start removeBlockAndChildren ...', block)
+    me._logLines('⛵️ Start removeBlockAndChildren ...', block)
 
     const id = block.id
     const hasChildren = block.has_children
@@ -86,7 +86,7 @@ export class EcoNotionServiceBuildBlockBase extends Base {
       await me.deleteAllChildBlocks(id)
     }
     const removedBlock = await me.deleteBlock(id)
-    me._logLines('🔥 Removed result: ', removedBlock)
+    me._logLines('⛵️ Removed result: ', removedBlock)
     return removedBlock
   }
 
@@ -96,7 +96,7 @@ export class EcoNotionServiceBuildBlockBase extends Base {
    */
   async deleteAllChildBlocks (blockId) {
     const me = this
-    me._logLines('🔥 Start deleteAllChildBlocks ...', blockId)
+    me._logLines('⛵️ Start deleteAllChildBlocks ...', blockId)
     let cursor = undefined
     let hasMore = true
 
@@ -122,7 +122,7 @@ export class EcoNotionServiceBuildBlockBase extends Base {
       cursor = response.next_cursor
     }
 
-    me._logLines('🔥 Đã xóa toàn bộ block con của block:', blockId)
+    me._logLines('⛵️ Đã xóa toàn bộ block con của block:', blockId)
     return await me._blocks.retrieve({ block_id: blockId })
   }
 }

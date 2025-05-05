@@ -96,8 +96,6 @@ export class EcoBuilderBlocksMaster extends Base {
     const updateResults = []
     const arr = rsCompare?.needChangeRichTextBlocks
     if (arr?.length) {
-      //console.log('🔥 needChangeRichTextBlocks', arr)
-
       for (const e of arr) {
         const updateResult = await me.#processUpdateRichText(e)
         updateResults.push(updateResult)
@@ -132,11 +130,8 @@ export class EcoBuilderBlocksMaster extends Base {
     const needReplaceBlocks = rsCompare?.needReplaceBlocks
     const needAddBlocks = rsCompare?.needAddBlocks
     if (needReplaceBlocks?.length) {
-      //console.log('🔥 add > needReplaceBlocks', needReplaceBlocks)
-
       for (const obj of needReplaceBlocks) {
         const addReplaceRs = await me.#processAddBlock(parentId, obj.iBlock)
-        //console.log('🔥 add for replace', addReplaceRs)
         me.#prepareIdChildrenMapForBlock(
           idChildrenMap,
           addReplaceRs,
@@ -148,7 +143,6 @@ export class EcoBuilderBlocksMaster extends Base {
     if (needAddBlocks?.length) {
       for (const iBlock of needAddBlocks) {
         const addNewRs = await me.#processAddBlock(parentId, iBlock)
-        //console.log('🔥 add for add', addNewRs)
         me.#prepareIdChildrenMapForBlock(idChildrenMap, addNewRs, iBlock)
         addResults.push(addNewRs)
       }

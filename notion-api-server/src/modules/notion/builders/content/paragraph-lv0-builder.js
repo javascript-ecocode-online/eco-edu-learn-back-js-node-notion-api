@@ -48,8 +48,8 @@ export class EcoNotionParagraphLv0Builder extends Base {
     const me = this
    
     const builtBlocks = []
-    await me.#executeFireToggle(builtBlocks, '🔥')
-    await me.#executeFireToggle(builtBlocks, '🇻🇳')
+    await me.#executeFireToggle(builtBlocks, '🪈')
+    //await me.#executeFireToggle(builtBlocks, '🇻🇳')
     
     return builtBlocks
   }

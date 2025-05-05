@@ -87,7 +87,7 @@ export class EcoNotionParagraphLv2RawBlocksBuilder extends EcoNotionLv2Builder {
     const richText = rootBlock ? rootBlock[rootBlock?.type]?.rich_text : []
     const rawParagraphText = me.#getRawParagraphText(richText)
     const isVNOnly = buildCase === '🇻🇳'
-    const isNormal = buildCase === '🔥'
+    const isNormal = buildCase === '🪈'
     //console.log('☕️ rawParagraphText', rawParagraphText)
     const rawSentenses = me.#splitIntoSentences(rawParagraphText)
     const isManySentenses = rawSentenses.length > 1
