@@ -4,6 +4,6 @@ import { EcoNotionControllerPageRelations } from '../controllers/notion-controll
 const router = express.Router()
 const controller = new EcoNotionControllerPageRelations({ name: 'EcoPageRelationsontroller' });
 
-router.get('/:pageId', controller.getRelations)
+router.get('/:tk/:pageId', controller.getRelations)
 
 export default router

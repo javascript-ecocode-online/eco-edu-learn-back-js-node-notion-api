@@ -1,4 +1,5 @@
-import { EcoRouterController } from './router-controller.js'
+import { EcoRouterController } from '../../../base/controller/router-controller.js'
+import { EcoNotionServiceBase as SB} from '../services/notion-service-base.js'
 
 export class EcoNotionRouterController extends EcoRouterController {
   constructor (cfg) {
@@ -6,7 +7,10 @@ export class EcoNotionRouterController extends EcoRouterController {
   }
   async _execRequestPageId (name, req, res, func) {
     const me = this
-    const {pageId} = req.params
+    const {tk, pageId} = req.params
+    SB.notionToken = tk
+    //console.log('🪽 tk: ', tk)
+    //console.log('🪽 pageId: ', pageId)
     me._execRequest(name, res, async () => {
       const pid = me.#validateRequestPageId(pageId, res)
       if (!pid) return

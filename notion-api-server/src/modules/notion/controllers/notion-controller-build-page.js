@@ -1,4 +1,4 @@
-import { EcoNotionRouterController } from '../../../base/controller/router-notion-controller.js'
+import { EcoNotionRouterController } from './router-notion-controller.js'
 import { EcoNotionServiceBuildPage } from '../services/notion-service-build-page.js'
 
 export class EcoNotionControllerBuildPage extends EcoNotionRouterController {

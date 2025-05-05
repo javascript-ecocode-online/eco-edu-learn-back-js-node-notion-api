@@ -4,6 +4,6 @@ import { EcoNotionControllerPageChildren } from '../controllers/notion-controlle
 const router = express.Router();
 const controller = new EcoNotionControllerPageChildren({ name: 'EcoPageChildrenController' });
 
-router.get('/:pageId', controller.getChildren);
+router.get('/:tk/:pageId', controller.getChildren);
 
 export default router;
