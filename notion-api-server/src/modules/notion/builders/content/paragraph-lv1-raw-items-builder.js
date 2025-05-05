@@ -73,10 +73,22 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
 
   #getFinalText (content, emj1, emj2) {
     console.log('----- use emj1 emj2 -----')
-    console.log(emj1)
-    console.log(emj2)
+    //console.log(emj1)
+    //console.log(emj2)
     //content = this.#addFluteToSentences(content)
-    const rs = content.replace(new RegExp(emj1, 'g'), emj2)
+    //const trimmedEmj2 = emj2.trim()
+    const rs = content?.trim()?.replace(
+      new RegExp(emj1, 'g'),
+      (match, offset, string) => {
+        // Lấy phần sau emj1
+        const after = string.slice(offset + match.length)
+        // Kiểm tra nếu phần sau chỉ toàn khoảng trắng rồi đến dấu câu hoặc hết chuỗi
+        if (/^\s*([.!?]|$)/.test(after)) {
+          return emj2
+        }
+        return match // không thay
+      }
+    )
     console.log(' --- getFinalText ---', rs)
     //return this.#addFluteToSentences(rs)
     return rs
