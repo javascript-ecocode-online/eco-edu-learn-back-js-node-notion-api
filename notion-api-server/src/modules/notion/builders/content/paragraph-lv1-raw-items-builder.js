@@ -1,9 +1,11 @@
 import { EcoNotionBuilderDataText as Base } from '../base/builder-data-text.js'
-import { NotionJsonArrayHelper } from '../../helpers/object/notion-object-array-helper.js'
-import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
-import { EcoTaskUrl as eUrl } from '../../../eco/tasks/eco-task-url.js'
-import { NotionUrlHelper as nUrl } from '../../helpers/id/notion-url-helper.js'
-import { NotionIdHelper as nId } from '../../helpers/id/notion-id-helper.js'
+import { EcoTextUtil as uTxt } from '../../../../utils/text.js'
+
+// import { NotionJsonArrayHelper } from '../../helpers/object/notion-object-array-helper.js'
+// import { EcoNotionTemplateLv1 } from '../../templates/notion-template-lv1.js'
+// import { EcoTaskUrl as eUrl } from '../../../eco/tasks/eco-task-url.js'
+// import { NotionUrlHelper as nUrl } from '../../helpers/id/notion-url-helper.js'
+// import { NotionIdHelper as nId } from '../../helpers/id/notion-id-helper.js'
 // Lớp này chịu trách nhiêm tạo dữ liệu cho dòng text nav1 lv1
 export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
   _pageId
@@ -26,6 +28,11 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
   setPageId (pageId) {
     const me = this
     me._pageId = pageId
+    return me
+  }
+  setPageInfo (pageInfo) {
+    const me = this
+    me._pageInfo = pageInfo
     return me
   }
   setBlock (block) {
@@ -71,13 +78,32 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
     return processed.join(' ')
   }
 
-  #getFinalText (content, emj1, emj2) {
-    console.log('----- use emj1 emj2 -----')
+  #isLink (str) {
+    return /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/.test(str)
+  }
+
+  #getRawText (text) {
+    return text ? uTxt.getRawText(text) : text
+  }
+
+  #getFinalText (content, emj1, emj2, newRt, status) {
+    const me = this
+    console.log('🏡 newRt', newRt)
+    console.log('🏡 _pageInfo', me._pageInfo?.properties?.title?.title)
+    const c = newRt?.text?.content?.trim()
+    if (status.isHome) {
+      if (c === '🏡') status.isHome = true
+    } else if (me.#isLink(c) && c === newRt?.text?.link?.url?.trim()) {
+      const ta = me._pageInfo?.properties?.title?.title
+      content = ta?.length
+        ? me.#getRawText(ta[0]?.plain_text ?? content)
+        : content
+    }
     //console.log(emj1)
     //console.log(emj2)
     //content = this.#addFluteToSentences(content)
     //const trimmedEmj2 = emj2.trim()
-    const rs = content?.trim()?.replace(
+    const rs = content?.replace(
       new RegExp(emj1, 'g'),
       (match, offset, string) => {
         // Lấy phần sau emj1
@@ -89,7 +115,7 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
         return match // không thay
       }
     )
-    console.log(' --- getFinalText ---', rs)
+    console.log(' 🏠 --- getFinalText ---', rs)
     //return this.#addFluteToSentences(rs)
     return rs
   }
@@ -98,7 +124,7 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
     const me = this
     const emj1 = me._emoji1
     const emj2 = me._emoji2
-
+    const status = {}
     return richTextArray.map(rt => {
       // Sao chép object gốc để giữ nguyên annotations và các thuộc tính khác
       const newRt = { ...rt }
@@ -107,13 +133,25 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
       if (newRt.type === 'text' && newRt.text?.content) {
         newRt.text = {
           ...newRt.text,
-          content: me.#getFinalText(newRt.text.content, emj1, emj2),
+          content: me.#getFinalText(
+            newRt.text.content,
+            emj1,
+            emj2,
+            newRt,
+            status
+          ),
         }
       }
 
       // Đồng thời sửa plain_text nếu cần (plain_text tự sinh, nhưng có thể bạn cần đồng bộ)
       if (newRt.plain_text) {
-        newRt.plain_text = me.#getFinalText(newRt.plain_text, emj1, emj2)
+        newRt.plain_text = me.#getFinalText(
+          newRt.plain_text,
+          emj1,
+          emj2,
+          newRt,
+          status
+        )
       }
       //me._emoji1 =  me._emoji2
       return newRt

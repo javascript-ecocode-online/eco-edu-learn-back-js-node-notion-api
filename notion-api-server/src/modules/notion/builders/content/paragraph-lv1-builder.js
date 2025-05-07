@@ -6,13 +6,14 @@ import { EcoNotionServiceBuildBlockAny as bb } from '../../services/notion-servi
 export class EcoNotionParagraphLv1Builder extends Base {
   #textBuilder
   _buildCase
-  constructor (pageId, block, buildCase) {
+  constructor (pageId, block, buildCase, pageInfo) {
     super('EcoNotionNav1Lv1Builder', pageId)
     this._block = block
     this._pageId = pageId
     this._buildCase = buildCase
+    this._pageInfo = pageInfo
   }
-  
+
   // Override from EcoBuilderBlockQuery
   get _textBuilder () {
     const me = this
@@ -20,13 +21,13 @@ export class EcoNotionParagraphLv1Builder extends Base {
       const pageId = me._pageId
       const block = me._block
       me.#textBuilder = new EcoNotionParagraphLv1RawItemsBuilder()
+        .setPageInfo(me._pageInfo)
         .setPageId(pageId)
         .setBlock(block)
     }
     return me.#textBuilder
   }
   get _childrenBuilder () {
-    
     const me = this
     const block = me._block
     const pageId = me._pageId
@@ -37,15 +38,15 @@ export class EcoNotionParagraphLv1Builder extends Base {
       .setBuildCase(buildCase)
   }
 
-   async #updateBlockText (textBuilder, block, emi) {
-      const me = this
-      //const textBuilder = me._textBuilder
-      const type = block.type
-      const svc = bb.instance
-      const richTextArr = textBuilder.setEmoji(emi).getRichTextData()
-      
-      return await svc.updateRichText(type, block.id, richTextArr)
-    }
+  async #updateBlockText (textBuilder, block, emi) {
+    const me = this
+    //const textBuilder = me._textBuilder
+    const type = block.type
+    const svc = bb.instance
+    const richTextArr = textBuilder.setEmoji(emi).getRichTextData()
+
+    return await svc.updateRichText(type, block.id, richTextArr)
+  }
 
   async execute (lv = 1) {
     const me = this
@@ -56,7 +57,7 @@ export class EcoNotionParagraphLv1Builder extends Base {
     const buildCase = me._buildCase
     textBuilder.setBeginEmoji(buildCase)
     block = await me.#updateBlockText(textBuilder, block, '♨️')
-    
+    me._block = block
     const childrenBuilder = me._childrenBuilder
     if (childrenBuilder) {
       await childrenBuilder.execute(lv + 1, block, rs)
@@ -66,5 +67,4 @@ export class EcoNotionParagraphLv1Builder extends Base {
     rs[`level-${lv}-rs`] = block
     return rs
   }
-
 }

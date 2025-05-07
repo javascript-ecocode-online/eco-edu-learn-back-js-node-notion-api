@@ -1,10 +1,11 @@
 import { EcoBase as Base } from '../../../../base/eco-base.js'
 import { EcoNotionParagraphLv1Builder as BlockBuilder } from './paragraph-lv1-builder.js'
 export class EcoNotionParagraphLv0Builder extends Base {
-  constructor (pageId, pageBlocks) {
+  constructor (pageId, pageBlocks, pageInfo) {
     super('EcoNotionParagraphLv0Builder', pageId)
     this._pageId = pageId
     this._pageBlocks = pageBlocks
+    this._pageInfo= pageInfo
   }
 
   #getEndWithEmjToggle(emj){
@@ -37,7 +38,8 @@ export class EcoNotionParagraphLv0Builder extends Base {
         const bb = new BlockBuilder(
           pageId,
           block,
-          emj
+          emj,
+          me._pageInfo
         )
         const buildResult = await bb.execute()
         if(buildResult) builtBlocks.push(buildResult)

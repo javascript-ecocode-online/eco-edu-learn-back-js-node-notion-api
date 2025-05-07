@@ -1,3 +1,5 @@
+import emojiRegex from 'emoji-regex'
+
 export class EcoTextUtil {
   static normalizeText (text) {
     return text
@@ -13,16 +15,27 @@ export class EcoTextUtil {
           .toLowerCase()
       : ''
   }
+  static getRawText (text) {
+    return text
+      ? text
+          .replace(/^[a-z]?\d+[\.\)]\s*/i, '') // loại bỏ mở đầu như "i2.", "a1)", "3.", "i)"
+          .replace(/[\(\[][^\)\]]*[\)\]]/g, '') // loại bỏ mọi thứ trong () hoặc []
+          .replace(/[\u{1F300}-\u{1FAFF}\u{1F000}-\u{1F6FF}]/gu, '') // loại emoji
+          .replace(/[^\p{L}\p{N}\s]/gu, '') // loại ký tự đặc biệt
+          .replace(/\s+/g, ' ')
+          .trim()
+      : ''
+  }
   static getContentNumInText (text) {
     return text
-    ? text
-        .replace(/\([^)]*\)/g, '') // Bỏ nội dung trong ngoặc ()
-        .replace(
-          /([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF])/g,
-          ''
-        ) // Bỏ emoji
-        .replace(/[^0-9]/g, '') // Bỏ tất cả trừ số
-    : '';
+      ? text
+          .replace(/\([^)]*\)/g, '') // Bỏ nội dung trong ngoặc ()
+          .replace(
+            /([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD83C-\uDBFF\uDC00-\uDFFF])/g,
+            ''
+          ) // Bỏ emoji
+          .replace(/[^0-9]/g, '') // Bỏ tất cả trừ số
+      : ''
   }
   static getEmojiString (text) {
     // Regex để match emoji
