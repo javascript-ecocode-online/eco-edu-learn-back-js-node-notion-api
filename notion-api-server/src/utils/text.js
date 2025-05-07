@@ -18,11 +18,11 @@ export class EcoTextUtil {
   static getRawText (text) {
     return text
       ? text
-          .replace(/^[a-z]?\d+[\.\)]\s*/i, '') // loại bỏ mở đầu như "i2.", "a1)", "3.", "i)"
-          .replace(/[\(\[][^\)\]]*[\)\]]/g, '') // loại bỏ mọi thứ trong () hoặc []
+          .replace(/^[a-z]?\d*[\.\)]?\s*/i, '') // loại mở đầu như "b.", "i2.", "1)", "a3)"
+          .replace(/[\(\[][^\)\]]*[\)\]]/g, '') // loại nội dung trong () hoặc []
           .replace(/[\u{1F300}-\u{1FAFF}\u{1F000}-\u{1F6FF}]/gu, '') // loại emoji
-          .replace(/[^\p{L}\p{N}\s]/gu, '') // loại ký tự đặc biệt
-          .replace(/\s+/g, ' ')
+          .replace(/[^a-zA-Z0-9\s\-']/g, '') // loại ký tự đặc biệt, giữ lại chữ, số, khoảng trắng, "-", "'"
+          .replace(/\s+/g, ' ') // chuẩn hóa khoảng trắng
           .trim()
       : ''
   }

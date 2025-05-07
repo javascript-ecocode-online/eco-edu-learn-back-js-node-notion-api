@@ -88,8 +88,8 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
 
   #getFinalText (content, emj1, emj2, newRt, status) {
     const me = this
-    console.log('🏡 newRt', newRt)
-    console.log('🏡 _pageInfo', me._pageInfo?.properties?.title?.title)
+    //console.log('🏡 newRt', newRt)
+    //console.log('🏡 _pageInfo', me._pageInfo?.properties?.title?.title)
     const c = newRt?.text?.content?.trim()
     if (status.isHome) {
       if (c === '🏡') status.isHome = true
@@ -140,6 +140,17 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
             newRt,
             status
           ),
+        }
+      }
+
+      if (newRt?.text?.link?.url?.trim()) {
+        newRt.annotations = {
+          bold: false,
+          italic: false,
+          strikethrough: false,
+          underline: true,
+          code: false,
+          color: 'blue',
         }
       }
 

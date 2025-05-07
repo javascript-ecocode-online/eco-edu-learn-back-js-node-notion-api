@@ -57,7 +57,7 @@ export class EcoNotionParagraphLv2RawBlocksBuilder extends EcoNotionLv2Builder {
       result += '.';
     }
   
-    return result;
+    return result?.replace(/🔹️ ?/g, '');;
   }
 
   #getEnText (text) {
