@@ -1,19 +1,17 @@
 import { EcoNotionServiceQueryBase as Base } from './notion-service-query-base.js'
-export class EcoNotionServiceQueryQuestionWrite extends Base {
+export class EcoNotionServiceDbBase extends Base {
   constructor () {
     super({
-      name: 'EcoNotionServiceQueryQuestionWrite',
+      name: 'EcoNotionServiceDb',
       isDebug: false,
       level: 'info',
     })
   }
-
   get #list () {
     return this.blocks.children.list
   }
-
   //TODO: Move to base
-  async #getPageBlocks (reason, pageId) {
+  async _getPageBlocks (reason, pageId) {
     const logName = `> getPageBlocks > ${reason}`
     this._logInfoBegin(logName, pageId)
 
@@ -35,31 +33,68 @@ export class EcoNotionServiceQueryQuestionWrite extends Base {
     return allBlocks
   }
 
-  async #getWriteDbId (reason, pageId) {
+  async _getLearnPageId (reason, pageId) {
     const me = this
-    const blocks = await me.#getPageBlocks(reason, pageId)
+    const blocks = await me._getPageBlocks(reason, pageId)
     const arr = blocks
       .filter(
         block =>
-          block.type === 'child_database' &&
-          block.child_database.title == 'Write Questions'
+          block.type === 'child_page' &&
+          block.child_page.title?.includes('⚡️ Learn')
       )
       .map(block => ({
         id: block.id,
-        title: block.child_database.title,
+        title: block.child_page.title,
         created_time: block.created_time,
       }))
     if (arr?.length) {
-      return arr[0]
+      const pageId = arr[0].id
+      return pageId
     }
     return null
   }
 
-  async getWriteQuestions (reason, pageId) {
+  _getDbBlocks (blocks) {
+    const arr = blocks?.filter(block => block.type === 'child_database')
+    return arr
+  }
+
+  _getDbByName (blocks, name) {
+    const arr = (
+      name ? blocks.filter(block => block.child_database.title === name) : blocks
+    )
+   
+    return arr
+  }
+
+  _getDbInfo (db) {
+    const arr = db?.map(block => ({
+      id: block.id,
+      title: block.child_database.title,
+      created_time: block.created_time,
+    }))
+   
+    return arr
+  }
+
+  async _getDbArrFromName (reason, pageId, dbName) {
     const me = this
-    const dbo = await me.#getWriteQuestionsDb(reason, pageId)
+    const learnPageId = await me._getLearnPageId(reason, pageId)
+    if (!learnPageId) return []
+    const learnBlocks = await me._getPageBlocks(reason, learnPageId)
+    const dbBlocks = me._getDbBlocks(learnBlocks)
+    const db = me._getDbByName(dbBlocks, dbName)
+    return db
+
+  }
+  async _getQuestions (reason, pageId, dbName) {
+    const me = this
+    const dbArr = await me._getDbArrFromName(reason, pageId, dbName)
+    //console.log('dbArr',  dbArr)
+    const dbos = me._getDbInfo(dbArr)
+    const dbo = dbos?.length ? dbos[0]: null
     const dbId = dbo?.id
-    if (!dbId) return nullÏ
+    if (!dbId) return null
     try {
       const response = await me.databases.query({
         database_id: dbId,
@@ -76,27 +111,5 @@ export class EcoNotionServiceQueryQuestionWrite extends Base {
       console.error('Lỗi khi lấy dữ liệu từ database:', error)
     }
     return dbo
-  }
-
-  async #getWriteQuestionsDb (reason, pageId) {
-    const me = this
-    const blocks = await me.#getPageBlocks(reason, pageId)
-    const arr = blocks
-      .filter(
-        block =>
-          block.type === 'child_page' &&
-          block.child_page.title?.includes('⚡️ Learn')
-      )
-      .map(block => ({
-        id: block.id,
-        title: block.child_page.title,
-        created_time: block.created_time,
-      }))
-    if (arr?.length) {
-      const pageId = arr[0].id
-      const dbObj = await me.#getWriteDbId(reason, pageId)
-      return dbObj
-    }
-    return null
   }
 }
