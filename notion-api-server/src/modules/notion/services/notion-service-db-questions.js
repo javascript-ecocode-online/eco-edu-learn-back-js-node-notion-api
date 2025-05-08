@@ -15,8 +15,8 @@ export class EcoNotionServiceDbQuestions extends Base {
     const me = this
     const dbName = me.#writeQuestions
     const dbArr = await me._getDbArrFromName(reason, pageId, dbName)
-    const dbos = me._getDbInfo(dbArr)
-    const dbo = dbos?.length ? dbos[0]: null
+    //const dbos = me._getDbInfo(dbArr)
+    const dbo = dbArr?.length ? dbArr[0]: null
     return dbo
   }
 

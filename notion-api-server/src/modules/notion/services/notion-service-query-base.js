@@ -1,4 +1,5 @@
 import { EcoNotionServiceBase as Base } from './notion-service-base.js'
+import { NotionIdHelper } from '../helpers/id/notion-id-helper.js'
 
 export class EcoNotionServiceQueryBase extends Base {
   constructor (logConfig) {
@@ -19,4 +20,8 @@ export class EcoNotionServiceQueryBase extends Base {
     //notion.pages.retrieve
     return this._notionClient.databases
   }
+
+   _cleanId (pageId) {
+      return NotionIdHelper.cleanId(pageId)
+    }
 }
