@@ -7,12 +7,14 @@ export class EcoNotionRouterController extends EcoRouterController {
   }
   async _execRequestPageId (name, req, res, func) {
     const me = this
+   
     const {tk, pageId} = req.params
     SB.notionToken = tk
     //console.log('🪽 tk: ', tk)
     //console.log('🪽 pageId: ', pageId)
     me._execRequest(name, res, async () => {
       const pid = me.#validateRequestPageId(pageId, res)
+       
       if (!pid) return
       await func(pid)
     })

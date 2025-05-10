@@ -26,6 +26,16 @@ export class EcoTextUtil {
           .trim()
       : ''
   }
+  static removeEmoji (text) {
+    return text
+      ? text
+
+          .replace(/[\u{1F300}-\u{1FAFF}\u{1F000}-\u{1F6FF}]/gu, '') // loại emoji
+
+          .replace(/\s+/g, ' ') // chuẩn hóa khoảng trắng
+          .trim()
+      : ''
+  }
   static getContentNumInText (text) {
     return text
       ? text

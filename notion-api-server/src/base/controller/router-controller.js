@@ -22,6 +22,7 @@ export class EcoRouterController {
     me.#logBeginRequest(name)
 
     try {
+      
       await func()
     } catch (err) {
       me.#logRequestError(name, err)

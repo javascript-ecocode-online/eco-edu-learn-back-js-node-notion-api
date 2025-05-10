@@ -23,11 +23,9 @@ export class EcoNotionControllerPageQuestions extends EcoNotionRouterController 
 
     me._execRequestPageId('⚡️ get_page_questions', req, res, async pageId => {
       const svc = me._svc
-      const blocks = await svc.getPageWriteQuestion(
-        'api-get-page-questions',
-        pageId,
-        'w'
-      )
+
+      const blocks = await svc.getPageQuestion('api-get-page-questions', pageId)
+
       res.json(blocks)
     })
   }
