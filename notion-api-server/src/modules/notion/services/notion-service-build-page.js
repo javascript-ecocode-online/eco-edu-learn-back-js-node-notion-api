@@ -77,12 +77,12 @@ export class EcoNotionServiceBuildPage extends Base {
 
     if (options.buildParagraphs) {
       console.log('👉 ----- Start build Paragraphs...')
-      const paragrapsBuilder = new EcoNotionParagraphLv0Builder(
+      const paragraphsBuilder = new EcoNotionParagraphLv0Builder(
         pageId,
         pageBlocks,
         info
       )
-      obj['paragraps'] = await paragrapsBuilder.execute()
+      obj['paragraphs'] = await paragraphsBuilder.execute()
       console.log('👍 ----- Build Paragraphs done!')
     }
 

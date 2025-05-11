@@ -44,9 +44,9 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
     const me = this
     //me._emoji1 = me._emoji2
     me._emoji2 = emoji
-    console.log('----- setEmoji -----')
-    console.log(me._emoji1)
-    console.log(me._emoji2)
+    //console.log('----- setEmoji -----')
+    //console.log(me._emoji1)
+    //console.log(me._emoji2)
     return me
   }
 
@@ -103,7 +103,7 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
     //console.log(emj2)
     //content = this.#addFluteToSentences(content)
     //const trimmedEmj2 = emj2.trim()
-    const rs = content?.replace(
+    let rs = content?.replace(
       new RegExp(emj1, 'g'),
       (match, offset, string) => {
         // Lấy phần sau emj1
@@ -115,7 +115,17 @@ export class EcoNotionParagraphLv1RawItemsBuilder extends Base {
         return match // không thay
       }
     )
+    rs = rs ?? ''
     console.log(' 🏠 --- getFinalText ---', rs)
+    if (rs.endsWith(' ' + emj2)) {
+      // Đúng định dạng rồi, không làm gì cả
+    } else if (rs.endsWith(emj2)) {
+      // Có emoji nhưng thiếu khoảng trắng trước → sửa lại
+      rs = rs.slice(0, -emj2.length) + ' ' + emj2
+    } else {
+      // Không có emoji → thêm vào
+      rs += ' ' + emj2
+    }
     //return this.#addFluteToSentences(rs)
     return rs
   }
