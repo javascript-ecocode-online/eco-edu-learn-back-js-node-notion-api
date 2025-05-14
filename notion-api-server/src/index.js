@@ -4,13 +4,15 @@ import notionRoutes from './modules/notion/routes.js';
 import cors from 'cors';
 import fs from 'fs';
 import https from 'https';
+import http from 'http';
 import path from 'path';
 
 dotenv.config();
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const HTTP_PORT = process.env.HTTP_PORT || 3000;
+const HTTPS_PORT = process.env.HTTPS_PORT || 3443;
 
 // Load SSL certificate (local self-signed)
 const sslOptions = {
@@ -24,12 +26,17 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json()); // middleware xử lý body JSON
+app.use(express.json());
 
 // Route chính
 app.use('/api/notion', notionRoutes);
 
+// Tạo HTTP server
+http.createServer(app).listen(HTTP_PORT, () => {
+  console.log(`✅ HTTP server is running at http://localhost:${HTTP_PORT}`);
+});
+
 // Tạo HTTPS server
-https.createServer(sslOptions, app).listen(PORT, () => {
-  console.log(`✅ HTTPS server is running at https://localhost:${PORT}`);
+https.createServer(sslOptions, app).listen(HTTPS_PORT, () => {
+  console.log(`✅ HTTPS server is running at https://localhost:${HTTPS_PORT}`);
 });
