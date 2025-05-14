@@ -4,6 +4,6 @@ import { EcoNotionControllerQuestionsWrite } from '../controllers/notion-control
 const router = express.Router();
 const controller = new EcoNotionControllerQuestionsWrite({ name: 'EcoPageChildrenController' });
 
-router.get('/:tk/:pageId', controller.getDbId);
+router.get('/:tk/:pageId', controller.getWQuestions);
 
 export default router;

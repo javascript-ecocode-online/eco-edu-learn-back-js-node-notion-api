@@ -116,7 +116,7 @@ export class EcoNotionServiceQueryWriteQuestions extends Base {
       }
 
       const hasVnQuestions = vQuestions?.length && eSentence && vSentence
-      console.log(vQuestions)
+      //console.log(vQuestions)
       if (hasVnQuestions) {
         const vnQuestions = me.#getVnQuestions(eSentence, vSentence, vQuestions)
         if (vnQuestions?.length) rs = rs.concat(vnQuestions)

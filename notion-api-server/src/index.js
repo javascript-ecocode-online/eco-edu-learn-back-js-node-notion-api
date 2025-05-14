@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import quizRoutes from './modules/quiz/routes.js';
 import notionRoutes from './modules/notion/routes.js';
+import exportRoutes from './modules/export/routes.js';
 import cors from 'cors';
 import fs from 'fs';
 import https from 'https';
@@ -29,7 +31,10 @@ app.use(cors({
 app.use(express.json());
 
 // Route chính
+app.use('/api/quiz', quizRoutes);
+
 app.use('/api/notion', notionRoutes);
+app.use('/api/export', exportRoutes);
 
 // Tạo HTTP server
 http.createServer(app).listen(HTTP_PORT, () => {

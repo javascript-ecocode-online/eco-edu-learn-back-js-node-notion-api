@@ -1,6 +1,6 @@
 import { EcoNotionServiceDbBase as Base } from './notion-service-db-base.js'
 export class EcoNotionServiceDbQuestions extends Base {
-  get #writeQuestions(){
+  get #writeQuestions () {
     return 'Write Questions'
   }
   constructor () {
@@ -16,14 +16,13 @@ export class EcoNotionServiceDbQuestions extends Base {
     const dbName = me.#writeQuestions
     const dbArr = await me._getDbArrFromName(reason, pageId, dbName)
     //const dbos = me._getDbInfo(dbArr)
-    const dbo = dbArr?.length ? dbArr[0]: null
+    const dbo = dbArr?.length ? dbArr[0] : null
     return dbo
   }
 
   async getWriteQuestions (reason, pageId) {
+    console.log('pageId: ', pageId)
     const dbName = this.#writeQuestions
     return await this._getQuestions(reason, pageId, dbName)
   }
-
- 
 }

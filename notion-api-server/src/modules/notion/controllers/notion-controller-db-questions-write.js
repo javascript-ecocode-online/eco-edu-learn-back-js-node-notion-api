@@ -13,7 +13,7 @@ export class EcoNotionControllerQuestionsWrite extends EcoNotionRouterController
 
   // 🇻🇳 Lấy danh sách các trang con của trang
   // 🇳🇿 Get a list of sub-pages of the page
-  async getDbId (req, res) {
+  async getWQuestions (req, res) {
     const me = this
     me._execRequestPageId('⚡️ get_db_question_write', req, res, async pageId => {
       const nqc = me._nqc
