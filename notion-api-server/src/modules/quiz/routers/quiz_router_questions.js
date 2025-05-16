@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     console.log('select all questions')
-    const [rows] = await pool.execute('SELECT * FROM questions')
+    const [rows] = await pool.execute('SELECT * FROM eco_notion_question')
     res.json(rows)
   } catch (err) {
     res.status(500).json({ error: err.message })

@@ -35,7 +35,7 @@ export class EcoNotionServiceQueryWriteQuestions extends Base {
         sVn: vSentence,
         aEn: phrase,
         aVn: phraseHint,
-        sSc: source,
+        aCt: source,
       }
       return rs
     }

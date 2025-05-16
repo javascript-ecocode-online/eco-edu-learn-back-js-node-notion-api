@@ -1,9 +1,17 @@
 import { ExportBaseService } from './export-service-base.js'
+import { QuizWQuestionsService } from '../../quiz/services/quiz-service-question-w.js'
 export class ExportWQuestionsService extends ExportBaseService {
   constructor (logConfig) {
     super(logConfig)
+    this.#init()
   }
+  #init () {
+      this._quizSvc = new QuizWQuestionsService()
+      return this
+    }
   async saveWQuestions (data) {
+    const me = this
+    const quizSvc = me._quizSvc
     const arr = []
     data?.forEach((d, i) => {
       const obj = {
@@ -14,12 +22,12 @@ export class ExportWQuestionsService extends ExportBaseService {
         "sVn": d.sVn,
         "aEn": d.aEn,
         "aVn": d.aVn,
-        "sSc": d.sSc,
         "qVn": d.qVn,
         "aCt": d.aCt 
       }
       arr.push(obj)
     })
-    return arr
+    const rs = await quizSvc.saveWQuestions(arr)
+    return rs
   }
 }
