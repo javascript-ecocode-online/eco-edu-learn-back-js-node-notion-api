@@ -9,6 +9,7 @@ import { EcoNotionNav2Lv1Builder } from '../builders/header-nav2/nav2-lv1-builde
 import { EcoNotionNav3Lv1Builder } from '../builders/header-nav3/nav3-lv1-builder.js'
 import { EcoNotionParagraphLv0Builder } from '../builders/content/paragraph-lv0-builder.js'
 import { EcoNotionServiceBase as SB} from './notion-service-base.js'
+import { DcSQLiteBdr } from '../builders/db/sqlite-bdr.js'
 export class EcoNotionServiceBuildPage extends Base {
   constructor () {
     super({ name: 'NotionBuildPage', isDebug: false, level: 'info' })
@@ -88,7 +89,14 @@ export class EcoNotionServiceBuildPage extends Base {
 
     if (options.buildLdb){
       console.log('👉 ----- Start build Ldb...')
-      console.log('👉 Todo!')
+      const dbBdr = new DcSQLiteBdr(
+        '/storage/6139-3833/Db',
+        'test.db',
+        pageId,
+        pageBlocks,
+        info
+      )
+      obj['dbBuildRs'] = await dbBdr.execute()
       console.log('👉 ----- End build Ldb')
     }
 
