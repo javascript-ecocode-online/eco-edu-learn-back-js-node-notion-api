@@ -18,11 +18,11 @@ export class DcSQLiteBdr extends Base {
     if (!this._dbi) return;
     if (!this._dbn) return;
     if (!this._dbf) return;
-    const fldPth = path.join(this._dbf, this._dbn)
+    const fldPth = path.join(this._dbf, this._dbi)
     if (!fs.existsSync(fldPth)) {
       fs.mkdirSync(fldPth, { recursive: true })
     }
-    let dbPath = path.join(fldPth, this._dbi)
+    let dbPath = path.join(fldPth, this._dbn)
     if (!dbPath.endsWith('.db')) {
       dbPath += '.db'
     }
