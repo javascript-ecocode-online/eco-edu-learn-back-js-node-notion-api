@@ -22,7 +22,10 @@ export class DcSQLiteBdr extends Base {
     if (!fs.existsSync(fldPth)) {
       fs.mkdirSync(fldPth, { recursive: true })
     }
-    const dbPath = path.join(fldPth, this._dbi)
+    let dbPath = path.join(fldPth, this._dbi)
+    if (!dbPath.endsWith('.db')) {
+      dbPath += '.db'
+    }
     const SQL = await initSqlJs()
     const db = new SQL.Database()
     const data = db.export()
