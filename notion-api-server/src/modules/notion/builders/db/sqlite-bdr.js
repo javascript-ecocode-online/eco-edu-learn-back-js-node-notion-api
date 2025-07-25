@@ -20,7 +20,6 @@ export class DcSQLiteBdr extends Base {
     const dbPath = path.join(this._folder, this._dbName)
     const SQL = await initSqlJs()
     const db = new SQL.Database()
-    // Lưu file db rỗng ra ổ đĩa
     const data = db.export()
     fs.writeFileSync(dbPath, Buffer.from(data))
     db.close()
