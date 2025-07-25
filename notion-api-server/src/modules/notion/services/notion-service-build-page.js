@@ -91,8 +91,7 @@ export class EcoNotionServiceBuildPage extends Base {
     if (options.buildLdb){
       console.log('👉 ----- Start build Ldb...')
       const dbBdr = new DcSQLiteBdr(
-        '/storage/6139-3833/Db',
-        'test.db',
+        options.buildLdb,
         pageId,
         pageBlocks,
         info
