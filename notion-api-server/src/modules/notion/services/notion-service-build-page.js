@@ -86,6 +86,12 @@ export class EcoNotionServiceBuildPage extends Base {
       console.log('👍 ----- Build Paragraphs done!')
     }
 
+    if (options.buildLdb){
+      console.log('👉 ----- Start build Ldb...')
+      console.log('👉 Todo!')
+      console.log('👉 ----- End build Ldb')
+    }
+
     //const nav2Blocks = []
     const rs = { success: true, result: obj }
 
