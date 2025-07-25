@@ -1,7 +1,7 @@
-import { EcoBase as Base } from '../../../../base/eco-base.js'
+import initSqlJs from 'sql.js'
 import fs from 'fs'
 import path from 'path'
-import sqlite3 from 'sqlite3'
+import { EcoBase as Base } from '../../../../base/eco-base.js'
 
 export class DcSQLiteBdr extends Base {
   constructor (folder, dbName, pageId, pageBlocks, pageInfo) {
@@ -12,28 +12,19 @@ export class DcSQLiteBdr extends Base {
     this._pageBlocks = pageBlocks
     this._pageInfo = pageInfo
   }
-  
+
   async execute () {
-    const me = this
-
-    // Đảm bảo thư mục tồn tại
-    if (!fs.existsSync(me._folder)) {
-      fs.mkdirSync(me._folder, { recursive: true })
+    if (!fs.existsSync(this._folder)) {
+      fs.mkdirSync(this._folder, { recursive: true })
     }
-
-    // Tạo đường dẫn file db
-    const dbPath = path.join(me._folder, me._dbName)
-
-    // Kết nối tới SQLite (tạo file nếu chưa có)
-    const db = new sqlite3.Database(dbPath)
-
-    console.log(`Db created: ${dbPath}`)
-
-
-    // Đóng kết nối ngay (chỉ tạo file)
+    const dbPath = path.join(this._folder, this._dbName)
+    const SQL = await initSqlJs()
+    const db = new SQL.Database()
+    // Lưu file db rỗng ra ổ đĩa
+    const data = db.export()
+    fs.writeFileSync(dbPath, Buffer.from(data))
     db.close()
-
-    // Trả về đường dẫn file db
+    console.log(`Db created: ${dbPath}`)
     return { dbPath }
   }
 }
