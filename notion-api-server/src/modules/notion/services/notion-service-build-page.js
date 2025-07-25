@@ -17,6 +17,7 @@ export class EcoNotionServiceBuildPage extends Base {
 
   async buildPage (reason, pageId, options) {
     const me = this
+    console.log('👉 Options', options)
     SB.notionToken = options?.notionToken
     const logName = `> buildPage > ${reason}`
     me._logInfoBegin(logName, pageId)
